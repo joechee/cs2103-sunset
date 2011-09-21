@@ -20,22 +20,22 @@ public class Task implements Serializable{
 	private Date dueTime;
 	private Integer percentageCompleted;
 	private Date addTime;
-	private String uniqId;
+	private UUID uniqId;
 	private Integer pIndex;
 	
-	public Task (String taskName, List<String> tags, Importance importance, Date dueDate, Integer percentageCompleted, Date dateAdded, String uniqId, Integer pIndex) {
+	public Task (String taskName, List<String> tags, Importance importance, Date dueDate, Integer percentageCompleted, Date dateAdded, Integer pIndex) {
 		this.taskName = taskName;
 		this.tags = tags;
 		this.importance = importance;
 		this.dueTime = dueDate;
 		this.percentageCompleted = percentageCompleted;
 		this.addTime = dateAdded;
-		this.uniqId = uniqId;
+		//this.uniqId = UUID.randomUUID();
 		this.pIndex = pIndex;
 	}
 	
-	public Task (String uniqId) {
-		this.uniqId = uniqId;
+	public Task () {
+		//this.uniqId = UUID.randomUUID();
 	}
 	
 	public void setTaskName(String taskName) {
@@ -74,7 +74,7 @@ public class Task implements Serializable{
 	public Date getDateAdded() {
 		return addTime;
 	}
-	public String getUniqId() {
+	public UUID getUniqId() {
 		return uniqId;
 	}
 	public void setpIndex(Integer pIndex) {
