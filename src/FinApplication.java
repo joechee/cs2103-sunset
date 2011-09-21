@@ -1,4 +1,7 @@
 
-public class FinApplication {
-
+public enum FinApplication {
+	INSTANCE;
+	
+	private List<Task> tasks;
+	
 }
