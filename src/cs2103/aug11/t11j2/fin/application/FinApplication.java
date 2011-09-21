@@ -1,5 +1,9 @@
+package cs2103.aug11.t11j2.fin.application;
 
-public static enum FinApplication {
+import cs2103.aug11.t11j2.fin.datamodel.*;
+import java.util.Map;
+
+public enum FinApplication {
 	INSTANCE;
 	
 	private Map<String, Task> taskMap = new HashMap<String, Task>();

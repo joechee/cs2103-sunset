@@ -1,4 +1,4 @@
-package DataModel;
+package cs2103.aug11.t11j2.fin.datamodel;
 
 import java.io.*;
 import java.util.*;
