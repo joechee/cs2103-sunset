@@ -95,6 +95,17 @@ public enum FinApplication {
 			return false;
 		}
 	}
+	
+	/**
+	 * Clears the current Fin environment (of all tasks etc.)
+	 */
+	void clearEnvironment() {
+		taskMap.clear();
+		taskList.clear();		
+	}
+	void addTaskTree(TaskTree tt) {
+		taskList.add(tt);
+	}
 
 	
 	/**
@@ -115,5 +126,4 @@ public enum FinApplication {
 			return false;
 		}
 	}
-
 }

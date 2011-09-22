@@ -6,7 +6,34 @@ import java.util.*;
 public class Task {
 
 	public enum EImportance {
-		LOW, NORMAL, HIGH
+		LOW("Low"), NORMAL("Normal"), HIGH("Important");
+
+		String importance;
+
+		EImportance(String importance) {
+			this.importance = importance;
+		}
+
+		@Override
+		public String toString() {
+			return importance;
+		}
+
+		private static final Map<String, EImportance> stringToEnum = new HashMap<String, EImportance>();
+		static {
+			for (EImportance impt : values()) {
+				stringToEnum.put(impt.toString(), impt);
+			}
+		}
+
+		public static EImportance fromString(String importance) {
+			EImportance tr = stringToEnum.get(importance);
+			if (tr == null) {
+				return NORMAL;
+			} else {
+				return tr;
+			}
+		}
 	};
 
 	private String taskName;
@@ -19,8 +46,7 @@ public class Task {
 	private Integer pIndex;
 
 	public Task(String taskName, List<String> tags, EImportance importance,
-			Date dueDate, Integer percentageCompleted,
-			Integer pIndex) {
+			Date dueDate, Integer percentageCompleted, Integer pIndex) {
 
 		this.taskName = taskName;
 		this.tags = tags;
@@ -34,10 +60,11 @@ public class Task {
 
 	public Task() {
 		this.uniqId = UUID.randomUUID();
-		
+
 		this.importance = EImportance.NORMAL;
 		this.addTime = new Date();
 		this.pIndex = 0;
+		this.percentageCompleted = 0;
 	}
 
 	public void setTaskName(String taskName) {
@@ -99,23 +126,31 @@ public class Task {
 	public Integer getpIndex() {
 		return pIndex;
 	}
-	
-	public Map<String, Object> toObject() {
+
+	public Task(Map<String, Object> dict) {
+		this.taskName = (String) dict.get("Name");
+		this.uniqId = UUID.fromString((String) dict.get("UID"));
+		this.addTime = (Date) dict.get("DateAdded");
+		this.pIndex = (Integer) dict.get("Priority");
+		this.importance = EImportance.fromString( (String) dict.get("Importance") );
+		this.percentageCompleted = (Integer) dict.get("Completed");
+		this.dueTime = (Date) dict.get("DueDate");
+	}
+
+	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
-		
+
 		tr.put("Name", this.getTaskName());
-		tr.put("UID", this.getUniqId());
+		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
 		tr.put("Priority", this.getpIndex());
-		tr.put("Importance", this.getImportance());
+		tr.put("Importance", this.getImportance().importance);
+		tr.put("Completed", this.getPercentageCompleted());
 
-		if (this.getPercentageCompleted() != null) {
-			tr.put("Completed", this.getPercentageCompleted());
-		}
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());
 		}
-		
+
 		return tr;
 	}
 

@@ -38,41 +38,48 @@ public class test {
 		task1.setTaskName("hellO!");
 		Task task2 = new Task();
 		task2.setTaskName("omg! no way!");
-		List<Object> tasklyst = new ArrayList<Object>();
-		tasklyst.add(task1);
-		tasklyst.add(task2);
+		Task task3 = new Task();
+		task3.setTaskName("hello world child1");
+		Task task4 = new Task();
+		task4.setTaskName("hello world child2");
+		
+			FinApplication.INSTANCE.add( task1, null );
+			FinApplication.INSTANCE.add( task2, null );
+			FinApplication.INSTANCE.add(task3, task1.getUniqId());
+			FinApplication.INSTANCE.add(task4, task1.getUniqId());
+
+			
+		System.out.println("Serializing test...");
 
 		
-		System.out.println("Serializing test...");
-		Serializer testSer = new Serializer();
-		testSer.serialize(tasklyst,FinConstants.DEFAULT_FILE);
+			FinSerializer fs = new FinSerializer();
+			fs.serialize("test.yaml");
+		
 		System.out.println("Serializing test complete!");
 		
 		System.out.println("***");
 		System.out.println("Deserializing test...");
-		List<Object> objects = (List<Object>) testSer.unserialize(FinConstants.DEFAULT_FILE);
-		System.out.println("Printing Task names:");
-		for (int i = 0; i < objects.size();i++) {
-			System.out.println(((Task) objects.get(i)).getTaskName());
-		}
+		
+		fs.unserialize("test.yaml");
+		dfs(null, 0);
+		
+		
+		
 		System.out.println("Deserializing test complete!");
 		System.out.println("***");
 		
 		System.out.println("Test complete!");
 
 		
-		Task task3 = new Task();
-		task3.setTaskName("hello world child1");
-		Task task4 = new Task();
-		task4.setTaskName("hello world child2");
-		
-		FinApplication.INSTANCE.add( task1, null );
-		FinApplication.INSTANCE.add( task2, null );
-		FinApplication.INSTANCE.add(task3, task1.getUniqId());
-		FinApplication.INSTANCE.add(task4, task1.getUniqId());
-		
-		FinSerializer fs = new FinSerializer();
-		fs.serialize("test.yaml");
+	}
+	
+	public static void dfs(UUID parent, int cnt) {
+		List<Task> ft = FinApplication.INSTANCE.getTasks(parent);
+		for (Task t : ft) {
+			for (int i=0;i<cnt;++i) System.out.print(" ");
+			System.out.println(t.getTaskName());
+			dfs(t.getUniqId(), cnt+3);
+		}
 	}
 }
 
