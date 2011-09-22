@@ -24,23 +24,25 @@ public class Task implements Serializable{
 	private Integer pIndex;
 	
 	public Task (String taskName, List<String> tags, Importance importance, Date dueDate, Integer percentageCompleted, Date dateAdded, Integer pIndex) {
+
 		this.taskName = taskName;
 		this.tags = tags;
 		this.importance = importance;
 		this.dueTime = dueDate;
 		this.percentageCompleted = percentageCompleted;
 		this.addTime = dateAdded;
-		//this.uniqId = UUID.randomUUID();
+		this.uniqId = UUID.randomUUID();
 		this.pIndex = pIndex;
 	}
 	
 	public Task () {
-		//this.uniqId = UUID.randomUUID();
+		this.uniqId = UUID.randomUUID();
 	}
 	
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
+	
 	public String getTaskName() {
 		return taskName;
 	}
