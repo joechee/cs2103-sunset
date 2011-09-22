@@ -1,4 +1,4 @@
-package cs2103.aug11.t11j2.fin.application;
+package cs2103.aug11.t11j2.fin.functest;
 
 import java.io.*;
 import java.util.*;
@@ -6,6 +6,7 @@ import java.util.*;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 /* A set of routines to test components
