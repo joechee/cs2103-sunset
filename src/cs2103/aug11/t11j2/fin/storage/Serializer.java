@@ -28,7 +28,7 @@ public class Serializer {
 	
 	}
 	
-	public List<Object> deserialize(String filename) throws IOException {
+	public List<Object> unserialize(String filename) throws IOException {
 		InputStream file = new FileInputStream(filename);
 		ArrayList<Object> deserializedObjects = new ArrayList<Object>();
 		for (Object data: yaml.loadAll(file)) {

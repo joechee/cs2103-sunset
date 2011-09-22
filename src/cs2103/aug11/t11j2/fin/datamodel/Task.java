@@ -3,12 +3,7 @@ package cs2103.aug11.t11j2.fin.datamodel;
 import java.io.*;
 import java.util.*;
 
-public class Task implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4205418282669977591L;
+public class Task {
 
 	public enum EImportance {
 		LOW, NORMAL, HIGH
@@ -24,7 +19,7 @@ public class Task implements Serializable {
 	private Integer pIndex;
 
 	public Task(String taskName, List<String> tags, EImportance importance,
-			Date dueDate, Integer percentageCompleted, Date dateAdded,
+			Date dueDate, Integer percentageCompleted,
 			Integer pIndex) {
 
 		this.taskName = taskName;
@@ -32,13 +27,17 @@ public class Task implements Serializable {
 		this.importance = importance;
 		this.dueTime = dueDate;
 		this.percentageCompleted = percentageCompleted;
-		this.addTime = dateAdded;
+		this.addTime = new Date();
 		this.uniqId = UUID.randomUUID();
 		this.pIndex = pIndex;
 	}
 
 	public Task() {
 		this.uniqId = UUID.randomUUID();
+		
+		this.importance = EImportance.NORMAL;
+		this.addTime = new Date();
+		this.pIndex = 0;
 	}
 
 	public void setTaskName(String taskName) {
@@ -99,6 +98,25 @@ public class Task implements Serializable {
 
 	public Integer getpIndex() {
 		return pIndex;
+	}
+	
+	public Map<String, Object> toObject() {
+		Map<String, Object> tr = new TreeMap<String, Object>();
+		
+		tr.put("Name", this.getTaskName());
+		tr.put("UID", this.getUniqId());
+		tr.put("DateAdded", this.getDateAdded());
+		tr.put("Priority", this.getpIndex());
+		tr.put("Importance", this.getImportance());
+
+		if (this.getPercentageCompleted() != null) {
+			tr.put("Completed", this.getPercentageCompleted());
+		}
+		if (this.getDueDate() != null) {
+			tr.put("DueDate", this.getDueDate());
+		}
+		
+		return tr;
 	}
 
 }

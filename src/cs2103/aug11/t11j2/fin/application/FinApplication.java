@@ -15,9 +15,15 @@ import java.util.*;
 public enum FinApplication {
 	INSTANCE;
 
-	private class TaskTree extends Task {
+	class TaskTree {
+		Task task;
 		UUID parentUID;
 		List<TaskTree> children = new ArrayList<TaskTree>();
+		
+		public TaskTree(Task task, UUID parentUID) {
+			this.task = task;
+			this.parentUID = parentUID;
+		}
 	};
 
 	List<TaskTree> taskList = new ArrayList<TaskTree>();
@@ -29,9 +35,8 @@ public enum FinApplication {
 	 * @param task
 	 * @param parentUID
 	 */
-	void add(Task task, UUID parentUID) {
-		TaskTree newTask = (TaskTree) task;
-		newTask.parentUID = parentUID;
+	public void add(Task task, UUID parentUID) {
+		TaskTree newTask = new TaskTree(task, parentUID);
 
 		if (parentUID != null) {
 			TaskTree parentTask = taskMap.get(parentUID);
@@ -42,7 +47,7 @@ public enum FinApplication {
 			taskList.add(newTask);
 		}
 
-		taskMap.put(newTask.getUniqId(), newTask);
+		taskMap.put(newTask.task.getUniqId(), newTask);
 	}
 
 	/**
@@ -51,19 +56,19 @@ public enum FinApplication {
 	 * @param parentUID
 	 * @return List of Tasks sorted by pIndex
 	 */
-	List<Task> getTasks(UUID parentUID) {
+	public List<Task> getTasks(UUID parentUID) {
 		List<Task> tasks = new ArrayList<Task>();
 
 		if (parentUID != null) {
 			TaskTree parentTask = taskMap.get(parentUID);
 			if (parentTask != null) {
-				for (Task t : parentTask.children) {
-					tasks.add(t);
+				for (TaskTree t : parentTask.children) {
+					tasks.add(t.task);
 				}
 			}
 		} else {
-			for (Task t : taskList) {
-				tasks.add(t);
+			for (TaskTree t : taskList) {
+				tasks.add(t.task);
 			}
 		}
 
@@ -78,7 +83,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is deleted
 	 */
-	boolean deleteTask(UUID taskUID) {
+	public boolean deleteTask(UUID taskUID) {
 		TaskTree todelete = taskMap.get(taskUID);
 		
 		if (todelete != null) {

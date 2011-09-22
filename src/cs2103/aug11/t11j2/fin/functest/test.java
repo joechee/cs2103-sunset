@@ -6,7 +6,9 @@ import java.util.*;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
+import cs2103.aug11.t11j2.fin.application.FinSerializer;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 /* A set of routines to test components
@@ -48,7 +50,7 @@ public class test {
 		
 		System.out.println("***");
 		System.out.println("Deserializing test...");
-		List<Object> objects = (List<Object>) testSer.deserialize(FinConstants.DEFAULT_FILE);
+		List<Object> objects = (List<Object>) testSer.unserialize(FinConstants.DEFAULT_FILE);
 		System.out.println("Printing Task names:");
 		for (int i = 0; i < objects.size();i++) {
 			System.out.println(((Task) objects.get(i)).getTaskName());
@@ -59,7 +61,18 @@ public class test {
 		System.out.println("Test complete!");
 
 		
+		Task task3 = new Task();
+		task3.setTaskName("hello world child1");
+		Task task4 = new Task();
+		task4.setTaskName("hello world child2");
 		
+		FinApplication.INSTANCE.add( task1, null );
+		FinApplication.INSTANCE.add( task2, null );
+		FinApplication.INSTANCE.add(task3, task1.getUniqId());
+		FinApplication.INSTANCE.add(task4, task1.getUniqId());
+		
+		FinSerializer fs = new FinSerializer();
+		fs.serialize("test.yaml");
 	}
 }
 
