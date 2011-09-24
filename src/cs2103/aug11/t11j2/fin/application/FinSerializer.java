@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication.TaskTree;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.datamodel.*;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 
 /**
@@ -94,10 +93,10 @@ public class FinSerializer {
 	 * Converts a given TaskTree into a dictionary
 	 */
 	private static Map<String, Object> taskTreeToDictionary(TaskTree tt) {
-		Map<String, Object> o = tt.task.toDictionary();
+		Map<String, Object> o = tt.getTask().toDictionary();
 
-		if (tt.children.size() > 0) {
-			o.put("Subtasks", FinSerializer.taskTreeListToList(tt.children));
+		if (tt.getChildren().size() > 0) {
+			o.put("Subtasks", FinSerializer.taskTreeListToList(tt.getChildren()));
 		}
 		return o;
 	}

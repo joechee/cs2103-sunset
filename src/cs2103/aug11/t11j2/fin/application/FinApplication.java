@@ -15,17 +15,6 @@ import java.util.*;
 public enum FinApplication {
 	INSTANCE;
 
-	class TaskTree {
-		Task task;
-		UUID parentUID;
-		List<TaskTree> children = new ArrayList<TaskTree>();
-		
-		public TaskTree(Task task, UUID parentUID) {
-			this.task = task;
-			this.parentUID = parentUID;
-		}
-	};
-
 	List<TaskTree> taskList = new ArrayList<TaskTree>();
 	Map<UUID, TaskTree> taskMap = new TreeMap<UUID, TaskTree>();
 
@@ -41,13 +30,13 @@ public enum FinApplication {
 		if (parentUID != null) {
 			TaskTree parentTask = taskMap.get(parentUID);
 			if (parentTask != null) {
-				parentTask.children.add(newTask);
+				parentTask.getChildren().add(newTask);
 			}
 		} else {
 			taskList.add(newTask);
 		}
 
-		taskMap.put(newTask.task.getUniqId(), newTask);
+		taskMap.put(newTask.getTask().getUniqId(), newTask);
 	}
 
 	/**
@@ -62,13 +51,13 @@ public enum FinApplication {
 		if (parentUID != null) {
 			TaskTree parentTask = taskMap.get(parentUID);
 			if (parentTask != null) {
-				for (TaskTree t : parentTask.children) {
-					tasks.add(t.task);
+				for (TaskTree t : parentTask.getChildren()) {
+					tasks.add(t.getTask());
 				}
 			}
 		} else {
 			for (TaskTree t : taskList) {
-				tasks.add(t.task);
+				tasks.add(t.getTask());
 			}
 		}
 
@@ -103,9 +92,6 @@ public enum FinApplication {
 		taskMap.clear();
 		taskList.clear();		
 	}
-	void addTaskTree(TaskTree tt) {
-		taskList.add(tt);
-	}
 
 	
 	/**
@@ -115,13 +101,13 @@ public enum FinApplication {
 	 * @return true iff the child is deleted from parent
 	 */
 	private boolean deleteChild(TaskTree todelete) {
-		if (todelete.parentUID == null) {
+		if (todelete.getParentUID() == null) {
 			return false;
 		}
 		
-		TaskTree parent = taskMap.get(todelete.parentUID);
+		TaskTree parent = taskMap.get(todelete.getParentUID());
 		if (parent != null) {
-			return parent.children.remove(taskMap);
+			return parent.getChildren().remove(taskMap);
 		} else {
 			return false;
 		}
