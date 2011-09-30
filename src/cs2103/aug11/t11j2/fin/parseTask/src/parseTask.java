@@ -58,7 +58,7 @@ public class parseTask {
 		
 		pIndex=getPriority(str);
 		
-		//return new Task(.....);
+		//return Task(.....);
 	}
 	
 	protected static String getTaskName(String str){
