@@ -13,6 +13,7 @@ public class parseTask {
 	final private static String [] DAYS_OF_WEEK = {"MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"};
 	final private static String [] MONTHS = {"JANUARY","FEBRARY","MARCH","APRIL","MAY","JUNE","JULY","AUGST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"};
 	final private static String WEEK_NEXT = "NEXT";
+	final private static String WEEK_THIS = "THIS";
 	final private static String WEEK = "WEEK";
 	final private static int DAYS_A_WEEK = 7;
 	final private static int MONTHS_A_YEAR = 12;
@@ -23,9 +24,14 @@ public class parseTask {
 	final private static int SUNDAY = 6;
 	final private static int NUM_INVALID = -1;
 	final private static int NOT_IN_STRING = -1;
+	final private static String EMPTY_STRING = "";
 		
 	final private static String WARNING_INVALID_DAY_OF_WEEK = "Warning: Invalid Day of Week";
 	final private static String WARNING_INVALID_MONTH ="Warning: Invalid Month";
+	final private static String ERROR_NO_TAG = "Invalid Task: Please add tags, each word of which starsts with #";
+	final private static String ERROR_NO_TIME = "Invalid Task: Please indicate a time in the form of HH:MM:SS or HH:MM or *(not specified)";
+	final private static String ERROR_NO_DATE = "Invalid Task: Please indicate a date in the form of MM DD YYYY or MM DD or Next/This Day_Of_Week";
+	final private static String ERROR_NO_PRIORITY = "invalid Task: Please indicate a priority, which is bracked number (X)";
 	
 	public parseTask(){
 		
@@ -40,38 +46,60 @@ public class parseTask {
 		String uniqId;
 		int pIndex;
 		
+		str=str.trim();
 		str=str.toUpperCase();
-		str=str+" ";
 		
 		taskName=getTaskName(str);		
 		str=removeTaskName(str);
 		
+		if(str.isEmpty()){
+			System.out.println(ERROR_NO_TAG);
+			return;
+		}
+		
 		tags=getTags(str);
 		str=removeTags(str);
 		
-		dueTime=getTime(str);
-		str=removeTime(str);
+		if(str.isEmpty()){
+			System.out.println(ERROR_NO_TIME);
+			return;
+		}
+		
+		dueTime=getDueTime(str);
+		str=removeDueTime(str);
 		
 		addTime=getAddTime(str);
 		
 		//uniqId=totTask+1;
+		if(str.isEmpty()){
+			System.out.println(ERROR_NO_PRIORITY);
+			return;
+		}
 		
 		pIndex=getPriority(str);
 		
+		System.out.println(taskName);
+		for(int i=0;i<tags.size();i++)System.out.print(tags.get(i)+" ");
+		System.out.println();
+		System.out.println(dueTime.toString());
+		System.out.println(addTime.toString());
+		System.out.println(pIndex);
 		//return Task(.....);
 	}
 	
 	protected static String getTaskName(String str){
-		String taskName = new String("");
-		while(str.charAt(0)!=TAG_SIGNAL){
-			taskName = taskName+getFirstToken(str);
+		String taskName = new String(EMPTY_STRING);
+		while(!str.isEmpty() && str.charAt(0)!=TAG_SIGNAL){
+			taskName=taskName+" "+getFirstToken(str);;
 			str=removeFirstToken(str);
+			str=str.trim();
 		}
+		taskName=taskName.trim();
 		return taskName;
 	}
 	
 	protected static String removeTaskName(String str){
-		while(str.charAt(0)!=TAG_SIGNAL){
+		while(!str.isEmpty() && str.charAt(0)!=TAG_SIGNAL){
 			str=removeFirstToken(str);
 		}
 		return str;
@@ -79,55 +107,65 @@ public class parseTask {
 	
 	protected static List<String> getTags(String str){
 		List<String>tags = new ArrayList<String>();
-		while(str.charAt(0)==TAG_SIGNAL){
+		while(!str.isEmpty() && str.charAt(0)==TAG_SIGNAL){
 			tags.add(getFirstToken(str));
-			str=removeFirstToken(str));
+			str=removeFirstToken(str);
+			str=str.trim();
 		}		
 		return tags;
 	}
 	
 	protected static String removeTags(String str){
-		while(str.charAt(0)==TAG_SIGNAL){
+		while(!str.isEmpty() && str.charAt(0)==TAG_SIGNAL){
 			str=removeFirstToken(str);
+			str=str.trim();
 		}
 		return str;
 	}
 	
-	protected static Date getTime(String str){
+	protected static Date getDueTime(String str){
 		Calendar cal = Calendar.getInstance();
 		Date date;
 		setTime(cal, str);
-		removeFirstToken(str);
+		str=removeFirstToken(str);
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		setDate(cal, str);
+		date=cal.getTime();
 		return date;
 		
 	}
 	
-	protected static String removeTime(String str){
-		String strDate;
+	protected static String removeDueTime(String str){
 		str=removeFirstToken(str); //remove time;
+		str=str.trim();
 		str=removeFirstToken(str); //remove month or "next";
+		str=str.trim();
 		str=removeFirstToken(str); //remove day or day of week;
-		if(toInt(getFirstToken(str))!=NUM_INVALID))str=removeFirstToken(str); //remove year;
+		str=str.trim();
+		if(toInt(getFirstToken(str))!=NUM_INVALID)str=removeFirstToken(str); //remove year;
+		str=str.trim();
 		return str;
 	}
 	
 	protected static void setTime(Calendar cal, String str){
 		String strTime = getFirstToken(str);
 		if(strTime.equals(TIME_DONT_CARE)){
-			cal.set(Calendar.HOUR_OF_DAY,23);
-			cal.set(Calendar.MINUTE,59);
-			cal.set(Calendar.SECOND,59);
+			cal.set(Calendar.HOUR_OF_DAY,HOURS_A_DAY-1);
+			cal.set(Calendar.MINUTE,MINUTES_AN_HOUR-1);
+			cal.set(Calendar.SECOND,SECONDS_A_MINUTE-1);
 		}
 		else{
 			int hour, minute, second;
 			int index=strTime.indexOf(':');
+			if(index==NOT_IN_STRING){
+				System.out.println(ERROR_NO_TIME);
+				return;
+			}			
 			hour=toInt(strTime.substring(0,index));
 			strTime=strTime.substring(index+1);
 			index=strTime.indexOf(':');
 			if(index!=NOT_IN_STRING){
-				minute=toInt(strTime.substring(0,index);
+				minute=toInt(strTime.substring(0,index));
 				strTime=strTime.substring(index+1);
 				second=toInt(strTime);
 			}
@@ -146,22 +184,26 @@ public class parseTask {
 	
 	protected static void setDate(Calendar cal, String str){
 		String strDate=getFirstToken(str);
-		if(strDate.equals(WEEK_NEXT)){
-			cal.add(Calendar.DAY_OF_WEEK,7);
+		if(strDate.equals(WEEK_NEXT)||strDate.equals(WEEK_THIS)){
+			if(strDate.equals(WEEK_NEXT))cal.add(Calendar.DAY_OF_WEEK,DAYS_A_WEEK);
 			str=removeFirstToken(str);
+			str=str.trim();
 			strDate=getFirstToken(str);
-			int dayOfWeek=getDayOFWeek(strDate);
-			dayOfWeek-=cal.get(Calendar.DAY_OF_WEEK);
-			cal.add(Calendar.DAY_OF_WEEK,dayOfWeek);
+			int dayOfWeek=getDayOFWeek(strDate)+2; //It is 1..7 for Sunday to Friday in Calendar Constants.
+			int today=cal.get(Calendar.DAY_OF_WEEK);
+			if(today==1)today=7; //SUNDAY
+			cal.add(Calendar.DAY_OF_WEEK,dayOfWeek-today);
 		}
 		else{
 			int month, day, year;
 			strDate=getFirstToken(str);
 			month=getMonth(strDate);
 			str=removeFirstToken(str);
+			str=str.trim();
 			strDate=getFirstToken(str);
 			day=toInt(strDate);
 			str=removeFirstToken(str);
+			str=str.trim();
 			year=toInt(strDate);
 			if(year==NUM_INVALID)year=cal.get(Calendar.YEAR);
 			month=restrictIn(month,MONTHS_A_YEAR);
@@ -191,19 +233,18 @@ public class parseTask {
 	}
 	
 	protected static int getPriority(String str){
+		str=str.substring(1,str.length()-1);
 		return toInt(str);		
 	}
 	
 	protected static String getFirstToken(String str){
-		return str.split(" ,")[0];		
+		return str.split(" ")[0];		
 	}
 	
 	protected static String removeFirstToken(String str){
 		int index=str.indexOf(" ");
-		int tem=str.indexOf(',');
-		if(tem==NOT_IN_STRING)tem=str.length();
-		if(index>tem)index=tem;
-		str.substring(index+1);
+		if(index==NOT_IN_STRING)return EMPTY_STRING;
+		str=str.substring(index+1);
 		return str;
 	}
 	
@@ -225,7 +266,14 @@ public class parseTask {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		Scanner cin = new Scanner(System.in);
+		String str;
+		while(true){
+			str=cin.nextLine();
+			if(str.equals("exit"))break;
+			getTask(str);
+			System.out.println("============================");
+		}
 	}
 
 }
