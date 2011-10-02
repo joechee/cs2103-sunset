@@ -222,7 +222,6 @@ public class parseTask {
 		}
 		else{
 			int month, day, year;
-			strDate=getFirstToken(str);
 			month=getMonth(strDate);
 			str=removeFirstToken(str);
 			str=str.trim();
@@ -230,6 +229,7 @@ public class parseTask {
 			day=toInt(strDate);
 			str=removeFirstToken(str);
 			str=str.trim();
+			strDate=getFirstToken(str);
 			year=toInt(strDate);
 			if(year==NUM_INVALID)year=cal.get(Calendar.YEAR);
 			month=restrictIn(month,MONTHS_A_YEAR);
