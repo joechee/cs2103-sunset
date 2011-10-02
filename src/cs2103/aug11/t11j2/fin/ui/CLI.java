@@ -14,7 +14,7 @@ public class CLI {
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!";
 	
-	static Scanner sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String args[]) {
 		displayWelcomeMessage();
@@ -25,7 +25,7 @@ public class CLI {
 			promptUser(PROMPT);
 			userArgs = getInput();
 			feedback = CommandParser.parse(userArgs);
-			promptUser(feedback);
+			promptUser(feedback + "\n");
 		}
 	}
 
