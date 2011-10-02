@@ -99,6 +99,7 @@ public class parseTask {
 			default:
 				str=removeTillKeywords(str);
 			}
+			str=str.trim();
 		}
 		
 		System.out.println(taskName);
@@ -113,14 +114,8 @@ public class parseTask {
 	}
 	
 	protected static String removeTillKeywords(String str){
-		int i;
-		for(i=0;i<NUM_KEYWORDS;i++)
-			if(str.indexOf(KEYWORDS[i])==0)break;
-		if(i<NUM_KEYWORDS)str=removeFirstToken(str);
-		for(i=0;i<NUM_KEYWORDS;i++)
-			if(str.indexOf(KEYWORDS[i])!=NOT_IN_STRING)break;
-		if(i==NUM_KEYWORDS)return EMPTY_STRING;
-		int index=str.indexOf(KEYWORDS[i]);
+		int index=getNextKeyword(str);
+		if(index==str.length())return EMPTY_STRING;
 		str=str.substring(index);
 		return str;
 	}
@@ -135,12 +130,13 @@ public class parseTask {
 	protected static int getNextKeyword(String str){
         int plus=getFirstToken(str).length();
 		str=removeFirstToken(str);
-		int i;
-		for(i=0;i<NUM_KEYWORDS;i++)
-			if(str.indexOf(KEYWORDS[i])!=NOT_IN_STRING)break;
-		if(i==NUM_KEYWORDS)return str.length()+plus;
-		int index=str.indexOf(KEYWORDS[i]);
-		return index+plus;
+		int i,index, min=str.length();
+		for(i=0;i<NUM_KEYWORDS;i++){
+			index=str.indexOf(KEYWORDS[i]);
+			if(index==NOT_IN_STRING)index=str.length();
+			if(index<min)min=index;
+		}
+		return min+plus;
 	}
 	
 	protected static String getTaskName(String str){
@@ -176,8 +172,8 @@ public class parseTask {
 		str=str.trim();
 		Calendar cal = Calendar.getInstance();
 		Date date;
-		setTime(cal, str);
-		str=removeFirstToken(str);
+		boolean timeIndicated=setTime(cal, str);
+		if(timeIndicated)str=removeFirstToken(str);
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		setDate(cal, str);
 		date=cal.getTime();
@@ -185,19 +181,28 @@ public class parseTask {
 		
 	}
 	
-	protected static void setTime(Calendar cal, String str){
+	protected static boolean setTime(Calendar cal, String str){
 		String strTime = getFirstToken(str);
 		if(strTime.equals(TIME_DONT_CARE)){
 			cal.set(Calendar.HOUR_OF_DAY,HOURS_A_DAY-1);
 			cal.set(Calendar.MINUTE,MINUTES_AN_HOUR-1);
 			cal.set(Calendar.SECOND,SECONDS_A_MINUTE-1);
+			return true;
 		}
 		else{
 			int hour, minute, second;
 			int index=strTime.indexOf(':');
 			if(index==NOT_IN_STRING){
-				System.out.println(ERROR_NO_TIME);
-				return;
+				if(Character.isDigit(strTime.charAt(0))){
+					/*
+					 * add in am, pm, afternoon, morning?
+					 */
+					return true;
+				}
+				cal.set(Calendar.HOUR_OF_DAY,HOURS_A_DAY-1);
+				cal.set(Calendar.MINUTE,MINUTES_AN_HOUR-1);
+				cal.set(Calendar.SECOND,SECONDS_A_MINUTE-1);
+				return false;
 			}			
 			hour=toInt(strTime.substring(0,index));
 			strTime=strTime.substring(index+1);
@@ -217,6 +222,7 @@ public class parseTask {
 			cal.set(Calendar.HOUR_OF_DAY,hour);
 			cal.set(Calendar.MINUTE,minute);
 			cal.set(Calendar.SECOND,second);
+			return true;
 		}
 	}
 	
