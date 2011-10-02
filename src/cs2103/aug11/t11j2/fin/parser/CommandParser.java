@@ -13,7 +13,7 @@ public class CommandParser {
 	private static FinApplication app = FinApplication.INSTANCE;
 	
 	private enum COMMAND_TYPE {
-		ADD, DELETE, GET_TASKS, INVALID, ERROR;
+		ADD, DELETE, GET_TASKS, EXIT, HELP, EMPTY, ERROR;
 	}
 	
 	public static String parse(String userArgs) {
@@ -46,6 +46,14 @@ public class CommandParser {
 			return delete(cmdArgs);
 		case GET_TASKS:
 			return getTasks(cmdArgs);
+		case EXIT:
+			System.exit(0);
+		case HELP:
+			return getHelp();
+		case EMPTY:
+			return "";
+		case ERROR:
+			return INVALID_ARGUMENTS_ERROR;
 		default:
 			return MYSTERY_ERROR;
 		}
@@ -53,13 +61,17 @@ public class CommandParser {
 	
 	private static COMMAND_TYPE getCmdType(String command) {
 		if (command.equals("")) {
-			return COMMAND_TYPE.INVALID;
+			return COMMAND_TYPE.EMPTY;
 		} else if (command.equalsIgnoreCase("add")) {
 			return COMMAND_TYPE.ADD;
 		} else if (command.equalsIgnoreCase("delete") || command.equalsIgnoreCase("del")) {
 			return COMMAND_TYPE.DELETE;
 		} else if (command.equalsIgnoreCase("get")) {
 			return COMMAND_TYPE.GET_TASKS;
+		} else if (command.equalsIgnoreCase("help")) {
+			return COMMAND_TYPE.HELP;
+		} else if (command.equalsIgnoreCase("exit")) {
+			return COMMAND_TYPE.EXIT;
 		} else {
 			return COMMAND_TYPE.ERROR;
 		}
@@ -94,5 +106,12 @@ public class CommandParser {
 		String feedback = "";
 		
 		return feedback;
+	}
+	
+	private static String getHelp() {
+		// get help listing from FinApp?
+		String help = "The available commands are: add, delete, get, help, exit.";
+		
+		return help;
 	}
 }
