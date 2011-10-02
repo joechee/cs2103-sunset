@@ -11,8 +11,6 @@ public class parseTask {
 	 * @param args
 	 */
 	
-	final private static char TAG_SIGNAL = '#';
-	final private static String TIME_DONT_CARE = "*";
 	final private static String [] DAYS_OF_WEEK = {"MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY","SUNDAY"};
 	final private static String [] MONTHS = {"JANUARY","FEBRARY","MARCH","APRIL","MAY","JUNE","JULY","AUGST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"};
 	final private static String WEEK_NEXT = "NEXT";
@@ -28,8 +26,12 @@ public class parseTask {
 	final private static int NUM_INVALID = -1;
 	final private static int NOT_IN_STRING = -1;
 	final private static int DEFAULT_PERCENTAGE = 0;
+	final private static int DEFAULT_PRIORITY = 0;
 	final private static String EMPTY_STRING = "";
-		
+	final private static String [] KEYWORDS = {"#","DUE ", "BY ","BEFORE " , "^", "@", "*","%"}; //taskName or Tag, dueTime, dueTime, ^importance, @Location, *priority, %percentageComplete;
+	final private static int NUM_KEYWORDS = 8;
+	final private static String TIME_DONT_CARE = "*";
+	
 	final private static String WARNING_INVALID_DAY_OF_WEEK = "Warning: Invalid Day of Week";
 	final private static String WARNING_INVALID_MONTH ="Warning: Invalid Month";
 	final private static String ERROR_NO_TAG = "Invalid Task: Please add tags, each word of which starsts with #";
@@ -42,103 +44,121 @@ public class parseTask {
 	}
 	
 	public static Task getTask(String str){
-		String taskName;
-		List<String> tags;
-		Task.EImportance importance;
-		Date dueTime;
+		String taskName=new String();
+		List<String> tags = new ArrayList<String>();
+		Task.EImportance importance=Task.EImportance.NORMAL;
+		Date dueTime = new Date();
 		int percentage = DEFAULT_PERCENTAGE;
-		int pIndex;
+		int pIndex=DEFAULT_PRIORITY;
 		
 		str=str.trim();
 		str=str.toUpperCase();
 		
-		taskName=getTaskName(str);		
-		str=removeTaskName(str);
+		int i;
+		for(i=0;i<NUM_KEYWORDS;i++)
+			if(str.indexOf(KEYWORDS[i])==0)break;
+		if(i==NUM_KEYWORDS)str="#"+str;
 		
-		if(str.isEmpty()){
-			System.out.println(ERROR_NO_TAG);
-			return null;
+		boolean havTaskName=false;
+		
+		while(!str.isEmpty()){
+			for(i=0;i<NUM_KEYWORDS;i++)
+				if(str.indexOf(KEYWORDS[i])==0)break;
+			switch (i){
+			case 0:
+				if(!havTaskName){
+					taskName=getTaskName(str);
+					havTaskName=true;
+				}
+				else addTags(tags,str);		
+				str=removeTillKeywords(str);
+				break;
+			case 1:
+				dueTime=getDueTime(str);
+				str=removeTillKeywords(str);
+				break;
+			case 2:
+				dueTime=getDueTime(str);
+				str=removeTillKeywords(str);
+				break;
+			case 3:
+				dueTime=getDueTime(str);
+				str=removeTillKeywords(str);
+				break;
+			case 4:
+				int importanceIndex=getImportanceIndex(str);
+				importance=getImportance(importanceIndex);
+				str=removeTillKeywords(str);
+				break;
+			case 5:
+			case 6:
+				pIndex=getPriority(str);
+				str=removeTillKeywords(str);
+				break;
+			case 7:
+			default:
+				str=removeTillKeywords(str);
+			}
 		}
-		
-		tags=getTags(str);
-		str=removeTags(str);
-		
-		int importanceIndex=getImportanceIndex(str);
-		if(importanceIndex>NUM_INVALID){
-			str=removeFirstToken(str); //remove Importance;
-			str=str.trim();
-		}
-		importance=getImportance(importanceIndex);
-		
-		
-		if(str.isEmpty()){
-			System.out.println(ERROR_NO_TIME);
-			return null;
-		}
-		
-		dueTime=getDueTime(str);
-		str=removeDueTime(str);
-		
-		if(str.isEmpty()){
-			System.out.println(ERROR_NO_PRIORITY);
-			return null;
-		}
-		
-		pIndex=getPriority(str);
 		
 		System.out.println(taskName);
-		for(int i=0;i<tags.size();i++)System.out.print(tags.get(i)+" ");
+		for(i=0;i<tags.size();i++)System.out.print(tags.get(i)+" ");
 		System.out.println();
 		System.out.println(importance);
-		System.out.println(dueTime.toString());
+		System.out.println(dueTime);
+		System.out.println(percentage);
 		System.out.println(pIndex);
-		
 		Task task= new Task(taskName, tags, importance, dueTime, percentage, pIndex);
 		return task;
 	}
 	
-	protected static String getTaskName(String str){
-		String taskName = new String(EMPTY_STRING);
-		while(!str.isEmpty() && str.charAt(0)!=TAG_SIGNAL){
-			taskName=taskName+" "+getFirstToken(str);;
-			str=removeFirstToken(str);
-			str=str.trim();
-		}
-		taskName=taskName.trim();
-		return taskName;
-	}
-	
-	protected static String removeTaskName(String str){
-		while(!str.isEmpty() && str.charAt(0)!=TAG_SIGNAL){
-			str=removeFirstToken(str);
-		}
+	protected static String removeTillKeywords(String str){
+		int i;
+		for(i=0;i<NUM_KEYWORDS;i++)
+			if(str.indexOf(KEYWORDS[i])==0)break;
+		if(i<NUM_KEYWORDS)str=removeFirstToken(str);
+		for(i=0;i<NUM_KEYWORDS;i++)
+			if(str.indexOf(KEYWORDS[i])!=NOT_IN_STRING)break;
+		if(i==NUM_KEYWORDS)return EMPTY_STRING;
+		int index=str.indexOf(KEYWORDS[i]);
+		str=str.substring(index);
 		return str;
 	}
 	
-	protected static List<String> getTags(String str){
-		List<String>tags = new ArrayList<String>();
-		while(!str.isEmpty() && str.charAt(0)==TAG_SIGNAL){
-			tags.add(getFirstToken(str));
-			str=removeFirstToken(str);
-			str=str.trim();
-		}		
-		return tags;
+	protected static void addTags(List<String>tags, String str){
+		int index=getNextKeyword(str);
+		str=str.substring(0,index);
+		str=str.trim();
+		tags.add(str);
 	}
 	
-	protected static String removeTags(String str){
-		while(!str.isEmpty() && str.charAt(0)==TAG_SIGNAL){
-			str=removeFirstToken(str);
-			str=str.trim();
-		}
+	protected static int getNextKeyword(String str){
+        int plus=getFirstToken(str).length();
+		str=removeFirstToken(str);
+		int i;
+		for(i=0;i<NUM_KEYWORDS;i++)
+			if(str.indexOf(KEYWORDS[i])!=NOT_IN_STRING)break;
+		if(i==NUM_KEYWORDS)return str.length()+plus;
+		int index=str.indexOf(KEYWORDS[i]);
+		return index+plus;
+	}
+	
+	protected static String getTaskName(String str){
+		int index=getNextKeyword(str);
+		str=str.substring(0,index);
+		str=str.trim();
 		return str;
 	}
 	
 	protected static int getImportanceIndex(String str){
+		int index=getNextKeyword(str);
+		str=str.substring(1,index);
+		str=str.trim();
 		if(str.isEmpty())return -1;
 		String importance=getFirstToken(str);
 		if(importance.equals("LOW"))return 0;
 		else if(importance.equals("NORMAL"))return 1;
-		else if(importance.equals("HIGH"))return 2;
+		else if(importance.equals("HIGH") || importance.equals("IMPORTANT"))return 2;
 		else return -1;
 	}
 	
@@ -150,6 +170,10 @@ public class parseTask {
 	}
 	
 	protected static Date getDueTime(String str){
+		int index=getNextKeyword(str);
+		str=str.substring(0,index);
+		str=removeFirstToken(str);
+		str=str.trim();
 		Calendar cal = Calendar.getInstance();
 		Date date;
 		setTime(cal, str);
@@ -159,18 +183,6 @@ public class parseTask {
 		date=cal.getTime();
 		return date;
 		
-	}
-	
-	protected static String removeDueTime(String str){
-		str=removeFirstToken(str); //remove time;
-		str=str.trim();
-		str=removeFirstToken(str); //remove month or "next";
-		str=str.trim();
-		str=removeFirstToken(str); //remove day or day of week;
-		str=str.trim();
-		if(toInt(getFirstToken(str))!=NUM_INVALID)str=removeFirstToken(str); //remove year;
-		str=str.trim();
-		return str;
 	}
 	
 	protected static void setTime(Calendar cal, String str){
@@ -209,6 +221,7 @@ public class parseTask {
 	}
 	
 	protected static void setDate(Calendar cal, String str){
+		if(str.isEmpty())return;
 		String strDate=getFirstToken(str);
 		if(strDate.equals(WEEK_NEXT)||strDate.equals(WEEK_THIS)){
 			if(strDate.equals(WEEK_NEXT))cal.add(Calendar.DAY_OF_WEEK,DAYS_A_WEEK);
@@ -254,7 +267,9 @@ public class parseTask {
 	}
 			
 	protected static int getPriority(String str){
-		str=str.substring(1,str.length()-1);
+		int index=getNextKeyword(str);
+		str=str.substring(1,index);
+		str=str.trim();
 		return toInt(str);		
 	}
 	
@@ -283,6 +298,15 @@ public class parseTask {
 	protected static int restrictIn(int value, int maxi){
 		value=(value % maxi +maxi)%maxi;
 		return value;
+	}
+	
+	public static void main(String [] args){
+		String str;
+		Scanner cin= new Scanner(System.in);
+		while(true){
+			str=cin.nextLine();
+			Task task=getTask(str);
+		}		
 	}
 
 }
