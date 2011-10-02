@@ -284,17 +284,5 @@ public class parseTask {
 		value=(value % maxi +maxi)%maxi;
 		return value;
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner cin = new Scanner(System.in);
-		String str;
-		while(true){
-			str=cin.nextLine();
-			if(str.equals("exit"))break;
-			getTask(str);
-			System.out.println("============================");
-		}
-	}
 
 }
