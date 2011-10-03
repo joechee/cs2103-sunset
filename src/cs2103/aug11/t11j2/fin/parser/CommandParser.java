@@ -1,5 +1,6 @@
 package cs2103.aug11.t11j2.fin.parser;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,15 +16,16 @@ public class CommandParser {
 	private static final String INVALID_ARGUMENTS_ERROR = "Invalid arguments provided.";
 	private static final String MYSTERY_ERROR = "Congratulations. You broke it.";
 	
-	private static Map<String, ICommandHandler> commandHandlers = new HashMap<String,ICommandHandler>();
+	private Map<String, ICommandHandler> commandHandlers = new HashMap<String,ICommandHandler>();
 	
 	private CommandParser() {
 		try {
 			installCommand(new AddCommandHandler());
+			installCommand(new JokeCommandHandler());
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				System.out.println("Unexpected error! You better go square it away");
-				System.out.println(e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -38,27 +40,41 @@ public class CommandParser {
 		}
 	}
 		
-	public static CommandResult parse(String userArgs) {
+	public CommandResult parse(String userArgs) throws IOException {
 		String command = "";
 		
 		command = getCommand(userArgs);
 		return runCommand(command, userArgs);		
 	}
 	
-	private static String getCommand(String userArgs) {
+	private String getCommand(String userArgs) {
 		String command = tokenize(userArgs)[0];
 		return command;
 	}
 
-	private static String[] tokenize(String userCommand) {
+	private String[] tokenize(String userCommand) {
 		return userCommand.trim().split("\\s+");
 	}
 	
-	private static CommandResult runCommand(String command, String userArgs) {		
+	private CommandResult runCommand(String command, String userArgs) throws IOException {
+		// Check if the current command is installed in CommandParser
+		if (!commandHandlers.containsKey(command.toLowerCase())) {
+			return CommandResult.unrecognizedCommandResult;
+		}
+
+		// Get the installed CommandHandler
 		ICommandHandler commandHandler = commandHandlers.get(command.toLowerCase());
 		String cmdArgs = userArgs.replaceFirst(command, "").trim();
 		
-		CommandResult res = commandHandler.executeCommands(cmdArgs);
+		CommandResult res = null;
+		try {
+			// Execute the CommandHandler with the arguments
+			res = commandHandler.executeCommands(cmdArgs);
+		} catch (FinProductionException e) {
+			if (FinConstants.IS_PRODUCTION) {
+				e.printStackTrace();
+			}
+		}
 		
 		return res;
 	}

@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.ui;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -21,21 +22,36 @@ public class CLI {
 		displayWelcomeMessage();
 		
 		String userArgs;
-		CommandResult feedback;
+		CommandResult feedback = null;
 		
 		while (RUN) {
 			promptUser(PROMPT);
 			userArgs = getInput();
-			feedback = CommandParser.parse(userArgs);
-			promptUser(feedback + "\n");
+			try {
+				feedback = CommandParser.INSTANCE.parse(userArgs);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+			renderCommandResult(feedback);
 		}
 	}
 
 
 	private static void displayWelcomeMessage() {
-		System.out.println(WELCOME_MESSAGE);
+		promptUser(WELCOME_MESSAGE);
 	}
 	
+	private static void renderCommandResult(CommandResult cmdRes){
+		switch(cmdRes.getRenderType()) {
+		case String:
+			promptUser((String)cmdRes.getReturnObject());
+			break;
+		case TaskList:
+		case UnrecognizedCommand:
+			promptUser("Command not recognized!");
+		}
+	}
 	private static void promptUser(String promptMessage) {
 		System.out.print(promptMessage);
 	}

@@ -6,7 +6,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 
 public class CommandResult {
 	public static enum RenderType {
-		TaskList, String
+		TaskList, String, UnrecognizedCommand
 	};
 	
 	private RenderType renderType;
@@ -44,7 +44,15 @@ public class CommandResult {
 			this.returnObject = returnObject;
 			
 			break;
+			
 		}
 	}
+	
+	private CommandResult(RenderType renderType) {
+		this.renderType = renderType;
+		this.returnObject = false;
+	}
+	
+	public static CommandResult unrecognizedCommandResult = new CommandResult(RenderType.UnrecognizedCommand); 
 	
 }
