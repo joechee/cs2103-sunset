@@ -3,14 +3,13 @@ package cs2103.aug11.t11j2.fin.functest;
 import java.io.*;
 import java.util.*;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.FinSerializer;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.jotd.Joke;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
+import cs2103.aug11.t11j2.fin.parser.CommandParser;
 /* A set of routines to test components
  * Please create a new method to test for separate components. 
  * 
@@ -25,9 +24,21 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
  */
 public class test {
 	public static void main(String[] args) throws IOException {
+		testJOTD();
+		//testSerializer();
+		//testParser();
 
-		testSerializer();
-
+	}
+	
+	static public void testParser() {
+		System.out.println(CommandParser.parse("add hello"));
+		
+		
+	}
+	
+	public static void testJOTD() throws IOException {
+		Joke testJoke = new Joke();
+		System.out.println(testJoke.generate());
 	}
 
 	
