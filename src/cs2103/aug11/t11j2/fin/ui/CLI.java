@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.ui;
 
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
 import java.util.Scanner;
 
@@ -19,7 +20,8 @@ public class CLI {
 	public static void main(String args[]) {
 		displayWelcomeMessage();
 		
-		String userArgs, feedback = "";
+		String userArgs;
+		CommandResult feedback;
 		
 		while (RUN) {
 			promptUser(PROMPT);
@@ -44,5 +46,4 @@ public class CLI {
 	}
 	
 }
-	
-	
+

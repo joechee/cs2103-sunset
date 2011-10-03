@@ -2,6 +2,8 @@ package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.List;
 
+import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
+
 public class CommandResult {
 	public static enum RenderType {
 		TaskList, String
@@ -17,14 +19,14 @@ public class CommandResult {
 		return returnObject;
 	}
 
-	CommandResult(RenderType renderType, Object returnObject) throws Exception {
+	CommandResult(RenderType renderType, Object returnObject) throws FinProductionException {
 		switch (renderType) {
 		case TaskList:
 			// Ensures that returnObject is of type List<String>
 			if (!(returnObject instanceof List<?>) ||
 				(((List<?>)returnObject).size() > 0 &&
 				!(((List<?>)returnObject).get(0) instanceof String))) {
-					throw(new Exception("Command result type is invalid for TaskList"));
+					throw(new FinProductionException("Command result type is invalid for TaskList"));
 			}
 			
 			this.renderType = renderType;
@@ -35,7 +37,7 @@ public class CommandResult {
 		case String:
 			// Ensure that returnObject is of type String
 			if (!(returnObject instanceof String)) {
-				throw(new Exception("Command result type is invalid for String"));
+				throw(new FinProductionException("Command result type is invalid for String"));
 			}
 			
 			this.renderType = renderType;

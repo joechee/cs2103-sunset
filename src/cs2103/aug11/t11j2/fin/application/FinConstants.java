@@ -21,8 +21,9 @@ public final class FinConstants {
 		DEPLOYMENT 
 	};
 	
-	static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
-	static final char HASH_TAG_CHAR = '#';
-	static final char META_TAG_CHAR = '$';
+	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
+	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION); 
+	public static final char HASH_TAG_CHAR = '#';
+	public static final char META_TAG_CHAR = '$';
 	
 }
