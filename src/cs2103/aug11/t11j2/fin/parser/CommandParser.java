@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.parser;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
@@ -10,7 +12,7 @@ public class CommandParser {
 	private static final String INVALID_ARGUMENTS_ERROR = "Invalid arguments provided.";
 	private static final String MYSTERY_ERROR = "Congratulations. You broke it.";
 	
-	private static FinApplication app = FinApplication.INSTANCE;
+	private static Map<String, ICommandHandler> commandHandlers = new HashMap<String,ICommandHandler>(); 
 	
 	private enum COMMAND_TYPE {
 		ADD, DELETE, GET_TASKS, EXIT, HELP, EMPTY, ERROR;
