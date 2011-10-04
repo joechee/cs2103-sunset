@@ -99,18 +99,19 @@ public class TaskParser {
 				importance = getImportance(importanceIndex);
 				str = removeTillKeywords(str);
 				break;
-			case 5:
+			case 5: //not decided.
 			case 6:
 				pIndex = getPriority(str);
 				str = removeTillKeywords(str);
 				break;
-			case 7:
+			case 7: //not decided.
 			default:
 				str = removeTillKeywords(str);
 			}
 			str = str.trim();
 		}
-
+		
+		/*==========Testing==========*/
 		System.out.println(taskName);
 		for (i = 0; i < tags.size(); i++)
 			System.out.print(tags.get(i) + " ");
@@ -119,6 +120,8 @@ public class TaskParser {
 		System.out.println(dueTime);
 		System.out.println(percentage);
 		System.out.println(pIndex);
+		/*==========Testing==========*/
+		
 		Task task = new Task(taskName, tags, importance, dueTime, percentage,
 				pIndex);
 		return task;
@@ -140,7 +143,7 @@ public class TaskParser {
 	}
 
 	protected static int getNextKeyword(String str) {
-		int plus = getFirstToken(str).length();
+		int plus = getFirstToken(str).length(); //the length of the first token.
 		str = removeFirstToken(str);
 		int i, index, min = str.length();
 		for (i = 0; i < NUM_KEYWORDS; i++) {
@@ -150,7 +153,7 @@ public class TaskParser {
 			if (index < min)
 				min = index;
 		}
-		return min + plus;
+		return min + plus; // The actually index is min{index} + length of the first token.
 	}
 
 	protected static String getTaskName(String str) {
@@ -159,7 +162,10 @@ public class TaskParser {
 		str = str.trim();
 		return str;
 	}
-
+	
+	/*
+	 * This function will be further developed to support more possible words.
+	 */
 	protected static int getImportanceIndex(String str) {
 		int index = getNextKeyword(str);
 		str = str.substring(1, index);
@@ -203,7 +209,10 @@ public class TaskParser {
 		return date;
 
 	}
-
+	
+	/*
+	 * @return whether the time is indicated.
+	 */
 	protected static boolean setTime(Calendar cal, String str) {
 		String strTime = getFirstToken(str);
 		if (strTime.equals(TIME_DONT_CARE)) {
@@ -217,7 +226,8 @@ public class TaskParser {
 			if (index == NOT_IN_STRING) {
 				if (Character.isDigit(strTime.charAt(0))) {
 					/*
-					 * add in am, pm, afternoon, morning?
+					 * This part will be further developed.
+					 * Things like morning, afternnon, evening, AM, PM will be added.
 					 */
 					return true;
 				}
@@ -246,7 +256,7 @@ public class TaskParser {
 			return true;
 		}
 	}
-
+	
 	protected static void setDate(Calendar cal, String str) {
 		if (str.isEmpty())
 			return;
