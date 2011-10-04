@@ -32,8 +32,8 @@ public class TaskParser {
 	final private static int DEFAULT_PRIORITY = 0;
 	final private static String EMPTY_STRING = "";
 	final private static String[] KEYWORDS = { "#", "DUE ", "BY ", "BEFORE ",
-			"^", "@", "*", "%" }; // taskName or Tag, dueTime, dueTime,
-									// ^importance, @Location, *priority,
+			"^", "@", "$", "%" }; // taskName or Tag, dueTime, dueTime,
+									// ^importance, @Location, $priority,
 									// %percentageComplete;
 	final private static int NUM_KEYWORDS = 8;
 	final private static String TIME_DONT_CARE = "*";
@@ -58,7 +58,7 @@ public class TaskParser {
 		int pIndex = DEFAULT_PRIORITY;
 
 		str = str.trim();
-		
+
 		int i;
 		for (i = 0; i < NUM_KEYWORDS; i++)
 			if (str.toUpperCase().indexOf(KEYWORDS[i]) == 0)
@@ -98,12 +98,12 @@ public class TaskParser {
 				importance = getImportance(importanceIndex);
 				str = removeTillKeywords(str);
 				break;
-			case 5:
+			case 5: //not decided yet.
 			case 6:
 				pIndex = getPriority(str);
 				str = removeTillKeywords(str);
 				break;
-			case 7:
+			case 7: //not decided yet.
 			default:
 				str = removeTillKeywords(str);
 			}
@@ -112,7 +112,7 @@ public class TaskParser {
 
 		System.out.println(taskName);
 		for (i = 0; i < tags.size(); i++)
-			System.out.print(tags.get(i) + " ");
+			System.out.print(tags.get(i) + ", ");
 		System.out.println();
 		System.out.println(importance);
 		System.out.println(dueTime);
@@ -140,7 +140,7 @@ public class TaskParser {
 
 	protected static int getNextKeyword(String str) {
 		str = str.toUpperCase();
-		int plus = getFirstToken(str).length();
+		int plus = getFirstToken(str).length()+1; //the length of the first token plus a white space
 		str = removeFirstToken(str);
 		int i, index, min = str.length();
 		for (i = 0; i < NUM_KEYWORDS; i++) {
@@ -159,7 +159,10 @@ public class TaskParser {
 		str = str.trim();
 		return str;
 	}
-
+	
+	/*
+	 * This method will be further developed to support more possible words.
+	 */
 	protected static int getImportanceIndex(String str) {
 		int index = getNextKeyword(str);
 		str = str.substring(1, index);
@@ -178,7 +181,6 @@ public class TaskParser {
 	}
 
 	protected static Task.EImportance getImportance(int index) {
-		Task.EImportance importance;
 		if (index == 1 || index == -1)
 			return Task.EImportance.NORMAL;
 		else if (index == 0)
@@ -188,12 +190,14 @@ public class TaskParser {
 	}
 
 	protected static Date getDueTime(String str) {
+		str=str.toUpperCase();
 		int index = getNextKeyword(str);
 		str = str.substring(0, index);
 		str = removeFirstToken(str);
 		str = str.trim();
 		Calendar cal = Calendar.getInstance();
 		Date date;
+		
 		boolean timeIndicated = setTime(cal, str);
 		if (timeIndicated)
 			str = removeFirstToken(str);
@@ -217,7 +221,7 @@ public class TaskParser {
 			if (index == NOT_IN_STRING) {
 				if (Character.isDigit(strTime.charAt(0))) {
 					/*
-					 * add in am, pm, afternoon, morning?
+					 * will be further developed
 					 */
 					return true;
 				}
@@ -250,7 +254,7 @@ public class TaskParser {
 	protected static void setDate(Calendar cal, String str) {
 		if (str.isEmpty())
 			return;
-		String strDate = getFirstToken(str).toUpperCase();
+		String strDate = getFirstToken(str);
 		if (strDate.equals(WEEK_NEXT) || strDate.equals(WEEK_THIS)) {
 			if (strDate.equals(WEEK_NEXT))
 				cal.add(Calendar.DAY_OF_WEEK, DAYS_A_WEEK);
@@ -284,7 +288,6 @@ public class TaskParser {
 	}
 
 	protected static int getDayOFWeek(String str) {
-		str = str.toUpperCase();
 		if (str.indexOf(WEEK) != NOT_IN_STRING)
 			return SUNDAY;
 		for (int index = 0; index < DAYS_A_WEEK; index++)
@@ -295,7 +298,6 @@ public class TaskParser {
 	}
 
 	protected static int getMonth(String str) {
-		str = str.toUpperCase();
 		for (int index = 0; index < MONTHS_A_YEAR; index++)
 			if (MONTHS[index].indexOf(str) != NOT_IN_STRING)
 				return index;
@@ -343,8 +345,9 @@ public class TaskParser {
 		Scanner(System.in); 
 		while(true){ 
 			str=cin.nextLine(); 
-			Task task=parse(str); 
+			parse(str); 
 		} 
-	}*/
+	} 
+	*/
 
 }
