@@ -31,7 +31,7 @@ public class FinSerializer {
 		Serializer sr = new Serializer();
 		List<Object> oLyst = FinSerializer.taskTreeListToList(FinApplication.INSTANCE.taskList);		
 		
-		sr.serialize(oLyst, filename);
+		sr.serialize(oLyst.iterator(), filename);
 	}
 	
 	/**
@@ -64,40 +64,26 @@ public class FinSerializer {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void parseDictionary(Map<String,Object> dict, UUID parentUID) {
 		Task task = new Task(dict);
-		FinApplication.INSTANCE.add(task, parentUID);
-		
-		if (dict.containsKey("Subtasks")) {
-			FinSerializer.parseDictionaries( (List <Object>)dict.get("Subtasks"), task.getUniqId() );
-		}
-		/*if (parentUID == null) {
-			System.out.println(task.getTaskName());
-		} else {
-			System.out.println(task.getTaskName() + " " + parentUID.toString());
-		}*/
+		FinApplication.INSTANCE.add(task);
 	}
 	
 	/**
-	 * Converts a list of TaskTrees into a List of dictionaries for serialization
+	 * Converts a list of Task into a List of dictionaries for serialization
 	 */
-	private static List<Object> taskTreeListToList(List<TaskTree> ttl) {
+	private static List<Object> taskTreeListToList(List<Task> ttl) {
 		List<Object> tr = new ArrayList<Object>();
-		for (TaskTree t : ttl) {
-			tr.add(FinSerializer.taskTreeToDictionary(t));
+		for (Task t : ttl) {
+			tr.add(FinSerializer.taskToDictionary(t));
 		}
 		return tr;
 	}
 	/**
-	 * Converts a given TaskTree into a dictionary
+	 * Converts a given Task into a dictionary
 	 */
-	private static Map<String, Object> taskTreeToDictionary(TaskTree tt) {
-		Map<String, Object> o = tt.getTask().toDictionary();
-
-		if (tt.getChildren().size() > 0) {
-			o.put("Subtasks", FinSerializer.taskTreeListToList(tt.getChildren()));
-		}
+	private static Map<String, Object> taskToDictionary(Task tt) {
+		Map<String, Object> o = tt.toDictionary();
 		return o;
 	}
 }

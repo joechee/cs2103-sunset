@@ -34,7 +34,7 @@ public class Joke {
 	}
 	
 	public void saveJokes() throws IOException {
-		jokeSerial.serialize(new ArrayList<Object>(jokeList),"Joke.yaml");
+		jokeSerial.serialize((new ArrayList<Object>(jokeList)).iterator(),"Joke.yaml");
 	}
 		
 			

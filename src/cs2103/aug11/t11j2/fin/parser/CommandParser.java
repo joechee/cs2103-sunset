@@ -74,7 +74,7 @@ public class CommandParser {
 		CommandResult res = null;
 		try {
 			// Execute the CommandHandler with the arguments
-			res = commandHandler.executeCommands(cmdArgs);
+			res = commandHandler.executeCommands(command, cmdArgs, FinApplication.INSTANCE.getUIContext());
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				e.printStackTrace();

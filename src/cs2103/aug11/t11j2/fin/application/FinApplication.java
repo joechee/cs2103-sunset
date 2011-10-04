@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
 import cs2103.aug11.t11j2.fin.datamodel.*;
+import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 import java.util.*;
 
@@ -15,50 +16,30 @@ import java.util.*;
 public enum FinApplication {
 	INSTANCE;
 
-	List<TaskTree> taskList = new ArrayList<TaskTree>();
-	Map<UUID, TaskTree> taskMap = new TreeMap<UUID, TaskTree>();
+	List<Task> taskList = new ArrayList<Task>();
+	Map<UUID, Task> taskMap = new TreeMap<UUID, Task>();
+	UIContext context = new UIContext();
 
 	/**
 	 * Adds a task to the environment.
 	 * 
 	 * @param task
-	 * @param parentUID
 	 */
-	public void add(Task task, UUID parentUID) {
-		TaskTree newTask = new TaskTree(task, parentUID);
-
-		if (parentUID != null) {
-			TaskTree parentTask = taskMap.get(parentUID);
-			if (parentTask != null) {
-				parentTask.getChildren().add(newTask);
-			}
-		} else {
-			taskList.add(newTask);
-		}
-
-		taskMap.put(newTask.getTask().getUniqId(), newTask);
+	public void add(Task task) {
+		taskList.add(task);
+		taskMap.put(task.getUniqId(), task);
 	}
 
 	/**
 	 * Get the list of (sub)task of a given parentUID
 	 * 
-	 * @param parentUID
 	 * @return List of Tasks sorted by pIndex
 	 */
-	public List<Task> getTasks(UUID parentUID) {
+	public List<Task> getTasks() {
 		List<Task> tasks = new ArrayList<Task>();
 
-		if (parentUID != null) {
-			TaskTree parentTask = taskMap.get(parentUID);
-			if (parentTask != null) {
-				for (TaskTree t : parentTask.getChildren()) {
-					tasks.add(t.getTask());
-				}
-			}
-		} else {
-			for (TaskTree t : taskList) {
-				tasks.add(t.getTask());
-			}
+		for (Task t : taskList) {
+			tasks.add(t);
 		}
 
 		Collections.sort(tasks, new TaskSortByPIndex());
@@ -73,12 +54,11 @@ public enum FinApplication {
 	 * @return true iff the task is deleted
 	 */
 	public boolean deleteTask(UUID taskUID) {
-		TaskTree todelete = taskMap.get(taskUID);
+		Task todelete = taskMap.get(taskUID);
 		
 		if (todelete != null) {
-			deleteChild(todelete);
 			taskMap.remove(taskUID);
-			
+			taskList.remove(todelete);
 			return true;
 		} else {
 			return false;
@@ -93,23 +73,7 @@ public enum FinApplication {
 		taskList.clear();		
 	}
 
-	
-	/**
-	 * Deletes a given TaskTree object from it's parents reference
-	 * 
-	 * @param todelete
-	 * @return true iff the child is deleted from parent
-	 */
-	private boolean deleteChild(TaskTree todelete) {
-		if (todelete.getParentUID() == null) {
-			return false;
-		}
-		
-		TaskTree parent = taskMap.get(todelete.getParentUID());
-		if (parent != null) {
-			return parent.getChildren().remove(taskMap);
-		} else {
-			return false;
-		}
+	public UIContext getUIContext() {
+		return context;
 	}
 }
