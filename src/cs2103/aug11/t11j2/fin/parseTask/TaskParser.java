@@ -337,7 +337,7 @@ public class TaskParser {
 		return value;
 	}
 
-	
+	/*
 	public static void main(String [] args){
 		String str; Scanner cin= new
 		Scanner(System.in); 
@@ -345,6 +345,6 @@ public class TaskParser {
 			str=cin.nextLine(); 
 			Task task=parse(str); 
 		} 
-	} 
+	}*/
 
 }
