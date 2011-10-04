@@ -66,6 +66,24 @@ public enum FinApplication {
 	}
 	
 	/**
+	 * Mark a task as completed
+	 * 
+	 * @param taskUID
+	 * @return true iff the task is marked as finished
+	 */
+	public boolean finTask(UUID taskUID) {
+		Task task = taskMap.get(taskUID);
+		
+		if (task != null){
+			task.fin();
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	/**
 	 * Clears the current Fin environment (of all tasks etc.)
 	 */
 	void clearEnvironment() {
@@ -76,4 +94,5 @@ public enum FinApplication {
 	public UIContext getUIContext() {
 		return context;
 	}
+
 }

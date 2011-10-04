@@ -7,8 +7,17 @@ import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.parseTask.TaskParser;
+import cs2103.aug11.t11j2.fin.parser.CommandResult.RenderType;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+/**
+ * CommandHandler for "add" command
+ * Usage: add [task]
+ * Parses given task and throws it into Fin environment
+ * 
+ * @author Koh Zi Chun
+ *
+ */
 public class AddCommandHandler implements ICommandHandler {
 
 	@Override
@@ -28,7 +37,7 @@ public class AddCommandHandler implements ICommandHandler {
 			throws FinProductionException {
 		Task newtask = TaskParser.parse(arguments);
 		FinApplication.INSTANCE.add(newtask);
-
+		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, newtask);
 	}

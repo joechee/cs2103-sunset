@@ -1,9 +1,11 @@
 package cs2103.aug11.t11j2.fin.ui;
 
+import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -42,12 +44,20 @@ public class CLI {
 		promptUser(WELCOME_MESSAGE);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void renderCommandResult(CommandResult cmdRes){
 		switch(cmdRes.getRenderType()) {
 		case String:
 			promptUser((String)cmdRes.getReturnObject());
 			break;
 		case TaskList:
+			Integer count = 1;
+			for (Task t : (List<Task>)cmdRes.getReturnObject()) {
+				promptUser(count + ". " + t.getTaskName());
+				promptUser("\n");
+			}
+			promptUser("\n");
+			break;
 		case UnrecognizedCommand:
 			promptUser("Command not recognized!");
 		}

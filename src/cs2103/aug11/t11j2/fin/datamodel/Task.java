@@ -153,5 +153,9 @@ public class Task {
 
 		return tr;
 	}
+	
+	public void fin() {
+		this.setPercentageCompleted(100);
+	}
 
 }
