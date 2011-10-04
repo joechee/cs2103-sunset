@@ -17,13 +17,13 @@ public class Serializer {
 		yaml = new Yaml(options);
 	}
 	
-	public void serialize(List<Object> objectLyst, String filename) throws IOException{
+	public void serialize(Iterator<Object> objects, String filename) throws IOException{
 		File saveFile = new File(filename);
 		if (!saveFile.exists()) {
 			saveFile.createNewFile();
 		}
 		FileWriter writer = new FileWriter(saveFile);
-		yaml.dumpAll(objectLyst.iterator(),writer);
+		yaml.dumpAll(objects,writer);
 		writer.close();
 	
 	}
