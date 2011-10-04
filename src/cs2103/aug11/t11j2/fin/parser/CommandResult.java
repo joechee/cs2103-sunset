@@ -35,7 +35,7 @@ public class CommandResult {
 			break;
 			
 		case String:
-			// Ensure that returnObject is of type String
+			// Ensures that returnObject is of type String
 			if (!(returnObject instanceof String)) {
 				throw(new FinProductionException("Command result type is invalid for String"));
 			}

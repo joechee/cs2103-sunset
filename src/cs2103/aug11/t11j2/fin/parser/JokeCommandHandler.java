@@ -12,18 +12,22 @@ public class JokeCommandHandler implements ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
-		return new ArrayList<String>(){{
-			add( "joke" );
-			add( "jotd" );
-			add( "jok" );
-			add("jo");
-		}};
+		return new ArrayList<String>() {
+			{
+				add("joke");
+				add("jotd");
+				add("jok");
+				add("jo");
+			}
+		};
 	}
 
 	@Override
-	public CommandResult executeCommands(String arguments) throws IOException, FinProductionException {
+	public CommandResult executeCommands(String arguments) throws IOException,
+			FinProductionException {
 		Joke testJoke = new Joke();
-		return new CommandResult(CommandResult.RenderType.String, testJoke.generate()); 
+		return new CommandResult(CommandResult.RenderType.String,
+				testJoke.generate());
 	}
 
 }

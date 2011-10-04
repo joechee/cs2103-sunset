@@ -16,12 +16,16 @@ public final class FinConstants {
 	/* Static Class */
 	private FinConstants () { }
 	
-	enum EDEVELOPMENT_MODE { 
+	public enum EDEVELOPMENT_MODE { 
 		PRODUCTION, 
 		DEPLOYMENT 
 	};
+	public enum EUI_MODE {
+		CLI, GUI
+	};
 	
 	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
+	public static final EUI_MODE UI_MODE = EUI_MODE.CLI;
 	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION); 
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char META_TAG_CHAR = '$';
