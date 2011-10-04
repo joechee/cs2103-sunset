@@ -58,11 +58,10 @@ public class TaskParser {
 		int pIndex = DEFAULT_PRIORITY;
 
 		str = str.trim();
-		str = str.toUpperCase();
-
+		
 		int i;
 		for (i = 0; i < NUM_KEYWORDS; i++)
-			if (str.indexOf(KEYWORDS[i]) == 0)
+			if (str.toUpperCase().indexOf(KEYWORDS[i]) == 0)
 				break;
 		if (i == NUM_KEYWORDS)
 			str = "#" + str;
@@ -71,7 +70,7 @@ public class TaskParser {
 
 		while (!str.isEmpty()) {
 			for (i = 0; i < NUM_KEYWORDS; i++)
-				if (str.indexOf(KEYWORDS[i]) == 0)
+				if (str.toUpperCase().indexOf(KEYWORDS[i]) == 0)
 					break;
 			switch (i) {
 			case 0:
@@ -99,19 +98,18 @@ public class TaskParser {
 				importance = getImportance(importanceIndex);
 				str = removeTillKeywords(str);
 				break;
-			case 5: //not decided.
+			case 5:
 			case 6:
 				pIndex = getPriority(str);
 				str = removeTillKeywords(str);
 				break;
-			case 7: //not decided.
+			case 7:
 			default:
 				str = removeTillKeywords(str);
 			}
 			str = str.trim();
 		}
-		
-		/*==========Testing==========*/
+
 		System.out.println(taskName);
 		for (i = 0; i < tags.size(); i++)
 			System.out.print(tags.get(i) + " ");
@@ -120,8 +118,6 @@ public class TaskParser {
 		System.out.println(dueTime);
 		System.out.println(percentage);
 		System.out.println(pIndex);
-		/*==========Testing==========*/
-		
 		Task task = new Task(taskName, tags, importance, dueTime, percentage,
 				pIndex);
 		return task;
@@ -143,7 +139,8 @@ public class TaskParser {
 	}
 
 	protected static int getNextKeyword(String str) {
-		int plus = getFirstToken(str).length(); //the length of the first token.
+		str = str.toUpperCase();
+		int plus = getFirstToken(str).length();
 		str = removeFirstToken(str);
 		int i, index, min = str.length();
 		for (i = 0; i < NUM_KEYWORDS; i++) {
@@ -153,7 +150,7 @@ public class TaskParser {
 			if (index < min)
 				min = index;
 		}
-		return min + plus; // The actually index is min{index} + length of the first token.
+		return min + plus;
 	}
 
 	protected static String getTaskName(String str) {
@@ -162,17 +159,14 @@ public class TaskParser {
 		str = str.trim();
 		return str;
 	}
-	
-	/*
-	 * This function will be further developed to support more possible words.
-	 */
+
 	protected static int getImportanceIndex(String str) {
 		int index = getNextKeyword(str);
 		str = str.substring(1, index);
 		str = str.trim();
 		if (str.isEmpty())
 			return -1;
-		String importance = getFirstToken(str);
+		String importance = getFirstToken(str).toUpperCase();
 		if (importance.equals("LOW"))
 			return 0;
 		else if (importance.equals("NORMAL"))
@@ -209,10 +203,7 @@ public class TaskParser {
 		return date;
 
 	}
-	
-	/*
-	 * @return whether the time is indicated.
-	 */
+
 	protected static boolean setTime(Calendar cal, String str) {
 		String strTime = getFirstToken(str);
 		if (strTime.equals(TIME_DONT_CARE)) {
@@ -226,8 +217,7 @@ public class TaskParser {
 			if (index == NOT_IN_STRING) {
 				if (Character.isDigit(strTime.charAt(0))) {
 					/*
-					 * This part will be further developed.
-					 * Things like morning, afternnon, evening, AM, PM will be added.
+					 * add in am, pm, afternoon, morning?
 					 */
 					return true;
 				}
@@ -256,11 +246,11 @@ public class TaskParser {
 			return true;
 		}
 	}
-	
+
 	protected static void setDate(Calendar cal, String str) {
 		if (str.isEmpty())
 			return;
-		String strDate = getFirstToken(str);
+		String strDate = getFirstToken(str).toUpperCase();
 		if (strDate.equals(WEEK_NEXT) || strDate.equals(WEEK_THIS)) {
 			if (strDate.equals(WEEK_NEXT))
 				cal.add(Calendar.DAY_OF_WEEK, DAYS_A_WEEK);
@@ -294,6 +284,7 @@ public class TaskParser {
 	}
 
 	protected static int getDayOFWeek(String str) {
+		str = str.toUpperCase();
 		if (str.indexOf(WEEK) != NOT_IN_STRING)
 			return SUNDAY;
 		for (int index = 0; index < DAYS_A_WEEK; index++)
@@ -304,6 +295,7 @@ public class TaskParser {
 	}
 
 	protected static int getMonth(String str) {
+		str = str.toUpperCase();
 		for (int index = 0; index < MONTHS_A_YEAR; index++)
 			if (MONTHS[index].indexOf(str) != NOT_IN_STRING)
 				return index;
@@ -345,10 +337,14 @@ public class TaskParser {
 		return value;
 	}
 
-	/*
-	 * public static void main(String [] args){ String str; Scanner cin= new
-	 * Scanner(System.in); while(true){ str=cin.nextLine(); Task
-	 * task=getTask(str); } }
-	 */
+	
+	public static void main(String [] args){
+		String str; Scanner cin= new
+		Scanner(System.in); 
+		while(true){ 
+			str=cin.nextLine(); 
+			Task task=parse(str); 
+		} 
+	} 
 
 }
