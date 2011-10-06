@@ -35,7 +35,12 @@ public class DeleteCommandHandler implements ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 
-		int taskIndex = Integer.parseInt(arguments);
+		int taskIndex;
+		try {
+			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
+		} catch(NumberFormatException nfe) {
+			return CommandResult.invalidTaskIndex;
+		}
 		
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
 			return CommandResult.invalidTaskIndex;

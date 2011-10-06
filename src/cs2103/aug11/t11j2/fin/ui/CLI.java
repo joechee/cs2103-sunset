@@ -20,7 +20,7 @@ public class CLI implements IUserInterface {
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!";
-	private static UIContext context;
+	private static UIContext context = new UIContext();
 
 	private static Scanner sc = new Scanner(System.in);
 

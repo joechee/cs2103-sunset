@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.application;
 import cs2103.aug11.t11j2.fin.datamodel.*;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -148,7 +149,12 @@ public enum FinApplication {
 	
 	public void loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
-		fs.unserialize(filename, true);
+		try {			
+			fs.unserialize(filename, true);
+		} catch(FileNotFoundException fnfe) {
+			clearEnvironment();
+			fs.serialize(filename);
+		}
 	}
 
 	public UIContext getUIContext() {

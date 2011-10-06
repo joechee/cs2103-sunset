@@ -8,7 +8,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 public class UIContext {
 	private List<Task> taskList = new ArrayList<Task>();
 	private String status = "";
-	private String filter;
+	private String filter = "";
 
 	public List<Task> getTaskList() {
 		return taskList;
