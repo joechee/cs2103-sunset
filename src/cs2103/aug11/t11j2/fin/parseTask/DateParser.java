@@ -159,7 +159,7 @@ public class DateParser {
 							
 							if (w > 0) {
 								Calendar calendar = Calendar.getInstance();
-								calendar.add(Calendar.DAY_OF_YEAR, 7 * w);
+								calendar.add(Calendar.DAY_OF_YEAR, w);
 
 								StringBuffer sb = new StringBuffer();
 								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);

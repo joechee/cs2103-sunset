@@ -30,6 +30,9 @@ public final class FinConstants {
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char META_TAG_CHAR = '$';
 	
-	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";//Character.toChars(6771).toString() + Character.toChars(6772).toString();
+	public static final String IMPORTANT_HASH_TAG = "impt";
+	public static final String FIN_HASH_TAG = "fin";
+	
+	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";
 
 }

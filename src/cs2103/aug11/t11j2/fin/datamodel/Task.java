@@ -131,7 +131,7 @@ public class Task {
 		long diff = due.getTimeInMillis() - now.getTimeInMillis();
 
 		if (diff < 0) {
-			return df.format(due);
+			return df.format(due.getTime());
 		} else if (diff <= DAY) {
 			return "DUE WITHIN 24 HOURS!";
 		} else if (diff <= 2 * DAY) {
@@ -142,7 +142,7 @@ public class Task {
 			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
 			return "due next " + dayFormat.format(due.getTime());
 		} else {
-			return df.format(due);
+			return df.format(due.getTime());
 		}
 	}
 
@@ -281,18 +281,18 @@ public class Task {
 
 	public void fin() {
 		this.setPercentageCompleted(100);
-		this.addTag("fin");
+		this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	public void unfin() {
 		this.setPercentageCompleted(0);
-		this.removeTag("fin");
+		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 	public void flag() {
-		this.addTag("important");
+		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 	public void unflag() {
-		this.removeTag("important");
+		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 
 }

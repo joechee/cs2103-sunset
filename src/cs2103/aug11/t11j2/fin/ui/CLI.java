@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
@@ -156,9 +157,9 @@ public class CLI implements IUserInterface {
 		List<Task> newContext = new ArrayList<Task>();
 		
 		for (Task t : taskList) {
-			if (t.hasTag("fin")) {
+			if (t.hasTag(FinConstants.FIN_HASH_TAG)) {
 				finTask.add(t);
-			} else if (t.hasTag("important")) {
+			} else if (t.hasTag(FinConstants.IMPORTANT_HASH_TAG)) {
 				imptTask.add(t);
 			} else {
 				normalTask.add(t);
