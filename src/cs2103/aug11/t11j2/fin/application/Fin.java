@@ -2,6 +2,9 @@ package cs2103.aug11.t11j2.fin.application;
 
 
 
+
+import java.io.IOException;
+
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /* Usage:
@@ -12,18 +15,24 @@ import cs2103.aug11.t11j2.fin.ui.*;
 public class Fin {
 
 	
+
+	
+	
 	public static void main(String[] args) {
 		try {
 			parseArgs(args);
 		} catch (IllegalArgumentException e) {
 			System.out.print(e.getMessage());
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
 	
 
 
-	private static void parseArgs(String[] args) {
+	private static void parseArgs(String[] args) throws IllegalArgumentException, IOException {
 		IUserInterface UI = FinConstants.DEFAULT_UI;
 		for (String i: args) {
 			if (i.toCharArray()[0] == '-') {
