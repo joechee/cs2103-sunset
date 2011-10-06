@@ -102,7 +102,7 @@ public class JUnitTest {
 	}
 	@Test
 	public void testParser() throws IOException {
-		System.out.println(CommandParser.INSTANCE.parse("add hello"));
+		System.out.println(CommandParser.INSTANCE.parse("add hello", null));
 		
 		
 	}
