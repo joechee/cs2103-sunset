@@ -10,8 +10,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler to delete a task
- * Usage: fin [task number]
+ * CommandHandler to delete a task Usage: fin [task number]
  * 
  * @author Koh Zi Chun
  */
@@ -38,17 +37,17 @@ public class DeleteCommandHandler implements ICommandHandler {
 		int taskIndex;
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
-		} catch(NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			return CommandResult.invalidTaskIndex;
 		}
-		
+
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
 			return CommandResult.invalidTaskIndex;
 		}
-		
-		Task todelete = context.getTaskList().get(taskIndex-1);
-		FinApplication.INSTANCE.deleteTask( todelete.getUniqId() );
-		
+
+		Task todelete = context.getTaskList().get(taskIndex - 1);
+		FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
+
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, todelete);
 	}

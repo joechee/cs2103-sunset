@@ -11,14 +11,15 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
 
 /**
  * 
- * FinSerializer handles the serializing of the Fin working environment
- *  (i.e all task and the semantics relationship between them) into a list of objects.
- *  
- * Each task is represented as a dictionary (Map<String, Object>) and tasks with subtasks
- * will have a "Subtasks" attribute with the same (recursive) definition.
+ * FinSerializer handles the serializing of the Fin working environment (i.e all
+ * task and the semantics relationship between them) into a list of objects.
  * 
- * This allows the main Storage Serializer to serialize the serialized object into
- * YAML (or JSON or XML if we want to change in the future). 
+ * Each task is represented as a dictionary (Map<String, Object>) and tasks with
+ * subtasks will have a "Subtasks" attribute with the same (recursive)
+ * definition.
+ * 
+ * This allows the main Storage Serializer to serialize the serialized object
+ * into YAML (or JSON or XML if we want to change in the future).
  * 
  * @version 0.1
  * @author Koh Zi Chun
@@ -29,46 +30,50 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
 public class FinSerializer {
 	public void serialize(String filename) throws IOException {
 		Serializer sr = new Serializer();
-		List<Object> oLyst = FinSerializer.taskTreeListToList(FinApplication.INSTANCE.taskList);		
-		
+		List<Object> oLyst = FinSerializer
+				.taskTreeListToList(FinApplication.INSTANCE.taskList);
+
 		sr.serialize(oLyst.iterator(), filename);
 	}
-	
+
 	/**
-	 * Clears the environment and unserialize a file into the environment 
+	 * Clears the environment and unserialize a file into the environment
+	 * 
 	 * @param filename
 	 * @throws IOException
 	 */
 	public boolean unserialize(String filename) throws IOException {
 		return unserialize(filename, true);
 	}
-	
-	public boolean unserialize(String filename, boolean clearEnvironment) throws IOException {
+
+	public boolean unserialize(String filename, boolean clearEnvironment)
+			throws IOException {
 		Serializer sr = new Serializer();
 		List<Object> dictionaries = sr.unserialize(filename);
-		
+
 		if (clearEnvironment == true) {
 			FinApplication.INSTANCE.clearEnvironment();
 		}
-		
+
 		FinSerializer.parseDictionaries(dictionaries, null);
-		
+
 		return true;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	private static void parseDictionaries(List<Object> dictionaries, UUID parentUID) {
+	private static void parseDictionaries(List<Object> dictionaries,
+			UUID parentUID) {
 		for (Object dict : dictionaries) {
-			FinSerializer.parseDictionary((Map<String,Object>)dict, parentUID); 
+			FinSerializer
+					.parseDictionary((Map<String, Object>) dict, parentUID);
 		}
 	}
-	
-	private static void parseDictionary(Map<String,Object> dict, UUID parentUID) {
+
+	private static void parseDictionary(Map<String, Object> dict, UUID parentUID) {
 		Task task = new Task(dict);
 		FinApplication.INSTANCE.add(task);
 	}
-	
+
 	/**
 	 * Converts a list of Task into a List of dictionaries for serialization
 	 */
@@ -79,6 +84,7 @@ public class FinSerializer {
 		}
 		return tr;
 	}
+
 	/**
 	 * Converts a given Task into a dictionary
 	 */

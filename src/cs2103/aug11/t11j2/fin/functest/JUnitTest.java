@@ -1,4 +1,5 @@
 package cs2103.aug11.t11j2.fin.functest;
+
 /* 
  * Ok guys, I've inserted JUnit inside here.
  * 
@@ -32,37 +33,38 @@ import cs2103.aug11.t11j2.fin.datamodel.Task.EImportance;
 import cs2103.aug11.t11j2.fin.jotd.Joke;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 
-
 public class JUnitTest {
 	@Test
 	public void testFailure() throws Exception {
 		fail();
 	}
-	
+
 	@Test
 	public void testJOTD() throws IOException {
 		Joke testJoke = new Joke();
-		assertEquals("Joke","Abortion brings out the kid in you.",testJoke.generate());
+		assertEquals("Joke", "Abortion brings out the kid in you.",
+				testJoke.generate());
 	}
-	
+
 	@Test
-	public void testTask() throws Exception{
-		Task test = new Task("test",new ArrayList<String>(),EImportance.LOW,null,0,0);
-	
-		assertEquals("taskName","test",test.getTaskName());
-		assertEquals("tags",new ArrayList<String>(),test.getTags());
-		assertEquals("Importance",EImportance.LOW,test.getImportance());
-		assertEquals("dueDate",null,test.getDueDate());		
-		assertSame("percentageCompleted",0,test.getPercentageCompleted());		
-		assertSame("pIndex",0,test.getpIndex());
-		
+	public void testTask() throws Exception {
+		Task test = new Task("test", new ArrayList<String>(), EImportance.LOW,
+				null, 0, 0);
+
+		assertEquals("taskName", "test", test.getTaskName());
+		assertEquals("tags", new ArrayList<String>(), test.getTags());
+		assertEquals("Importance", EImportance.LOW, test.getImportance());
+		assertEquals("dueDate", null, test.getDueDate());
+		assertSame("percentageCompleted", 0, test.getPercentageCompleted());
+		assertSame("pIndex", 0, test.getpIndex());
+
 	}
-	
+
 	@Test
 	public void testMain() throws Exception {
-		
+
 	}
-	
+
 	@Test
 	public void testSerializer() throws IOException {
 		System.out.println("Test Serializer");
@@ -75,36 +77,32 @@ public class JUnitTest {
 		task3.setTaskName("hello world child1");
 		Task task4 = new Task();
 		task4.setTaskName("hello world child2");
-		
+
 		FinApplication.INSTANCE.add(task1);
 		FinApplication.INSTANCE.add(task2);
-			
 
-			
 		System.out.println("Serializing test...");
 
-		
-			FinSerializer fs = new FinSerializer();
-			fs.serialize("test.yaml");
-		
+		FinSerializer fs = new FinSerializer();
+		fs.serialize("test.yaml");
+
 		System.out.println("Serializing test complete!");
-		
+
 		System.out.println("***");
 		System.out.println("Deserializing test...");
-		
+
 		fs.unserialize("test.yaml");
-			
-		
+
 		System.out.println("Deserializing test complete!");
 		System.out.println("***");
-		
+
 		System.out.println("Test complete!");
 	}
+
 	@Test
 	public void testParser() throws IOException {
 		System.out.println(CommandParser.INSTANCE.parse("add hello", null));
-		
-		
+
 	}
 
 }

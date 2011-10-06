@@ -46,8 +46,8 @@ public class CommandResult {
 		case TaskList:
 			// Ensures that returnObject is of type List<Task>
 			if (!(returnObject instanceof List<?>)
-					|| (((List<?>) returnObject).size() > 0 && 
-						  !(((List<?>) returnObject).get(0) instanceof Task))) {
+					|| (((List<?>) returnObject).size() > 0 && !(((List<?>) returnObject)
+							.get(0) instanceof Task))) {
 				throw (new FinProductionException(
 						"Command result type is invalid for TaskList"));
 			}

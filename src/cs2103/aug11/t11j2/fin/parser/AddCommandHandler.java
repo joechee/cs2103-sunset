@@ -11,12 +11,11 @@ import cs2103.aug11.t11j2.fin.parser.CommandResult.RenderType;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "add" command
- * Usage: add [task]
- * Parses given task and throws it into Fin environment
+ * CommandHandler for "add" command Usage: add [task] Parses given task and
+ * throws it into Fin environment
  * 
  * @author Koh Zi Chun
- *
+ * 
  */
 public class AddCommandHandler implements ICommandHandler {
 
@@ -33,12 +32,12 @@ public class AddCommandHandler implements ICommandHandler {
 	}
 
 	@Override
-	public CommandResult executeCommands(String command, String arguments, UIContext context)
-			throws FinProductionException {
+	public CommandResult executeCommands(String command, String arguments,
+			UIContext context) throws FinProductionException {
 		Task newtask = TaskParser.parse(arguments);
 		FinApplication.INSTANCE.add(newtask);
 		FinApplication.INSTANCE.saveEnvironment();
-		
+
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, newtask);
 	}

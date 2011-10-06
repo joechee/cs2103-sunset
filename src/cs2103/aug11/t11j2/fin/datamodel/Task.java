@@ -81,12 +81,15 @@ public class Task {
 		 */
 		return tag.toLowerCase().split("\\s+")[0].trim();
 	}
+
 	public void addTag(String tag) {
 		addTag(formatTag(tag));
 	}
+
 	public boolean hasTag(String tag) {
 		return this.tags.contains(tag.toLowerCase().trim());
 	}
+
 	public boolean hasTags(List<String> tags) {
 		boolean has = true;
 		for (String t : tags) {
@@ -97,9 +100,11 @@ public class Task {
 		}
 		return has;
 	}
+
 	public void removeTag(String tag) {
 		this.tags.remove(tag.toLowerCase().trim());
 	}
+
 	public List<String> getTags() {
 		List<String> newTags = new ArrayList<String>();
 		Collections.copy(newTags, tags);
@@ -155,7 +160,8 @@ public class Task {
 		this.uniqId = UUID.fromString((String) dict.get("UID"));
 		this.addTime = (Date) dict.get("DateAdded");
 		this.pIndex = (Integer) dict.get("Priority");
-		this.importance = EImportance.fromString( (String) dict.get("Importance") );
+		this.importance = EImportance.fromString((String) dict
+				.get("Importance"));
 		this.percentageCompleted = (Integer) dict.get("Completed");
 		this.dueTime = (Date) dict.get("DueDate");
 	}
@@ -176,7 +182,7 @@ public class Task {
 
 		return tr;
 	}
-	
+
 	public void fin() {
 		this.setPercentageCompleted(100);
 	}

@@ -19,7 +19,7 @@ public enum FinApplication {
 	INSTANCE;
 
 	String taskFileName = "";
-	
+
 	List<Task> taskList = new ArrayList<Task>();
 	Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
 	UIContext context = new UIContext();
@@ -55,7 +55,7 @@ public enum FinApplication {
 	}
 
 	/**
-	 * Get the list of tasks 
+	 * Get the list of tasks
 	 * 
 	 * @return List of Tasks sorted by pIndex
 	 */
@@ -73,7 +73,7 @@ public enum FinApplication {
 
 	/**
 	 * Get the list of tasks with a particular #tag
-	 *  
+	 * 
 	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */
@@ -81,16 +81,16 @@ public enum FinApplication {
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
 			Collections.sort(lt, new TaskSortByPIndex());
-			
+
 			return lt;
 		} else {
 			return new ArrayList<Task>();
 		}
 	}
-	
+
 	/**
 	 * Get the list of tasks with a list of #tags
-	 *  
+	 * 
 	 * @param tag
 	 * @return List of Task with tags sorted by pIndex
 	 */
@@ -148,19 +148,19 @@ public enum FinApplication {
 		taskMap.clear();
 		taskList.clear();
 	}
-	
+
 	public void loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
 		taskFileName = filename;
-		
-		try {			
+
+		try {
 			fs.unserialize(filename, true);
-		} catch(FileNotFoundException fnfe) {
+		} catch (FileNotFoundException fnfe) {
 			clearEnvironment();
 			fs.serialize(filename);
 		}
 	}
-	
+
 	public void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
 		try {

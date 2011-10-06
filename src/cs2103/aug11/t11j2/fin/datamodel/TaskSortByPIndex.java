@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
  * Comparator that sorts Tasks by PIndex
  */
-public class TaskSortByPIndex implements Comparator <Task>{
+public class TaskSortByPIndex implements Comparator<Task> {
 
 	@Override
 	public int compare(Task o1, Task o2) {

@@ -37,24 +37,24 @@ public class EditCommandHandler implements ICommandHandler {
 
 		int taskIndex;
 		String[] tokens = arguments.split("\\s");
-		
+
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
-		} catch(NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			return CommandResult.invalidTaskIndex;
 		}
-		
+
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
 			return CommandResult.invalidTaskIndex;
 		}
 
-		Task todelete = context.getTaskList().get(taskIndex-1);
-		FinApplication.INSTANCE.deleteTask( todelete.getUniqId() );
+		Task todelete = context.getTaskList().get(taskIndex - 1);
+		FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
 
 		String newTaskString = arguments.replaceFirst(tokens[0], "").trim();
-		
+
 		AddCommandHandler addCmdHandler = new AddCommandHandler();
-		return addCmdHandler.executeCommands(addCmdHandler.getCommandStrings().get(0), 
-				newTaskString, context);
+		return addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
+				.get(0), newTaskString, context);
 	}
 }

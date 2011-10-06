@@ -64,7 +64,8 @@ public class CommandParser {
 		return userCommand.trim().split("\\s+");
 	}
 
-	private CommandResult runCommand(String command, String userArgs, UIContext context) {
+	private CommandResult runCommand(String command, String userArgs,
+			UIContext context) {
 		// Check if the current command is installed in CommandParser
 		if (!commandHandlers.containsKey(command.toLowerCase())) {
 			return CommandResult.unrecognizedCommandResult;

@@ -11,23 +11,23 @@ import cs2103.aug11.t11j2.fin.ui.*;
  * @author Joe Chee
  */
 public final class FinConstants {
-	
+
 	/* Constants */
 	public static final IUserInterface DEFAULT_UI = new CLI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 
 	/* Static Class */
-	private FinConstants () { }
-	
-	public enum EDEVELOPMENT_MODE { 
-		PRODUCTION, 
-		DEPLOYMENT 
+	private FinConstants() {
+	}
+
+	public enum EDEVELOPMENT_MODE {
+		PRODUCTION, DEPLOYMENT
 	};
-	
+
 	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
-	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION); 
+	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION);
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char META_TAG_CHAR = '$';
-	
+
 }

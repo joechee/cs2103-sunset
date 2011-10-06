@@ -17,21 +17,21 @@ public class UIContext {
 	void setTaskList(List<Task> tasks) {
 		this.taskList = tasks;
 	}
-	
+
 	void setStatus(String newStatus) {
 		status = newStatus;
 	}
-	
+
 	String getStatus() {
 		return status;
 	}
-	
 
 	void setFilter(String filter) {
 		this.filter = filter;
 	}
+
 	String getFilter() {
 		return this.filter;
 	}
-	
+
 }
