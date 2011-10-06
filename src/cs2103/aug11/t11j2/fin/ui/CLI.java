@@ -1,24 +1,24 @@
 package cs2103.aug11.t11j2.fin.ui;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author alexljz
  *
  */
-public class CLI implements UI{
+public class CLI implements IUserInterface{
 	
 	private static final String PROMPT = "> ";
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!";
-	private UIContext context;
+	private static UIContext context;
 	
 	private static Scanner sc = new Scanner(System.in);
 	
@@ -39,13 +39,12 @@ public class CLI implements UI{
 				e.printStackTrace();
 				return;
 			}
-			updateContext(feedback);
-			renderContext();
-			//renderCommandResult(feedback);
+//			renderContext();
+			renderCommandResult(feedback);
 		}
 	}
 	
-	private void initContext() {
+	private static void initContext() {
 		CommandResult feedback = null;
 		try {
 			feedback = CommandParser.INSTANCE.parse("show", context);
@@ -56,40 +55,30 @@ public class CLI implements UI{
 		updateContext(feedback);
 	}
 	
-	//assumption that context has a status message + tasklist
-	public void updateContext(CommandResult feedback) {
-		// this should update the context using the provided CommandResult
-		// how will a Task or String affect the context?
+	public static void updateContext(CommandResult feedback) {
 		switch (feedback.getRenderType()) {
-		case String:
-			//add string to bottom of context
-			context.updateStatus((String)feedback.getReturnObject());
-			break;
 		case TaskList:
-			//replace context with given tasklist
-			context.setTaskList((List<Task>)feedback.getReturnObject());
+			Object o = feedback.getReturnObject();
+			List<Task> taskList = (List<Task>) o;
+			context.setTaskList(taskList);
 			break;
 		case Task:
-			//indicate added task in task list
-			context.focusTask((Task)feedback.getReturnObject());
-			break;
+		case String:			
 		case UnrecognizedCommand:
 		case InvalidTaskIndex:
 		case Null:
-			// all cases of String actually? add a error message to bottom of context to be displayed
-			context.updateStatus(someErrorMsg);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void renderContext() {
+	/*private void renderContext() {
 		//takes context and renders it accordingly
 		int focus = context.getFocused();
 		display(context.getTaskList());
 		display(context.getStatus());
-	}
+	}*/
 
 	private static void displayWelcomeMessage() {
 		promptUser(WELCOME_MESSAGE);
@@ -100,14 +89,21 @@ public class CLI implements UI{
 		switch(cmdRes.getRenderType()) {
 		case String:
 			promptUser((String)cmdRes.getReturnObject());
+			initContext();
 			break;
 		case TaskList:
+			updateContext(cmdRes);
 			Integer count = 1;
 			for (Task t : (List<Task>)cmdRes.getReturnObject()) {
 				promptUser(count + ". " + t.getTaskName());
 				promptUser("\n");
 			}
 			promptUser("\n");
+			break;
+		case Task:
+			promptUser("Task: " + ((Task) cmdRes.getReturnObject()).getTaskName() + " added.");
+			promptUser("\n");
+			initContext();
 			break;
 		case UnrecognizedCommand:
 			promptUser("Command not recognized!");
