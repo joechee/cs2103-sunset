@@ -29,13 +29,19 @@ public class Serializer {
 	}
 	
 	public List<Object> unserialize(String filename) throws IOException {
-		InputStream file = new FileInputStream(filename);
-		ArrayList<Object> deserializedObjects = new ArrayList<Object>();
-		for (Object data: yaml.loadAll(file)) {
-			deserializedObjects.add(data);
+		File file = new File(filename);
+		if (file.exists()) {
+			InputStream fs = new FileInputStream(filename);
+			ArrayList<Object> deserializedObjects = new ArrayList<Object>();
+			for (Object data: yaml.loadAll(fs)) {
+				deserializedObjects.add(data);
+			}
+			fs.close();
+			return deserializedObjects;
+		} else {
+			throw new FileNotFoundException("File does not exist!");
 		}
-		file.close();
-		return deserializedObjects;
+
 	}
 
 }

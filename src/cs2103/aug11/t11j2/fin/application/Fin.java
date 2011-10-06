@@ -48,10 +48,11 @@ public class Fin {
 	private static String checkFilename(String i) throws IllegalArgumentException {
 		if (i == null) {
 			throw new IllegalArgumentException("Invalid Input!");
-		} else if (i.split(".").length == 0) {
+		} else if (!i.endsWith(".yaml")) {
+			System.out.println(i);
 			return i+FinConstants.fileExtension;
 		}
-		return null;
+		return i;
 	}
 
 	private static IUserInterface parseUI(String UIString) throws IllegalArgumentException {
