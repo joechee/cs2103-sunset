@@ -29,8 +29,8 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-	
+
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.String, "ARGGG I NEED HELP!");
-}
+	}
 }
