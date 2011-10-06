@@ -1,21 +1,25 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.regex.Pattern;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class CommandParser {
-	public static CommandParser INSTANCE = new CommandParser();
 
-	private static final String INVALID_ARGUMENTS_ERROR = "Invalid arguments provided.";
-	private static final String MYSTERY_ERROR = "Congratulations. You broke it.";
+	public static interface ICommandHandler {
+		public List<String> getCommandStrings();
+
+		CommandResult executeCommands(String command, String arguments,
+				UIContext context) throws FinProductionException;
+
+	}
+
+	public static CommandParser INSTANCE = new CommandParser();
 
 	private Map<String, ICommandHandler> commandHandlers = new HashMap<String, ICommandHandler>();
 
@@ -24,9 +28,13 @@ public class CommandParser {
 			installCommand(new ShowCommandHandler());
 			installCommand(new AddCommandHandler());
 			installCommand(new FinCommandHandler());
+			installCommand(new UnfinCommandHandler());
+			installCommand(new ImportantCommandHandler());
+			installCommand(new UnImportantCommandHandler());
 			installCommand(new DeleteCommandHandler());
 			installCommand(new JokeCommandHandler());
 			installCommand(new EditCommandHandler());
+			installCommand(new HelpCommandHandler());
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				System.out
@@ -74,7 +82,7 @@ public class CommandParser {
 		// Get the installed CommandHandler
 		ICommandHandler commandHandler = commandHandlers.get(command
 				.toLowerCase());
-		String cmdArgs = userArgs.replaceFirst(command, "").trim();
+		String cmdArgs = userArgs.replaceFirst(Pattern.quote(command), "").trim();
 
 		CommandResult res = null;
 		try {

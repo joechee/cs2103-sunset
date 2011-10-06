@@ -1,7 +1,10 @@
 package cs2103.aug11.t11j2.fin.datamodel;
 
-import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 
 public class Task {
 
@@ -45,17 +48,63 @@ public class Task {
 	private UUID uniqId;
 	private Integer pIndex;
 
-	public Task(String taskName, List<String> tags, EImportance importance,
-			Date dueDate, Integer percentageCompleted, Integer pIndex) {
+	public Task(String taskName, EImportance importance, Date dueDate,
+			Integer percentageCompleted, Integer pIndex) {
 
 		this.taskName = taskName;
-		this.tags = tags;
 		this.importance = importance;
 		this.dueTime = dueDate;
 		this.percentageCompleted = percentageCompleted;
 		this.addTime = new Date();
 		this.uniqId = UUID.randomUUID();
 		this.pIndex = pIndex;
+
+		parseTags();
+
+	}
+	private void parseTags() {
+		String[] tokens = tokenize(this.taskName);
+
+		// parse hashTags of task
+		for (String s : tokens) {
+			if (isHashTag(s)) {
+				this.tags.add(sanitizeHashTag(s));
+			}
+		}
+	}
+	private static String sanitizeHashTag(String s) {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < s.length(); ++i) {
+			char c = s.charAt(i);
+			if (Character.isLetterOrDigit(c)) {
+				sb.append(Character.toLowerCase(c));
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private static String[] tokenize(String task) {
+		return task.trim().split("\\s");
+	}
+
+	private static boolean isHashTag(String s) {
+		boolean hasHashTag = s.charAt(0) == FinConstants.HASH_TAG_CHAR;
+
+		if (!hasHashTag) {
+			return false;
+		}
+
+		// ensures that hashtag comprises only letters or digits
+		for (int i = 1; i < s.length(); ++i) {
+			char c = s.charAt(i);
+			if (!Character.isLetterOrDigit(c)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public Task() {
@@ -71,11 +120,43 @@ public class Task {
 		this.taskName = taskName;
 	}
 
-	public String getTaskName() {
-		return taskName;
+	private static final long DAY = 24 * 60 * 60 * 1000;
+
+	private String naturalDate(Date d) {
+		Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat("dd MMM");
+
+		due.setTime(d);
+
+		long diff = due.getTimeInMillis() - now.getTimeInMillis();
+
+		if (diff < 0) {
+			return df.format(due);
+		} else if (diff <= DAY) {
+			return "DUE WITHIN 24 HOURS!";
+		} else if (diff <= 2 * DAY) {
+			return "due tomorrow";
+		} else if (diff <= 5 * DAY) {
+			return "due in " + (int) (Math.floor(diff / DAY) + 1) + " days";
+		} else if (diff <= 14 * DAY) {
+			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
+			return "due next " + dayFormat.format(due.getTime());
+		} else {
+			return df.format(due);
+		}
 	}
 
-	private static String formatTag(String tag) {
+	public String getTaskName() {
+		Date due = this.getDueDate();
+		if (due != null && taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER,
+					naturalDate(due));
+		} else {
+			return taskName;
+		}
+	}
+
+	private static String sanitizeTag(String tag) {
 		/**
 		 * Ensures tag are lowercases without spaces
 		 */
@@ -83,7 +164,10 @@ public class Task {
 	}
 
 	public void addTag(String tag) {
-		addTag(formatTag(tag));
+		String sanitizedTag = sanitizeTag(tag);
+
+		this.tags.add(sanitizedTag);
+		this.taskName = this.taskName.trim() + " " + "#" + sanitizedTag;
 	}
 
 	public boolean hasTag(String tag) {
@@ -102,12 +186,17 @@ public class Task {
 	}
 
 	public void removeTag(String tag) {
-		this.tags.remove(tag.toLowerCase().trim());
+		if (this.tags.remove(tag.toLowerCase().trim())) {
+			this.taskName = this.taskName.replaceAll(
+					"(?i)#" + tag.toLowerCase() + "\\s*", "");
+		}
 	}
 
 	public List<String> getTags() {
 		List<String> newTags = new ArrayList<String>();
-		Collections.copy(newTags, tags);
+		for (String t : tags) {
+			newTags.add(t);
+		}
 		return newTags;
 	}
 
@@ -164,16 +253,18 @@ public class Task {
 				.get("Importance"));
 		this.percentageCompleted = (Integer) dict.get("Completed");
 		this.dueTime = (Date) dict.get("DueDate");
+		
+		parseTags();
 	}
 
 	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
 
-		tr.put("Name", this.getTaskName());
+		tr.put("Name", this.taskName);
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
 		tr.put("Priority", this.getpIndex());
-		tr.put("Importance", this.getImportance().importance);
+		// tr.put("Importance", this.getImportance().importance);
 		tr.put("Completed", this.getPercentageCompleted());
 
 		if (this.getDueDate() != null) {
@@ -183,8 +274,25 @@ public class Task {
 		return tr;
 	}
 
+	@Override
+	public String toString() {
+		return getTaskName();
+	}
+
 	public void fin() {
 		this.setPercentageCompleted(100);
+		this.addTag("fin");
+	}
+
+	public void unfin() {
+		this.setPercentageCompleted(0);
+		this.removeTag("fin");
+	}
+	public void flag() {
+		this.addTag("important");
+	}
+	public void unflag() {
+		this.removeTag("important");
 	}
 
 }

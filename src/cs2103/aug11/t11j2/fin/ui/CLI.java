@@ -1,5 +1,6 @@
 package cs2103.aug11.t11j2.fin.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,7 +9,6 @@ import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
 /**
@@ -112,28 +112,31 @@ public class CLI implements IUserInterface {
 	}
 
 	private static void renderString(CommandResult cmdRes) {
-		echo((String) cmdRes.getReturnObject() + "\n");
+		echo((String) cmdRes.getReturnObject() + "\n\n");
 		refreshContext();
 	}
 
 	private static void renderTaskResult(CommandResult cmdRes) {
 		String taskName = ((Task) cmdRes.getReturnObject()).getTaskName();
-		ICommandHandler commandHandler = cmdRes.getCommand();
+		CommandParser.ICommandHandler commandHandler = cmdRes.getCommand();
 
 		if (commandHandler instanceof AddCommandHandler) {
-			echo("Task: " + taskName + " added!");
+			echo("Task: " + taskName + " added!\n");
 			echo("\n");
 
 			if (refreshContext() == false) {
 				context.setFilter("");
 				refreshContext();
-				printTaskList();
 			}
+			printTaskList();
 		} else if (commandHandler instanceof DeleteCommandHandler) {
-			echo("Task: " + taskName + " deleted!");
+			echo("Task: " + taskName + " deleted!\n");
 			echo("\n");
 			refreshContext();
 			printTaskList();
+		} else {
+			refreshContext();
+			printTaskList();			
 		}
 	}
 
@@ -147,16 +150,54 @@ public class CLI implements IUserInterface {
 		int count = 1;
 		List<Task> taskList = context.getTaskList();
 
+		List<Task> finTask = new ArrayList<Task>();
+		List<Task> imptTask = new ArrayList<Task>();
+		List<Task> normalTask = new ArrayList<Task>();
+		List<Task> newContext = new ArrayList<Task>();
+		
 		for (Task t : taskList) {
-			echo(count + ". " + t.getTaskName() + "\n");
-			count++;
+			if (t.hasTag("fin")) {
+				finTask.add(t);
+			} else if (t.hasTag("important")) {
+				imptTask.add(t);
+			} else {
+				normalTask.add(t);
+			}
 		}
+		
+		if (imptTask.size() > 0) {
+			echo("#important\n");
+			for (Task t : imptTask) {
+				newContext.add(t);
+				echo("  " + count + ". " + t.getTaskName() + "\n");
+				count++;				
+			}
+		}
+		if (normalTask.size() > 0) {
+			echo("\n");
+			for (Task t : normalTask) {
+				newContext.add(t);
+				echo("  " + count + ". " + t.getTaskName() + "\n");
+				count++;	
+			}
+			echo("\n");
+		}
+		if (finTask.size() > 0) {
+			echo("#fin\n");
+			for (Task t : finTask) {
+				newContext.add(t);
+				echo("  " + count + ". " + t.getTaskName() + "\n");
+				count++;	
+			}
+		}
+		
+		context.setTaskList(newContext);
 
 		if (taskList.size() == 0) {
 			if (context.getFilter().length() == 0) {
-				echo("There are no tasks");
+				echo("There are no tasks\n");
 			} else {
-				echo("There are no tasks that matches your filter");
+				echo("There are no tasks that matches your filter\n");
 			}
 		}
 

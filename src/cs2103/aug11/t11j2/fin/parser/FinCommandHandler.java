@@ -1,6 +1,5 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class FinCommandHandler implements ICommandHandler {
+public class FinCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {

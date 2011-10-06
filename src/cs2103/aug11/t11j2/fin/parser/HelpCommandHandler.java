@@ -10,22 +10,21 @@ import cs2103.aug11.t11j2.fin.parseTask.TaskParser2;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "add" command Usage: add [task] Parses given task and
- * throws it into Fin environment
+ * Returns a string that shows the help file
  * 
  * @author Koh Zi Chun
  * 
  */
-public class AddCommandHandler implements CommandParser.ICommandHandler {
+public class HelpCommandHandler implements CommandParser.ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
-				add("a");
-				add("ad");
-				add("add");
+				add("?");
+				add("help");
+				add("h");
 			}
 		};
 	}
@@ -33,11 +32,8 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		Task newtask = TaskParser2.parse(arguments);
-		FinApplication.INSTANCE.add(newtask);
-		FinApplication.INSTANCE.saveEnvironment();
-
+	
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, newtask);
-	}
+				CommandResult.RenderType.String, "ARGGG I NEED HELP!");
+}
 }

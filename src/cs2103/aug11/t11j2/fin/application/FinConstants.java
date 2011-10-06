@@ -29,5 +29,7 @@ public final class FinConstants {
 	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION);
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char META_TAG_CHAR = '$';
+	
+	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";//Character.toChars(6771).toString() + Character.toChars(6772).toString();
 
 }

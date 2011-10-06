@@ -8,24 +8,21 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-/**
- * CommandHandler for "edit" command Usage: edit [tasknumber] [task] Edits a
- * given task to a new task
- * 
- * @author Koh Zi Chun
- * 
- */
-public class EditCommandHandler implements CommandParser.ICommandHandler {
-
+public class UnImportantCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
-				add("e");
-				add("ed");
-				add("edi");
-				add("edit");
+				add("unflag");
+				add("normal");
+				add("norm");
+				add("nrml");
+				add("n");
+				add("unf");
+				add("unfl");
+				add("unimpt");
+				add("uni");
 			}
 		};
 	}
@@ -35,10 +32,8 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 
 		int taskIndex;
-		String[] tokens = arguments.split("\\s");
-
 		try {
-			taskIndex = Integer.parseInt(tokens[0]);
+			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 		} catch (NumberFormatException nfe) {
 			return CommandResult.invalidTaskIndex;
 		}
@@ -48,12 +43,9 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
+		FinApplication.INSTANCE.unflagTask(todelete.getUniqId());
 
-		String newTaskString = arguments.replaceFirst(tokens[0], "").trim();
-
-		AddCommandHandler addCmdHandler = new AddCommandHandler();
-		return addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
-				.get(0), newTaskString, context);
+		return new CommandResult(this, arguments,
+				CommandResult.RenderType.Task, todelete);
 	}
 }

@@ -11,7 +11,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public class JokeCommandHandler implements ICommandHandler {
+public class JokeCommandHandler implements CommandParser.ICommandHandler {
 	class Joke {
 		List<String> jokeList;
 		Serializer jokeSerial;

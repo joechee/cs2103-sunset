@@ -124,6 +124,39 @@ public enum FinApplication {
 	}
 
 	/**
+	 * Mark a task as important / flag
+	 * 
+	 * @param taskUID
+	 * @return true iff the task is flagged
+	 */
+	public boolean flagTask(UUID taskUID) {
+		Task task = taskMap.get(taskUID);
+
+		if (task != null) {
+			task.flag();
+			return true;
+		} else {
+			return false;
+		}		
+	}
+	/**
+	 * Unmark a task as important / flag
+	 * 
+	 * @param taskUID
+	 * @return true iff the task is unflagged
+	 */
+	public boolean unflagTask(UUID taskUID) {
+		Task task = taskMap.get(taskUID);
+
+		if (task != null) {
+			task.unflag();
+			return true;
+		} else {
+			return false;
+		}		
+	}
+
+	/**
 	 * Mark a task as completed
 	 * 
 	 * @param taskUID
@@ -138,7 +171,23 @@ public enum FinApplication {
 		} else {
 			return false;
 		}
+	}
 
+	/**
+	 * Unmark a task as completed
+	 * 
+	 * @param taskUID
+	 * @return true iff the task is unmarked as finished
+	 */
+	public boolean unfinTask(UUID taskUID) {
+		Task task = taskMap.get(taskUID);
+
+		if (task != null) {
+			task.unfin();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -177,5 +226,6 @@ public enum FinApplication {
 	public UIContext getUIContext() {
 		return context;
 	}
+
 
 }

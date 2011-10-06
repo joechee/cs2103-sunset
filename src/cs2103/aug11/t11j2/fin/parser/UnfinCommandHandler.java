@@ -6,26 +6,21 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parseTask.TaskParser2;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "add" command Usage: add [task] Parses given task and
- * throws it into Fin environment
+ * CommandHandler to mark a task as uncompleted (unFin :() Usage: unfin [task number]
  * 
  * @author Koh Zi Chun
- * 
  */
-public class AddCommandHandler implements CommandParser.ICommandHandler {
-
+public class UnfinCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
-				add("a");
-				add("ad");
-				add("add");
+				add("unfin");
+				add("uf");
 			}
 		};
 	}
@@ -33,11 +28,22 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		Task newtask = TaskParser2.parse(arguments);
-		FinApplication.INSTANCE.add(newtask);
-		FinApplication.INSTANCE.saveEnvironment();
+
+		int taskIndex;
+		try {
+			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
+		} catch (NumberFormatException nfe) {
+			return CommandResult.invalidTaskIndex;
+		}
+
+		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
+			return CommandResult.invalidTaskIndex;
+		}
+		Task todelete = context.getTaskList().get(taskIndex - 1);
+
+		FinApplication.INSTANCE.unfinTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, newtask);
+				CommandResult.RenderType.Task, todelete);
 	}
 }
