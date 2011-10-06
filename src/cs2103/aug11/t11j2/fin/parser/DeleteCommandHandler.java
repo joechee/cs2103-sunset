@@ -33,7 +33,7 @@ public class DeleteCommandHandler implements ICommandHandler {
 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
-			UIContext context) throws IOException, FinProductionException {
+			UIContext context) throws FinProductionException {
 
 		int taskIndex = Integer.parseInt(arguments);
 		
@@ -44,6 +44,7 @@ public class DeleteCommandHandler implements ICommandHandler {
 		Task todelete = context.getTaskList().get(taskIndex);
 		FinApplication.INSTANCE.deleteTask( todelete.getUniqId() );
 		
-		return CommandResult.nullCommandResult;
+		return new CommandResult(this, arguments,
+				CommandResult.RenderType.Task, todelete);
 	}
 }

@@ -34,7 +34,7 @@ public class FinCommandHandler implements ICommandHandler {
 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
-			UIContext context) throws IOException, FinProductionException {
+			UIContext context) throws FinProductionException {
 
 		int taskIndex = Integer.parseInt(arguments);
 		
@@ -45,7 +45,8 @@ public class FinCommandHandler implements ICommandHandler {
 		Task todelete = context.getTaskList().get(taskIndex);
 		FinApplication.INSTANCE.finTask( todelete.getUniqId() );
 		
-		return CommandResult.nullCommandResult;
+		return new CommandResult(this, arguments,
+				CommandResult.RenderType.Task, todelete);
 	}
 
 }

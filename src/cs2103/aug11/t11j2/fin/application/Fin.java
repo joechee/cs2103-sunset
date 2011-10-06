@@ -11,7 +11,6 @@ import cs2103.aug11.t11j2.fin.ui.*;
 
 public class Fin {
 
-	private static final String fileExtension = ".yaml";
 	
 	public static void main(String[] args) {
 		try {
@@ -42,7 +41,7 @@ public class Fin {
 		if (i == null) {
 			throw new IllegalArgumentException("Invalid Input!");
 		} else if (i.split(".").length == 0) {
-			return i+fileExtension;
+			return i+FinConstants.fileExtension;
 		}
 		return null;
 	}

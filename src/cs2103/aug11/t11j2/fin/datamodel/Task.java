@@ -75,12 +75,35 @@ public class Task {
 		return taskName;
 	}
 
-	public void setTags(List<String> tags) {
-		this.tags = tags;
+	private static String formatTag(String tag) {
+		/**
+		 * Ensures tag are lowercases without spaces
+		 */
+		return tag.toLowerCase().split("\\s+")[0].trim();
 	}
-
+	public void addTag(String tag) {
+		addTag(formatTag(tag));
+	}
+	public boolean hasTag(String tag) {
+		return this.tags.contains(tag.toLowerCase().trim());
+	}
+	public boolean hasTags(List<String> tags) {
+		boolean has = true;
+		for (String t : tags) {
+			if (hasTag(t) == false) {
+				has = false;
+				break;
+			}
+		}
+		return has;
+	}
+	public void removeTag(String tag) {
+		this.tags.remove(tag.toLowerCase().trim());
+	}
 	public List<String> getTags() {
-		return tags;
+		List<String> newTags = new ArrayList<String>();
+		Collections.copy(newTags, tags);
+		return newTags;
 	}
 
 	public void setImportance(EImportance importance) {

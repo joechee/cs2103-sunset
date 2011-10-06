@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.application;
 import cs2103.aug11.t11j2.fin.datamodel.*;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -17,8 +18,11 @@ public enum FinApplication {
 	INSTANCE;
 
 	List<Task> taskList = new ArrayList<Task>();
-	Map<UUID, Task> taskMap = new TreeMap<UUID, Task>();
+	Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
 	UIContext context = new UIContext();
+
+	// Each hashTag points to a collection of Tasks
+	Map<String, List<Task>> hashTags = new HashMap<String, List<Task>>();
 
 	/**
 	 * Adds a task to the environment.
@@ -28,10 +32,27 @@ public enum FinApplication {
 	public void add(Task task) {
 		taskList.add(task);
 		taskMap.put(task.getUniqId(), task);
+
+		for (String tag : task.getTags()) {
+			addTaskToTag(tag, task);
+		}
+	}
+
+	private void addTaskToTag(String tag, Task task) {
+		List<Task> taskListOfTags;
+
+		if (hashTags.containsKey(tag)) {
+			taskListOfTags = hashTags.get(tag);
+		} else {
+			taskListOfTags = new ArrayList<Task>();
+			hashTags.put(tag, taskListOfTags);
+		}
+
+		taskListOfTags.add(task);
 	}
 
 	/**
-	 * Get the list of (sub)task of a given parentUID
+	 * Get the list of tasks 
 	 * 
 	 * @return List of Tasks sorted by pIndex
 	 */
@@ -48,6 +69,40 @@ public enum FinApplication {
 	}
 
 	/**
+	 * Get the list of tasks with a particular #tag
+	 *  
+	 * @param tag
+	 * @return List of Task with tag sorted by pIndex
+	 */
+	public List<Task> getTasksWithTag(String tag) {
+		if (hashTags.containsKey(tag)) {
+			List<Task> lt = hashTags.get(tag);
+			Collections.sort(lt, new TaskSortByPIndex());
+			
+			return lt;
+		} else {
+			return new ArrayList<Task>();
+		}
+	}
+	
+	/**
+	 * Get the list of tasks with a list of #tags
+	 *  
+	 * @param tag
+	 * @return List of Task with tags sorted by pIndex
+	 */
+	public List<Task> getTasksWithTags(List<String> tags) {
+		List<Task> filteredTasks = new ArrayList<Task>();
+		for (Task t : taskList) {
+			if (t.hasTags(tags)) {
+				filteredTasks.add(t);
+			}
+		}
+		Collections.sort(filteredTasks, new TaskSortByPIndex());
+		return filteredTasks;
+	}
+
+	/**
 	 * Deletes a given task (by UID) from the environment
 	 * 
 	 * @param taskUID
@@ -55,7 +110,7 @@ public enum FinApplication {
 	 */
 	public boolean deleteTask(UUID taskUID) {
 		Task todelete = taskMap.get(taskUID);
-		
+
 		if (todelete != null) {
 			taskMap.remove(taskUID);
 			taskList.remove(todelete);
@@ -64,7 +119,7 @@ public enum FinApplication {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Mark a task as completed
 	 * 
@@ -73,22 +128,27 @@ public enum FinApplication {
 	 */
 	public boolean finTask(UUID taskUID) {
 		Task task = taskMap.get(taskUID);
-		
-		if (task != null){
+
+		if (task != null) {
 			task.fin();
 			return true;
-		}else {
+		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Clears the current Fin environment (of all tasks etc.)
 	 */
 	void clearEnvironment() {
 		taskMap.clear();
-		taskList.clear();		
+		taskList.clear();
+	}
+	
+	public void loadEnvironment(String filename) throws IOException {
+		FinSerializer fs = new FinSerializer();
+		fs.unserialize(filename, true);
 	}
 
 	public UIContext getUIContext() {

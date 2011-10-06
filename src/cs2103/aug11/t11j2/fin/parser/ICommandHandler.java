@@ -10,7 +10,6 @@ public interface ICommandHandler {
 
 	public List<String> getCommandStrings();
 
-	CommandResult executeCommands(String command, String arguments, UIContext context) throws IOException,
-			FinProductionException ;
+	CommandResult executeCommands(String command, String arguments, UIContext context) throws FinProductionException ;
 
 }
