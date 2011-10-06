@@ -8,7 +8,7 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
 public class Joke {
 	List<String> jokeList ;
 	Serializer jokeSerial;
-	@SuppressWarnings("unchecked")
+
 	public Joke() throws IOException {
 		jokeList = new ArrayList<String>();
 		jokeSerial = new Serializer();
