@@ -49,7 +49,6 @@ public class Fin {
 		if (i == null) {
 			throw new IllegalArgumentException("Invalid Input!");
 		} else if (!i.endsWith(".yaml")) {
-			System.out.println(i);
 			return i+FinConstants.fileExtension;
 		}
 		return i;

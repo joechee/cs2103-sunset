@@ -48,7 +48,7 @@ public class EditCommandHandler implements ICommandHandler {
 			return CommandResult.invalidTaskIndex;
 		}
 
-		Task todelete = context.getTaskList().get(taskIndex);
+		Task todelete = context.getTaskList().get(taskIndex-1);
 		FinApplication.INSTANCE.deleteTask( todelete.getUniqId() );
 
 		String newTaskString = arguments.replaceFirst(tokens[0], "").trim();

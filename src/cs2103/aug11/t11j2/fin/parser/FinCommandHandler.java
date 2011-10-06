@@ -47,7 +47,7 @@ public class FinCommandHandler implements ICommandHandler {
 			return CommandResult.invalidTaskIndex;
 		}
 		
-		Task todelete = context.getTaskList().get(taskIndex);
+		Task todelete = context.getTaskList().get(taskIndex-1);
 		FinApplication.INSTANCE.finTask( todelete.getUniqId() );
 		
 		return new CommandResult(this, arguments,

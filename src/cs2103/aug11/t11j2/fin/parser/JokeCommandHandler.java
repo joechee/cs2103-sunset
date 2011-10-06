@@ -20,13 +20,14 @@ public class JokeCommandHandler implements ICommandHandler {
 				add("jotd");
 				add("jok");
 				add("jo");
+				add("j");
 			}
 		};
 	}
 
 	@Override
-	public CommandResult executeCommands(String command, String arguments, UIContext context)
-			throws FinProductionException {
+	public CommandResult executeCommands(String command, String arguments,
+			UIContext context) throws FinProductionException {
 		String joke = "";
 		try {
 			Joke testJoke = new Joke();

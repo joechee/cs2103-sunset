@@ -18,6 +18,8 @@ import java.util.*;
 public enum FinApplication {
 	INSTANCE;
 
+	String taskFileName = "";
+	
 	List<Task> taskList = new ArrayList<Task>();
 	Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
 	UIContext context = new UIContext();
@@ -149,11 +151,26 @@ public enum FinApplication {
 	
 	public void loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
+		taskFileName = filename;
+		
 		try {			
 			fs.unserialize(filename, true);
 		} catch(FileNotFoundException fnfe) {
 			clearEnvironment();
 			fs.serialize(filename);
+		}
+	}
+	
+	public void saveEnvironment() {
+		FinSerializer fs = new FinSerializer();
+		try {
+			fs.serialize(taskFileName);
+		} catch (IOException e) {
+			if (FinConstants.IS_PRODUCTION) {
+				e.printStackTrace();
+			} else {
+				// handle saving
+			}
 		}
 	}
 

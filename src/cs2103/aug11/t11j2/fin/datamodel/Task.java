@@ -37,7 +37,7 @@ public class Task {
 	};
 
 	private String taskName;
-	private List<String> tags;
+	private List<String> tags = new ArrayList<String>();
 	private EImportance importance;
 	private Date dueTime;
 	private Integer percentageCompleted;

@@ -152,10 +152,12 @@ public class CLI implements IUserInterface {
 			count++;
 		}
 
-		if (taskList.size() == 0 && context.getFilter() == "") {
-			echo("There are no tasks");
-		} else {
-			echo("There are no tasks that matches your filter");
+		if (taskList.size() == 0) {
+			if (context.getFilter().length() == 0) {
+				echo("There are no tasks");
+			} else {
+				echo("There are no tasks that matches your filter");
+			}
 		}
 
 		echo("\n");

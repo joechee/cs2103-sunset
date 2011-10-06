@@ -37,6 +37,7 @@ public class AddCommandHandler implements ICommandHandler {
 			throws FinProductionException {
 		Task newtask = TaskParser.parse(arguments);
 		FinApplication.INSTANCE.add(newtask);
+		FinApplication.INSTANCE.saveEnvironment();
 		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, newtask);

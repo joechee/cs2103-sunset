@@ -34,28 +34,27 @@ public class ShowCommandHandler implements ICommandHandler {
 
 	private static List<String> tokenize(String filters) {
 		List<String> tokenList = new ArrayList<String>();
-		String [] tokens = filters.trim().split("\\s");
+		String[] tokens = filters.trim().split("\\s");
 		for (String token : tokens) {
 			tokenList.add(token);
 		}
 		return tokenList;
 	}
-	
+
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 
 		List<Task> tasks = null;
-		if (arguments.trim() == "") {
+		if (arguments.trim().length() == 0) {
 			tasks = FinApplication.INSTANCE.getTasks();
 		} else {
-			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
+			tasks = FinApplication.INSTANCE
+					.getTasksWithTags(tokenize(arguments));
 		}
-		
-		
+
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.TaskList,
-				tasks);
+				CommandResult.RenderType.TaskList, tasks);
 	}
 
 }
