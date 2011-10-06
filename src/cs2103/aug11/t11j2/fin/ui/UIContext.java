@@ -7,6 +7,8 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 
 public class UIContext {
 	private List<Task> taskList = new ArrayList<Task>();
+	private String status = "";
+	private int focus = 0;
 
 	public List<Task> getTaskList() {
 		return taskList;
@@ -14,6 +16,18 @@ public class UIContext {
 
 	void setTaskList(List<Task> tasks) {
 		this.taskList = tasks;
+	}
+	
+	void setStatus(String newStatus) {
+		status = newStatus;
+	}
+	
+	String getStatus() {
+		return status;
+	}
+	
+	void setFocus(Task focusTask) {
+		
 	}
 	
 }
