@@ -98,26 +98,24 @@ public class TaskParser {
 				importance = getImportance(importanceIndex);
 				str = removeTillKeywords(str);
 				break;
-			case 5: //not decided yet.
+			case 5: // not decided yet.
 			case 6:
 				pIndex = getPriority(str);
 				str = removeTillKeywords(str);
 				break;
-			case 7: //not decided yet.
+			case 7: // not decided yet.
 			default:
 				str = removeTillKeywords(str);
 			}
 			str = str.trim();
 		}
 
-		System.out.println(taskName);
-		for (i = 0; i < tags.size(); i++)
-			System.out.print(tags.get(i) + ", ");
-		System.out.println();
-		System.out.println(importance);
-		System.out.println(dueTime);
-		System.out.println(percentage);
-		System.out.println(pIndex);
+		/*
+		 * System.out.println(taskName); for (i = 0; i < tags.size(); i++)
+		 * System.out.print(tags.get(i) + ", "); System.out.println();
+		 * System.out.println(importance); System.out.println(dueTime);
+		 * System.out.println(percentage); System.out.println(pIndex);
+		 */
 		Task task = new Task(taskName, tags, importance, dueTime, percentage,
 				pIndex);
 		return task;
@@ -140,7 +138,8 @@ public class TaskParser {
 
 	protected static int getNextKeyword(String str) {
 		str = str.toUpperCase();
-		int plus = getFirstToken(str).length()+1; //the length of the first token plus a white space
+		int plus = getFirstToken(str).length() + 1; // the length of the first
+													// token plus a white space
 		str = removeFirstToken(str);
 		int i, index, min = str.length();
 		for (i = 0; i < NUM_KEYWORDS; i++) {
@@ -159,7 +158,7 @@ public class TaskParser {
 		str = str.trim();
 		return str;
 	}
-	
+
 	/*
 	 * This method will be further developed to support more possible words.
 	 */
@@ -190,14 +189,14 @@ public class TaskParser {
 	}
 
 	protected static Date getDueTime(String str) {
-		str=str.toUpperCase();
+		str = str.toUpperCase();
 		int index = getNextKeyword(str);
 		str = str.substring(0, index);
 		str = removeFirstToken(str);
 		str = str.trim();
 		Calendar cal = Calendar.getInstance();
 		Date date;
-		
+
 		boolean timeIndicated = setTime(cal, str);
 		if (timeIndicated)
 			str = removeFirstToken(str);
@@ -340,14 +339,8 @@ public class TaskParser {
 	}
 
 	/*
-	public static void main(String [] args){
-		String str; Scanner cin= new
-		Scanner(System.in); 
-		while(true){ 
-			str=cin.nextLine(); 
-			parse(str); 
-		} 
-	} 
-	*/
+	 * public static void main(String [] args){ String str; Scanner cin= new
+	 * Scanner(System.in); while(true){ str=cin.nextLine(); parse(str); } }
+	 */
 
 }

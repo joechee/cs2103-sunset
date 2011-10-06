@@ -112,7 +112,7 @@ public class CLI implements IUserInterface {
 	}
 
 	private static void renderString(CommandResult cmdRes) {
-		echo((String) cmdRes.getReturnObject());
+		echo((String) cmdRes.getReturnObject() + "\n");
 		refreshContext();
 	}
 
