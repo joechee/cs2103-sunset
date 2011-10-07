@@ -19,6 +19,12 @@ public class TaskParser {
 	final private static String WEEK_NEXT = "NEXT";
 	final private static String WEEK_THIS = "THIS";
 	final private static String WEEK = "WEEK";
+	final private static String PERIOD_TODAY = "TODAY";
+	final private static String PERIOD_TOMORROW = "TOMORROW";
+	final private static String PERIOD_IN = "IN";
+	final private static String PERIOD_DAY = "DAY";
+	final private static String PERIOD_WEEK = "WEEK";
+	final private static String PERIOD_MONTH = "MONTH";
 	final private static int DAYS_A_WEEK = 7;
 	final private static int MONTHS_A_YEAR = 12;
 	final private static int DAYS_A_MONTH = 31; // maximum;
@@ -33,7 +39,7 @@ public class TaskParser {
 	final private static String EMPTY_STRING = "";
 	final private static String[] KEYWORDS = { "#", "DUE ", "BY ", "BEFORE ",
 			"^", "@", "$", "%" }; // taskName or Tag, dueTime, dueTime,
-									// ^importance, @Location, $priority,
+									// ^importance, @Location, *priority,
 									// %percentageComplete;
 	final private static int NUM_KEYWORDS = 8;
 	final private static String TIME_DONT_CARE = "*";
@@ -41,7 +47,7 @@ public class TaskParser {
 	final private static String IMPORTANCE_HIGH = "HIGH";
 	final private static String IMPORTANCE_NORMAL = "NORMAL";
 	final private static String IMPORTANCE_IMPORTANT = "IMPORTANT";
-
+	
 	final private static String WARNING_INVALID_DAY_OF_WEEK = "Warning: Invalid Day of Week";
 	final private static String WARNING_INVALID_MONTH = "Warning: Invalid Month";
 	final private static String ERROR_NO_TAG = "Invalid Task: Please add tags, each word of which starsts with #";
@@ -102,24 +108,26 @@ public class TaskParser {
 				importance = getImportance(importanceIndex);
 				str = removeTillKeywords(str);
 				break;
-			case 5: // not decided yet.
+			case 5:
 			case 6:
 				pIndex = getPriority(str);
 				str = removeTillKeywords(str);
 				break;
-			case 7: // not decided yet.
+			case 7:
 			default:
 				str = removeTillKeywords(str);
 			}
 			str = str.trim();
 		}
 
-		/*
-		 * System.out.println(taskName); for (i = 0; i < tags.size(); i++)
-		 * System.out.print(tags.get(i) + ", "); System.out.println();
-		 * System.out.println(importance); System.out.println(dueTime);
-		 * System.out.println(percentage); System.out.println(pIndex);
-		 */
+		System.out.println(taskName);
+		for (i = 0; i < tags.size(); i++)
+			System.out.print(tags.get(i) + ", ");
+		System.out.println();
+		System.out.println(importance);
+		System.out.println(dueTime);
+		System.out.println(percentage);
+		System.out.println(pIndex);
 		Task task = new Task(taskName, tags, importance, dueTime, percentage,
 				pIndex);
 		return task;
@@ -142,8 +150,7 @@ public class TaskParser {
 
 	protected static int getNextKeyword(String str) {
 		str = str.toUpperCase();
-		int plus = getFirstToken(str).length() + 1; // the length of the first
-													// token plus a white space
+		int plus = getFirstToken(str).length()+1; //the length of the first token plus a white space
 		str = removeFirstToken(str);
 		if(str.isEmpty())
 			return plus+NOT_IN_STRING;
@@ -165,9 +172,6 @@ public class TaskParser {
 		return str;
 	}
 
-	/*
-	 * This method will be further developed to support more possible words.
-	 */
 	protected static int getImportanceIndex(String str) {
 		int index = getNextKeyword(str);
 		str = str.substring(1, index);
@@ -197,14 +201,13 @@ public class TaskParser {
 	}
 
 	protected static Date getDueTime(String str) {
-		str = str.toUpperCase();
+		str=str.toUpperCase();
 		int index = getNextKeyword(str);
 		str = str.substring(0, index);
 		str = removeFirstToken(str);
 		str = str.trim();
 		Calendar cal = Calendar.getInstance();
 		Date date;
-
 		boolean timeIndicated = setTime(cal, str);
 		if (timeIndicated)
 			str = removeFirstToken(str);
@@ -217,6 +220,7 @@ public class TaskParser {
 
 	protected static boolean setTime(Calendar cal, String str) {
 		String strTime = getFirstToken(str);
+		if(strTime.isEmpty())return false;
 		if (strTime.equals(TIME_DONT_CARE)) {
 			cal.set(Calendar.HOUR_OF_DAY, HOURS_A_DAY - 1);
 			cal.set(Calendar.MINUTE, MINUTES_AN_HOUR - 1);
@@ -228,7 +232,7 @@ public class TaskParser {
 			if (index == NOT_IN_STRING) {
 				if (Character.isDigit(strTime.charAt(0))) {
 					/*
-					 * will be further developed
+					 * add in am, pm, afternoon, morning?
 					 */
 					return true;
 				}
@@ -261,12 +265,15 @@ public class TaskParser {
 	protected static void setDate(Calendar cal, String str) {
 		if (str.isEmpty())
 			return;
-		String strDate = getFirstToken(str);
+		String strDate = getFirstToken(str);		
+		// next/this week/day_of_week.
 		if (strDate.equals(WEEK_NEXT) || strDate.equals(WEEK_THIS)) {
 			if (strDate.equals(WEEK_NEXT))
 				cal.add(Calendar.DAY_OF_WEEK, DAYS_A_WEEK);
 			str = removeFirstToken(str);
 			str = str.trim();
+			if (str.isEmpty())
+				return;
 			strDate = getFirstToken(str);
 			int dayOfWeek = getDayOFWeek(strDate) + 2; // It is 1..7 for Sunday
 														// to Friday in Calendar
@@ -275,15 +282,56 @@ public class TaskParser {
 			if (today == 1)
 				today = 8; // SUNDAY
 			cal.add(Calendar.DAY_OF_WEEK, dayOfWeek - today);
-		} else {
+		}
+		//today
+		else if (strDate.equals(PERIOD_TODAY)){
+			return;
+		}
+		//tomorrow
+		else if (strDate.equals(PERIOD_TOMORROW)){
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			return;
+		}
+		//in X days/weeks/months
+		else if (strDate.equals(PERIOD_IN)){
+			str = removeFirstToken(str);
+			str = str.trim();
+			if (str.isEmpty())
+				return;
+			strDate = getFirstToken(str);
+			int amount = toInt(strDate);
+			if (amount == NUM_INVALID)
+				amount = 0;
+			str = removeFirstToken(str);
+			str = str.trim();
+			if (str.isEmpty())
+				return;
+			strDate = getFirstToken(str);
+			if (strDate.indexOf(PERIOD_DAY) == 0){
+				cal.add(Calendar.DAY_OF_MONTH, amount);
+			}
+			else if (strDate.indexOf(PERIOD_WEEK) ==0){
+				cal.add(Calendar.DAY_OF_MONTH, amount*DAYS_A_WEEK);
+			}
+			else if (strDate.indexOf(PERIOD_MONTH) ==0){
+				cal.add(Calendar.MONTH, amount);
+			}
+			return;
+		}
+		//explicit date
+		else {
 			int month, day, year;
 			month = getMonth(strDate);
 			str = removeFirstToken(str);
 			str = str.trim();
+			if (str.isEmpty())
+				return;
 			strDate = getFirstToken(str);
 			day = toInt(strDate);
 			str = removeFirstToken(str);
 			str = str.trim();
+			if (str.isEmpty())
+				return;
 			strDate = getFirstToken(str);
 			year = toInt(strDate);
 			if (year == NUM_INVALID)
