@@ -37,6 +37,10 @@ public class TaskParser {
 									// %percentageComplete;
 	final private static int NUM_KEYWORDS = 8;
 	final private static String TIME_DONT_CARE = "*";
+	final private static String IMPORTANCE_LOW = "LOW";
+	final private static String IMPORTANCE_HIGH = "HIGH";
+	final private static String IMPORTANCE_NORMAL = "NORMAL";
+	final private static String IMPORTANCE_IMPORTANT = "IMPORTANT";
 
 	final private static String WARNING_INVALID_DAY_OF_WEEK = "Warning: Invalid Day of Week";
 	final private static String WARNING_INVALID_MONTH = "Warning: Invalid Month";
@@ -141,6 +145,8 @@ public class TaskParser {
 		int plus = getFirstToken(str).length() + 1; // the length of the first
 													// token plus a white space
 		str = removeFirstToken(str);
+		if(str.isEmpty())
+			return plus+NOT_IN_STRING;
 		int i, index, min = str.length();
 		for (i = 0; i < NUM_KEYWORDS; i++) {
 			index = str.indexOf(KEYWORDS[i]);
@@ -169,12 +175,14 @@ public class TaskParser {
 		if (str.isEmpty())
 			return -1;
 		String importance = getFirstToken(str).toUpperCase();
-		if (importance.equals("LOW"))
+		if (IMPORTANCE_LOW.indexOf(importance)==0)
 			return 0;
-		else if (importance.equals("NORMAL"))
+		else if (IMPORTANCE_NORMAL.indexOf(importance)==0)
 			return 1;
-		else if (importance.equals("HIGH") || importance.equals("IMPORTANT"))
+		else if (IMPORTANCE_HIGH.indexOf(importance)==0)
 			return 2;
+		else if (IMPORTANCE_IMPORTANT.indexOf(importance)==0)
+			return 2;	
 		else
 			return -1;
 	}
