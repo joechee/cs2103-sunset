@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
+import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
 
@@ -48,7 +49,24 @@ public class Task {
 	private UUID uniqId;
 	private Integer pIndex;
 
-	public Task(String taskName, EImportance importance, Date dueDate,
+	public Task(String taskName) {
+		DateParser dp = new DateParser();
+		Date due = null;
+		if (dp.parse(taskName)) {
+			taskName = dp.getParsedString();
+			due = dp.getParsedDate();
+		}
+
+		this.taskName = taskName;
+		this.dueTime = due;
+		this.percentageCompleted = this.pIndex = 0;
+		this.uniqId = UUID.randomUUID();
+		this.addTime = new Date();
+
+		parseTags();
+	}
+
+	Task(String taskName, EImportance importance, Date dueDate,
 			Integer percentageCompleted, Integer pIndex) {
 
 		this.taskName = taskName;
@@ -62,6 +80,24 @@ public class Task {
 		parseTags();
 
 	}
+
+	public Task(Map<String, Object> dict) {
+		this.taskName = (String) dict.get("Name");
+		this.uniqId = UUID.fromString((String) dict.get("UID"));
+		this.addTime = (Date) dict.get("DateAdded");
+		this.pIndex = (Integer) dict.get("Priority");
+		this.importance = EImportance.fromString((String) dict
+				.get("Importance"));
+		this.percentageCompleted = (Integer) dict.get("Completed");
+		this.dueTime = (Date) dict.get("DueDate");
+
+		parseTags();
+	}
+
+	/**
+	 * looks at the current task string, extracts all the valid hash tags and
+	 * add it to the list of tags the Task object has
+	 */
 	private void parseTags() {
 		String[] tokens = tokenize(this.taskName);
 
@@ -72,6 +108,7 @@ public class Task {
 			}
 		}
 	}
+
 	private static String sanitizeHashTag(String s) {
 		StringBuilder sb = new StringBuilder();
 
@@ -156,15 +193,8 @@ public class Task {
 		}
 	}
 
-	private static String sanitizeTag(String tag) {
-		/**
-		 * Ensures tag are lowercases without spaces
-		 */
-		return tag.toLowerCase().split("\\s+")[0].trim();
-	}
-
 	public void addTag(String tag) {
-		String sanitizedTag = sanitizeTag(tag);
+		String sanitizedTag = sanitizeHashTag(tag);
 
 		this.tags.add(sanitizedTag);
 		this.taskName = this.taskName.trim() + " " + "#" + sanitizedTag;
@@ -244,19 +274,6 @@ public class Task {
 		return pIndex;
 	}
 
-	public Task(Map<String, Object> dict) {
-		this.taskName = (String) dict.get("Name");
-		this.uniqId = UUID.fromString((String) dict.get("UID"));
-		this.addTime = (Date) dict.get("DateAdded");
-		this.pIndex = (Integer) dict.get("Priority");
-		this.importance = EImportance.fromString((String) dict
-				.get("Importance"));
-		this.percentageCompleted = (Integer) dict.get("Completed");
-		this.dueTime = (Date) dict.get("DueDate");
-		
-		parseTags();
-	}
-
 	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
 
@@ -288,9 +305,11 @@ public class Task {
 		this.setPercentageCompleted(0);
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
+
 	public void flag() {
 		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
+
 	public void unflag() {
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}

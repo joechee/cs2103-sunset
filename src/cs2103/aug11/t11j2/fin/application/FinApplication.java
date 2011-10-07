@@ -66,7 +66,7 @@ public enum FinApplication {
 			tasks.add(t);
 		}
 
-		Collections.sort(tasks, new TaskSortByPIndex());
+		Collections.sort(tasks, new TaskSortByDueDate());
 
 		return tasks;
 	}
@@ -80,7 +80,7 @@ public enum FinApplication {
 	public List<Task> getTasksWithTag(String tag) {
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
-			Collections.sort(lt, new TaskSortByPIndex());
+			Collections.sort(lt, new TaskSortByDueDate());
 
 			return lt;
 		} else {
@@ -101,7 +101,7 @@ public enum FinApplication {
 				filteredTasks.add(t);
 			}
 		}
-		Collections.sort(filteredTasks, new TaskSortByPIndex());
+		Collections.sort(filteredTasks, new TaskSortByDueDate());
 		return filteredTasks;
 	}
 

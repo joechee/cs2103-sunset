@@ -50,7 +50,7 @@ public class DateParser {
 	public DateParser() {
 		// by/due tomorrow
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due|due\\sby|by)\\s(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due|due\\sby|by)\\s*(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
@@ -71,7 +71,7 @@ public class DateParser {
 
 		// on/by/this [day_of_week], e.g by Thursday
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due)?\\s(on|by|this)\\s(\\w*)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due)?\\s*(on|by|this)\\s*(\\w*)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -101,7 +101,7 @@ public class DateParser {
 
 		// next week
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due|due\\sby|by)?\\s(next|nxt)\\s(week|wk)",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due|due\\sby|by)?\\s*(next|nxt)\\s*(week|wk)",Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
@@ -121,7 +121,7 @@ public class DateParser {
 
 		// next [day_of_week], e.g next Thursday
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due|due\\sby|by)?\\s(next|nxt)\\s(\\w*)",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due|due\\sby|by)?\\s*(next|nxt)\\s*(\\w*)",Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -149,7 +149,7 @@ public class DateParser {
 
 		// in [number] days
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due)?\\sin\\s(\\d*)\\s(days)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due)?\\s*in\\s*(\\d*)\\s*(days)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						
@@ -176,11 +176,11 @@ public class DateParser {
 
 		// for using SimpleDateFormat
 		patternCheckers.add(
-				new PatternChecker(Pattern.compile("(.*)"),
+				new PatternChecker(Pattern.compile("(due\\sby|due|on|by)\\s*(\\w*[\\s|/]\\w*)"),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
-						if (m.find()) {
-							String t = m.group();
+						while (m.find()) {
+							String t = m.group(2);
 							List<DateFormat> totest = new LinkedList<DateFormat>();
 							
 							totest.add( new SimpleDateFormat("dd MMM") );
@@ -192,7 +192,7 @@ public class DateParser {
 									Date date = df.parse(t);
 									
 									StringBuffer sb = new StringBuffer();
-									m.appendReplacement(sb, t);
+									m.appendReplacement(sb, "");
 									m.appendTail(sb);
 
 									Calendar cal = Calendar.getInstance();
@@ -255,18 +255,23 @@ public class DateParser {
 		return false;
 	}
 	
-/*	public static void main (String[] args) {
+	/*public static void test(String s) {
 		DateParser dp = new DateParser();
-		Boolean d = dp.parse("next week");
+		Boolean d = dp.parse(s);
 		
-		
-		try {
-			DateFormat dateformat = new SimpleDateFormat("dd/MM");
-			System.out.println(dateformat.parse("15/10"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (d) {
+			System.out.println(dp.parsedDate);
+			System.out.println(dp.parsedString);
+		} else {
+			System.out.println("cant parse");
 		}
+		
+	}
+	
+	public static void main (String[] args) {
+		test("do something due by    15/10");
+		test("do on 15 oct something");
+		test("do something on oct 15");
 	}*/
 
 	public String getParsedString() {

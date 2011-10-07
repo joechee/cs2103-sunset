@@ -30,7 +30,32 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 
-		return new CommandResult(this, arguments,
+		arguments = arguments.trim().toLowerCase();
+		
+		if (arguments.length() == 0) {
+			return showDefaultHelp();
+		} else {
+			return showHelpFor(arguments);
+		}
+	}
+
+	private CommandResult showHelpFor(String arguments) throws FinProductionException {
+		if (arguments.equals("edit")) {
+			return new CommandResult(this, "",
+					CommandResult.RenderType.String, "I need help for edit!");			
+		} else if(arguments.equals("show")) {
+			return new CommandResult(this, "",
+					CommandResult.RenderType.String, "I need help for show!");						
+		}
+		
+		return showDefaultHelp();			
+		
+	}
+
+	private CommandResult showDefaultHelp() throws FinProductionException {
+		return new CommandResult(this, "",
 				CommandResult.RenderType.String, "ARGGG I NEED HELP!");
 	}
+	
+	
 }
