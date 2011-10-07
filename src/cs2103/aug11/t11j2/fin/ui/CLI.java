@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
@@ -16,7 +17,7 @@ import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
  * @author alexljz
  * 
  */
-public class CLI implements IUserInterface {
+public class CLI implements Fin.IUserInterface {
 
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;

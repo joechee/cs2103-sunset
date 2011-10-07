@@ -10,6 +10,9 @@ import cs2103.aug11.t11j2.fin.ui.*;
  */
 
 public class Fin {
+	public interface IUserInterface {
+		void mainLoop();
+	}
 
 	public static void main(String[] args) {
 		try {
