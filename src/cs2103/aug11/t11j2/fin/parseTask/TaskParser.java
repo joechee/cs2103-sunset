@@ -13,7 +13,7 @@ public class TaskParser {
 
 	final private static String[] DAYS_OF_WEEK = { "MONDAY", "TUESDAY",
 			"WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY" };
-	final private static String[] MONTHS = { "JANUARY", "FEBRARY", "MARCH",
+	final private static String[] MONTHS = { "JANUARY", "FEBRUARY", "MARCH",
 			"APRIL", "MAY", "JUNE", "JULY", "AUGST", "SEPTEMBER", "OCTOBER",
 			"NOVEMBER", "DECEMBER" };
 	final private static String WEEK_NEXT = "NEXT";
