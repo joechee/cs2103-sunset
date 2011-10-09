@@ -192,7 +192,7 @@ public class DateParser {
 									Date date = df.parse(t);
 									
 									StringBuffer sb = new StringBuffer();
-									m.appendReplacement(sb, "");
+									m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
 									m.appendTail(sb);
 
 									Calendar cal = Calendar.getInstance();
