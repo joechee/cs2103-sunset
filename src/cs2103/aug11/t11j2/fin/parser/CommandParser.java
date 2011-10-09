@@ -32,6 +32,7 @@ public class CommandParser {
 			installCommand(new ImportantCommandHandler());
 			installCommand(new UnImportantCommandHandler());
 			installCommand(new DeleteCommandHandler());
+			installCommand(new DeleteAllCommandHandler());
 			installCommand(new JokeCommandHandler());
 			installCommand(new EditCommandHandler());
 			installCommand(new HelpCommandHandler());

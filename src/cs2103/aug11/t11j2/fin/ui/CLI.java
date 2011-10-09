@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
@@ -112,11 +113,12 @@ public class CLI implements Fin.IUserInterface {
 			renderTaskResult(cmdRes);
 			break;
 		case Exit:
-			echo("Thank you for using Fin.");
-			echo("Goodbye!");
+			FinApplication.INSTANCE.saveEnvironment();
+			echo("Thank you for using Fin.\n");
+			echo("Goodbye!\n");
 			return true;
 		case UnrecognizedCommand:
-			echo("Command not recognized!");
+			echo("Command not recognized!\n\n");
 		}
 		return false;
 	}
