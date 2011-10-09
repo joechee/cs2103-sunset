@@ -166,8 +166,7 @@ public enum FinApplication {
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
-			task.fin();
-			return true;
+			return task.fin();
 		} else {
 			return false;
 		}

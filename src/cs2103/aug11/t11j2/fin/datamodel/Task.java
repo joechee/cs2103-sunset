@@ -193,11 +193,13 @@ public class Task {
 		}
 	}
 
-	public void addTag(String tag) {
+	public boolean addTag(String tag) {
+		if (hasTag(tag)) return false;
 		String sanitizedTag = sanitizeHashTag(tag);
 
 		this.tags.add(sanitizedTag);
 		this.taskName = this.taskName.trim() + " " + "#" + sanitizedTag;
+		return true;
 	}
 
 	public boolean hasTag(String tag) {
@@ -296,9 +298,9 @@ public class Task {
 		return getTaskName();
 	}
 
-	public void fin() {
+	public boolean fin() {
 		this.setPercentageCompleted(100);
-		this.addTag(FinConstants.FIN_HASH_TAG);
+		return this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	public void unfin() {
