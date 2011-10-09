@@ -7,7 +7,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 
 public class CommandResult {
 	public static enum RenderType {
-		TaskList, Task, String, UnrecognizedCommand, InvalidTaskIndex, Null
+		TaskList, Task, String, UnrecognizedCommand, InvalidTaskIndex, Null, Exit
 	};
 
 	private RenderType renderType;
@@ -90,5 +90,7 @@ public class CommandResult {
 			RenderType.InvalidTaskIndex);
 	public final static CommandResult nullCommandResult = new CommandResult(
 			RenderType.Null);
+	public final static CommandResult exitCommandResult = new CommandResult(
+			RenderType.Exit);
 
 }

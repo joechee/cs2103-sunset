@@ -37,7 +37,7 @@ public class CLI implements Fin.IUserInterface {
 			showPrompt();
 			userArgs = getInput();
 			feedback = runCommand(userArgs);
-			renderCommandResult(feedback);
+			if (renderCommandResult(feedback)) break;
 		}
 	}
 
@@ -96,8 +96,11 @@ public class CLI implements Fin.IUserInterface {
 
 		return different;
 	}
-
-	private static void renderCommandResult(CommandResult cmdRes) {
+	
+	/**
+	 * @return true if exitCommand is returned and false otherwise.
+	 */
+	private static boolean renderCommandResult(CommandResult cmdRes) {
 		switch (cmdRes.getRenderType()) {
 		case String:
 			renderString(cmdRes);
@@ -108,9 +111,14 @@ public class CLI implements Fin.IUserInterface {
 		case Task:
 			renderTaskResult(cmdRes);
 			break;
+		case Exit:
+			echo("Thank you for using Fin.");
+			echo("Goodbye!");
+			return true;
 		case UnrecognizedCommand:
 			echo("Command not recognized!");
 		}
+		return false;
 	}
 
 	private static void renderString(CommandResult cmdRes) {
