@@ -32,11 +32,17 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		Task newtask = new Task(arguments);
-		FinApplication.INSTANCE.add(newtask);
-		FinApplication.INSTANCE.saveEnvironment();
+		if (arguments.trim().length() == 0) {
+			HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+			return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+					"add", context);
+		} else {
+			Task newtask = new Task(arguments);
+			FinApplication.INSTANCE.add(newtask);
+			FinApplication.INSTANCE.saveEnvironment();
 
-		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, newtask);
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.Task, newtask);
+		}
 	}
 }

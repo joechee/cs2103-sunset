@@ -33,21 +33,28 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 
-		int taskIndex;
-		try {
-			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
-		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+		if (arguments.toLowerCase().equals("all")) {
+			// delete all
+			DeleteAllCommandHandler delallCmdHandler = new DeleteAllCommandHandler();
+			return delallCmdHandler.executeCommands(delallCmdHandler.getCommandStrings().get(0), "",
+					context);
+		} else {
+			int taskIndex;
+			try {
+				taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
+			} catch (NumberFormatException nfe) {
+				return CommandResult.invalidTaskIndex;
+			}
+	
+			if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
+				return CommandResult.invalidTaskIndex;
+			}
+	
+			Task todelete = context.getTaskList().get(taskIndex - 1);
+			FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
+	
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.Task, todelete);
 		}
-
-		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
-		}
-
-		Task todelete = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
-
-		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, todelete);
 	}
 }
