@@ -289,4 +289,35 @@ public class DateParser {
 	private void setParsedDate(Date parsedDate) {
 		this.parsedDate = parsedDate;
 	}
+	
+	
+	private static final long DAY = 24 * 60 * 60 * 1000;
+	/**
+	 * Returns a string represeting a date from now in natural language 
+	 * 
+	 * @param date d
+	 */
+	public static String naturalDateFromNow(Date d) {
+		Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat("dd MMM");
+
+		due.setTime(d);
+
+		long diff = due.getTimeInMillis() - now.getTimeInMillis();
+
+		if (diff < 0) {
+			return df.format(due.getTime());
+		} else if (diff <= DAY) {
+			return "WITHIN 24 HOURS!";
+		} else if (diff <= 2 * DAY) {
+			return "tomorrow";
+		} else if (diff <= 5 * DAY) {
+			return "in " + (int) (Math.floor(diff / DAY) + 1) + " days";
+		} else if (diff <= 14 * DAY) {
+			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
+			return "next " + dayFormat.format(due.getTime());
+		} else {
+			return df.format(due.getTime());
+		}
+	}
 }
