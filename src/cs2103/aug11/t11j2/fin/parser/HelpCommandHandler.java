@@ -43,37 +43,37 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 	private CommandResult showHelpFor(String arguments) throws FinProductionException {
 		if (arguments.equals("add")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "add <task>\t\t\tAdds <task> to your task list\n");			
+					CommandResult.RenderType.String, "add <task>\t\t\tAdds <task> to your task list");			
 		} else if(arguments.equals("show")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "show <filters>\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"\n");						
+					CommandResult.RenderType.String, "show <filters>\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"");						
 		} else if(arguments.equals("search")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "search <patterns>\t\tSearch the tasks containing the (all) the <patterns>\n");
+					CommandResult.RenderType.String, "search <patterns>\t\tSearch the tasks containing the (all) the <patterns>");
 		} else if(arguments.equals("delete")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "delete <task number>\t\tDeletes a task from your tasklist\n");
+					CommandResult.RenderType.String, "delete <task number>\t\tDeletes a task from your tasklist");
 		} else if(arguments.equals("tag")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "tag <task number> <tag>\t\tTags a <task> with <tag>\n");
+					CommandResult.RenderType.String, "tag <task number> <tag>\t\tTags a <task> with <tag>");
 		} else if(arguments.equals("untag")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "untag <task number> <tag>\tUntags a <task> with <tag>\n");
+					CommandResult.RenderType.String, "untag <task number> <tag>\tUntags a <task> with <tag>");
 		} else if(arguments.equals("fin")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "fin <task number>\t\tMarks a task as completed\n");
+					CommandResult.RenderType.String, "fin <task number>\t\tMarks a task as completed");
 		} else if(arguments.equals("unfin")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "unfin <task number>\t\tUnmarks the completed task\n");
+					CommandResult.RenderType.String, "unfin <task number>\t\tUnmarks the completed task");
 		} else if(arguments.equals("help")) {
 			return new CommandResult(this, "",
 					CommandResult.RenderType.String, "Are you joking?");
 		} else if(arguments.equals("important")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "important\t\t\t\tMarks a task as important\n");
+					CommandResult.RenderType.String, "important\t\t\t\tMarks a task as important");
 		} else if(arguments.equals("unimportant")) {
 			return new CommandResult(this, "",
-					CommandResult.RenderType.String, "unimportant\t\t\t\tUnmarks an important task\n");
+					CommandResult.RenderType.String, "unimportant\t\t\t\tUnmarks an important task");
 		} else if(arguments.equals("edit")) {
 			return new CommandResult(this, "",
 					CommandResult.RenderType.String, "edit <task number> to <new task> \t\tChanges a task to the new task");

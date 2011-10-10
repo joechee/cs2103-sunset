@@ -39,6 +39,10 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 			DeleteAllCommandHandler delallCmdHandler = new DeleteAllCommandHandler();
 			return delallCmdHandler.executeCommands(delallCmdHandler.getCommandStrings().get(0), "",
 					context);
+		} else if (arguments.trim().length() == 0){
+			HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+			return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+					"delete", context);
 		} else {
 			int taskIndex;
 			try {
