@@ -30,6 +30,7 @@ public class CLI implements Fin.IUserInterface {
 	public void mainLoop() {
 		displayWelcomeMessage();
 		refreshContext();
+		displayTasks();
 
 		String userArgs;
 		CommandResult feedback = null;
@@ -55,6 +56,13 @@ public class CLI implements Fin.IUserInterface {
 		return updateContext(feedback);
 	}
 
+	private static void displayTasks() {
+			CommandResult feedback = null;
+			feedback = runCommand("show");
+			
+			renderCommandResult(feedback);
+	}
+	
 	private static CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
