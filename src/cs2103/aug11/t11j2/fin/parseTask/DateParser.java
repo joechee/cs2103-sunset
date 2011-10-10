@@ -133,7 +133,7 @@ public class DateParser {
 								int today = calendar.get(Calendar.DAY_OF_WEEK);
 								calendar.add(Calendar.DAY_OF_YEAR, 7 + (day_of_week - today));
 								DateFormat df = new SimpleDateFormat("dd MMM, EEE");
-								System.out.println(df.format(calendar.getTime()));
+								
 								StringBuffer sb = new StringBuffer();
 								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
 								m.appendTail(sb);
