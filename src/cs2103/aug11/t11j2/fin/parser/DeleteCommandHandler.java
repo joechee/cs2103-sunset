@@ -19,6 +19,7 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 	public List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
+				add("delete");
 				add("del");
 				add("de");
 				add("d");
