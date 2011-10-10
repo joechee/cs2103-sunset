@@ -53,8 +53,17 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 	}
 
 	private CommandResult showDefaultHelp() throws FinProductionException {
+		final String help = "Fin. is a ToDo manager that will allow you to keep track of your daily tasks the way you want it to be tracked.\n\n" +
+				"add <task>\t\tAdds <task> to your task list\n" +
+				"show <filters>\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"\n" +
+				"search <patterns>\tSearch the tasks containing the (all) the <patterns>\n" +
+				"delete <task>\t\tDeletes a task from your tasklist\n" +
+				"tag <task> <tag>\tTags a <task> with <tag>\n" +
+				"untag <task> <tag>\tUntags a <task> with <tag>\n" +
+				"fin <task>\tMarks a task as completed\n" +
+				"unfin <task>\t";
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, "ARGGG I NEED HELP!");
+				CommandResult.RenderType.String, help);
 	}
 	
 	
