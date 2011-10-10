@@ -12,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for the "search tasks" command Usage: search [filters]
  * 
  */
-public class SearchTasksWithPattern {
+public class SearchTasksWithPattern implements CommandParser.ICommandHandler {
 	
 	@Override
 	@SuppressWarnings("serial")
@@ -24,6 +24,7 @@ public class SearchTasksWithPattern {
 				add("sear");
 				add("lookfor");
 				add("lookup");
+				add("check");
 			}
 		};
 	}
@@ -37,23 +38,22 @@ public class SearchTasksWithPattern {
 		return tokenList;
 	}
 	
-	public static List<Task> filterTasksWithPatterns(List<Tasks>tasks, String filters){
+	public static List<Task> filterTasksWithPatterns(List<Task>tasks, String filters){
 		List <String> patterns = tokenize(filters);
 		List <Task> tasksAfterFilter = new ArrayList<Task>();
 		int numOfTasks = tasks.size();
-		for (int i=0; i<numOfTasks; i++)
-			filterd[i] = false;
 		int numOfPatterns = patterns.size();
 		for (int i=0; i<numOfTasks; i++){
 			boolean filtered = false; //whether the task[i] is filtered out;
-			String taskString = tasks[i].toString().toUpperCase();
+			String taskString = tasks.get(i).toString().toUpperCase();
 			for (int j=0; j<numOfPatterns; j++){
-				if (taskString.indexOf(pattern[j].toUpperCase())==-1){
+				if (taskString.indexOf(patterns.get(j).toUpperCase())==-1){
 					filtered = true;
+					break;
 				}
 			}
 			if(!filtered){
-				tasksAfterFilter.add(tasks[i]);
+				tasksAfterFilter.add(tasks.get(i));
 			}
 		}
 		return tasksAfterFilter;		
@@ -65,15 +65,9 @@ public class SearchTasksWithPattern {
 
 		List<Task> tasks = null;
 		tasks = FinApplication.INSTANCE.getTasks();
-		if (arguments.trim().length() == 0) {
-			return tasks;
-		}
 		tasks = filterTasksWithPatterns(tasks, arguments.trim());
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TaskList, tasks);
 	}
-
-}
-
 
 }
