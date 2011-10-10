@@ -26,6 +26,7 @@ public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHand
 				add("tag");
 				add("moretag");
 				add("retag");
+				add("t");
 			}
 		};
 	}
@@ -50,7 +51,8 @@ public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHand
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
-			task.addTag(tokens[i]);		
+			task.addTag(tokens[i]);
+		
 		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, task);

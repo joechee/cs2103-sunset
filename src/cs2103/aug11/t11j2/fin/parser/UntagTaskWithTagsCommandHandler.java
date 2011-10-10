@@ -55,7 +55,7 @@ public class UntagTaskWithTagsCommandHandler implements CommandParser.ICommandHa
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
 			task.removeTag(tokens[i]);
-		
+
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, task);
 	}
