@@ -12,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for the "search tasks" command Usage: search [filters]
  * 
  */
-public class SearchTasksWithPattern implements CommandParser.ICommandHandler {
+public class SearchTasksWithPatternCommandHandler implements CommandParser.ICommandHandler {
 	
 	@Override
 	@SuppressWarnings("serial")

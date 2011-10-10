@@ -37,6 +37,7 @@ public class CommandParser {
 			installCommand(new EditCommandHandler());
 			installCommand(new HelpCommandHandler());
 			installCommand(new ExitCommandHandler());
+			installCommand(new SearchTasksWithPatternCommandHandler());
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				System.out
