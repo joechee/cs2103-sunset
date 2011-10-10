@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
+
+import cs2103.aug11.t11j2.fin.gui.SWTest;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
@@ -13,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.*;
 public final class FinConstants {
 
 	/* Constants */
-	public static final Fin.IUserInterface DEFAULT_UI = new CLI();
+	public static final Fin.IUserInterface DEFAULT_UI = new SWTest();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 
@@ -29,10 +31,9 @@ public final class FinConstants {
 	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION);
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char META_TAG_CHAR = '$';
-	
+
 	public static final String IMPORTANT_HASH_TAG = "impt";
 	public static final String FIN_HASH_TAG = "fin";
-	
-	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";
 
+	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";
 }

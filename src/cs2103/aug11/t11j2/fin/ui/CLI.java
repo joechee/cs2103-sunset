@@ -176,9 +176,9 @@ public class CLI implements Fin.IUserInterface {
 		List<Task> newContext = new ArrayList<Task>();
 		
 		for (Task t : taskList) {
-			if (t.hasTag(FinConstants.FIN_HASH_TAG)) {
+			if (t.isFin()) {
 				finTask.add(t);
-			} else if (t.hasTag(FinConstants.IMPORTANT_HASH_TAG)) {
+			} else if (t.isImportant()) {
 				imptTask.add(t);
 			} else {
 				normalTask.add(t);

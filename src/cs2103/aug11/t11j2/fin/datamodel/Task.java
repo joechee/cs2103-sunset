@@ -316,4 +316,12 @@ public class Task {
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 
+	public boolean isFin() {
+		return this.hasTag(FinConstants.FIN_HASH_TAG);
+	}
+	
+	public boolean isImportant() {
+		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
+	}
+
 }
