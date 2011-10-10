@@ -1,0 +1,186 @@
+Welcome to Fin. Task Manager!
+There are no tasks
+
+> There are no tasks
+
+> Task: #cs2103 project (WITHIN 24 HOURS!) added!
+
+
+  1. #cs2103 project (WITHIN 24 HOURS!)
+
+
+> Task: #cs3230 homework (WITHIN 24 HOURS!) added!
+
+
+  1. #cs2103 project (WITHIN 24 HOURS!)
+  2. #cs3230 homework (WITHIN 24 HOURS!)
+
+
+> Task: #ph2212 project (next Monday) added!
+
+
+  1. #cs2103 project (WITHIN 24 HOURS!)
+  2. #cs3230 homework (WITHIN 24 HOURS!)
+  3. #ph2212 project (next Monday)
+
+
+> There are no tasks that matches your filter
+
+due tomorrow> Task: #cs2102 project (next Wednesday) added!
+
+
+  1. #cs2103 project (WITHIN 24 HOURS!)
+  2. #cs3230 homework (WITHIN 24 HOURS!)
+  3. #ph2212 project (next Monday)
+  4. #cs2102 project (next Wednesday)
+
+
+> Task: #cs2100 assignment in 2 weeks added!
+
+
+  1. #cs2103 project (WITHIN 24 HOURS!)
+  2. #cs3230 homework (WITHIN 24 HOURS!)
+  3. #ph2212 project (next Monday)
+  4. #cs2102 project (next Wednesday)
+  5. #cs2100 assignment in 2 weeks
+
+
+> 
+  1. #cs2102 project (next Wednesday)
+
+
+cs2102> There are no tasks that matches your filter
+
+cs> 
+  1. #cs2103 project (WITHIN 24 HOURS!)
+  2. #cs2102 project (next Wednesday)
+
+
+cs> cs> cs> There are no tasks that matches your filter
+
+cs> Task: #cs2220 assignment (30 Oct) added!
+
+
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. #ph2212 project (next Monday)
+  3. #cs2102 project (next Wednesday)
+  4. #cs2220 assignment (30 Oct)
+  5. #cs2100 assignment in 2 weeks
+
+#fin
+  6. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> Task: (tomorrow) #I do not know added!
+
+
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday)
+  4. #cs2102 project (next Wednesday)
+  5. #cs2220 assignment (30 Oct)
+  6. #cs2100 assignment in 2 weeks
+
+#fin
+  7. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> Task: due in 2 weeks #no problem added!
+
+
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday)
+  4. #cs2102 project (next Wednesday)
+  5. #cs2220 assignment (30 Oct)
+  6. #cs2100 assignment in 2 weeks
+  7. due in 2 weeks #no problem
+
+#fin
+  8. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> Task: abcdefg (next Monday) for fun added!
+
+
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday)
+  4. abcdefg (next Monday) for fun
+  5. #cs2102 project (next Wednesday)
+  6. #cs2220 assignment (30 Oct)
+  7. #cs2100 assignment in 2 weeks
+  8. due in 2 weeks #no problem
+
+#fin
+  9. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> 
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday) #important #but #nothing #special
+  4. abcdefg (next Monday) for fun
+  5. #cs2102 project (next Wednesday)
+  6. #cs2220 assignment (30 Oct)
+  7. #cs2100 assignment in 2 weeks
+  8. due in 2 weeks #no problem
+
+#fin
+  9. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> 
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday) #important #but #nothing #special
+  4. abcdefg (next Monday) for fun
+  5. #cs2102 project (next Wednesday)
+  6. #cs2220 assignment (30 Oct)
+  7. #cs2100 assignment in 2 weeks #important #interesting
+  8. due in 2 weeks #no problem
+
+#fin
+  9. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> 
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday) #important #but #nothing #special
+  4. abcdefg (next Monday) for fun #funny #exciting
+  5. #cs2102 project (next Wednesday)
+  6. #cs2220 assignment (30 Oct)
+  7. #cs2100 assignment in 2 weeks #important #interesting
+  8. due in 2 weeks #no problem
+
+#fin
+  9. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> Command not recognized!
+
+> 
+  1. abcdefg (next Monday) for fun #funny #exciting
+
+
+> > > > > 
+  1. abcdefg (next Monday) for fun #funny #exciting
+
+
+funny> 
+  1. #cs2102 project (next Wednesday)
+
+
+funny> 
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+  2. (tomorrow) #I do not know
+  3. #ph2212 project (next Monday) #important #but #nothing #special
+  4. abcdefg (next Monday) for fun #funny #exciting
+  5. #cs2102 project (next Wednesday)
+  6. #cs2220 assignment (30 Oct)
+  7. #cs2100 assignment in 2 weeks #important #interesting
+  8. due in 2 weeks #no problem
+
+#fin
+  9. #cs2103 project (WITHIN 24 HOURS!) #fin
+
+> 
+  1. #cs3230 homework (WITHIN 24 HOURS!)
+
+
+> Thank you for using Fin.
+Goodbye!

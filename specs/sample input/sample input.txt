@@ -1,0 +1,32 @@
+Fin myTask.txt
+ls
+add #cs2103 project due tomorrow
+add #cs3230 homework due tomorrow
+add #ph2212 project due next week
+show due tomorrow
+add #cs2102 project due next Wed
+add #cs2100 assignment in 2 weeks
+show cs2102
+show cs
+search cs project
+del 4
+del 88
+fin 1
+add #cs2220 assignment due 30/10
+add due in 2 days #I do not know
+add due in 2 weeks #no problem
+add abcdefg due next week for fun
+atag 3 important but nothing special
+atag 7 important interesting 
+moretag 4 funny exciting
+more tag 7 funny
+search funny
+utag 4 #funny
+utag 4 funny
+fin 4
+unfin 4
+show funny
+search cs next
+show
+search cs homework
+q
