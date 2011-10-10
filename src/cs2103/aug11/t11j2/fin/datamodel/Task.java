@@ -157,37 +157,12 @@ public class Task {
 		this.taskName = taskName;
 	}
 
-	private static final long DAY = 24 * 60 * 60 * 1000;
-
-	private String naturalDate(Date d) {
-		Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
-		DateFormat df = new SimpleDateFormat("dd MMM");
-
-		due.setTime(d);
-
-		long diff = due.getTimeInMillis() - now.getTimeInMillis();
-
-		if (diff < 0) {
-			return df.format(due.getTime());
-		} else if (diff <= DAY) {
-			return "DUE WITHIN 24 HOURS!";
-		} else if (diff <= 2 * DAY) {
-			return "due tomorrow";
-		} else if (diff <= 5 * DAY) {
-			return "due in " + (int) (Math.floor(diff / DAY) + 1) + " days";
-		} else if (diff <= 14 * DAY) {
-			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
-			return "due next " + dayFormat.format(due.getTime());
-		} else {
-			return df.format(due.getTime());
-		}
-	}
 
 	public String getTaskName() {
 		Date due = this.getDueDate();
 		if (due != null && taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
 			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER,
-					naturalDate(due));
+					"(" + DateParser.naturalDateFromNow(due) + ")");
 		} else {
 			return taskName;
 		}
