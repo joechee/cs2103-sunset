@@ -51,13 +51,10 @@ public class UntagTaskWithTagsCommandHandler implements CommandParser.ICommandHa
 			return CommandResult.invalidTaskIndex;
 		}
 		Task task = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.deleteTask(task.getUniqId());
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
 			task.removeTag(tokens[i]);
-		
-		FinApplication.INSTANCE.add(task);		
 		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, task);

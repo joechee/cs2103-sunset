@@ -47,13 +47,10 @@ public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHand
 			return CommandResult.invalidTaskIndex;
 		}
 		Task task = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.deleteTask(task.getUniqId());
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
-			task.addTag(tokens[i]);
-		
-		FinApplication.INSTANCE.add(task);		
+			task.addTag(tokens[i]);		
 		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, task);
