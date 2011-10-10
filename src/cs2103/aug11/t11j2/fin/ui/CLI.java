@@ -209,6 +209,7 @@ public class CLI implements Fin.IUserInterface {
 				echo("  " + count + ". " + t.getTaskName() + "\n");
 				count++;	
 			}
+			echo("\n");
 		}
 		
 		context.setTaskList(newContext);
@@ -221,7 +222,7 @@ public class CLI implements Fin.IUserInterface {
 			}
 		}
 
-		echo("\n");
+
 	}
 
 	private static void displayWelcomeMessage() {
