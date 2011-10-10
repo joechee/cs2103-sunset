@@ -12,24 +12,20 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for "Untag" command Usage: untag [task index] [tags]
  * removes the [tags] from the index-th task. eg: untag 7 cs math.
  */
-public class UntagTaskWithTagsCommandHandler implements CommandParser.ICommandHandler {
+public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
-				add("untag");
-				add("untags");
-				add("deletetag");
-				add("deletetags");
-				add("deltags");
-				add("deltag");
-				add("dtag");
-				add("utag");
-				add("dt");
-				add("ut");
-				add("delt");
+				add("addtag");
+				add("addtags");
+				add("atag");
+				add("addt");
+				add("tag");
+				add("moretag");
+				add("retag");
 			}
 		};
 	}
@@ -55,7 +51,7 @@ public class UntagTaskWithTagsCommandHandler implements CommandParser.ICommandHa
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
-			task.removeTag(tokens[i]);
+			task.addTag(tokens[i]);
 		
 		FinApplication.INSTANCE.add(task);		
 		
