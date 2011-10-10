@@ -9,8 +9,8 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "Untag" command Usage: untag [task index] [tags]
- * removes the [tags] from the index-th task. eg: untag 7 cs math.
+ * CommandHandler for "tag" command Usage: tag [task index] [tags]
+ * adds the [tags] to the index-th task. eg: tag 7 cs math.
  */
 public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHandler {
 
