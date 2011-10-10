@@ -15,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.*;
 public final class FinConstants {
 
 	/* Constants */
-	public static final Fin.IUserInterface DEFAULT_UI = new SWTest();
+	public static final Fin.IUserInterface DEFAULT_UI = new CLI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 
