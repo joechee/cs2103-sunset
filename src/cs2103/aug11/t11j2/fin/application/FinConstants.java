@@ -38,6 +38,7 @@ public final class FinConstants {
 	public static final RGB RED_COLOR = new RGB(255, 0, 0);
 	public static final RGB HASHTAG_COLOR = new RGB(50, 150, 200);
 
+
 	public static final String DEFAULT_FONT = "consolas";
 	public static final int DEFAULT_FONTSIZE = 12;
 
