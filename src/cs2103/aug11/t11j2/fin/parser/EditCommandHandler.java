@@ -6,7 +6,6 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -63,7 +62,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		if (tokens[1].equals("to")) {
 			// replace current task with new task
 			
-			if (tokens.length == 2) return showEditHelp(context);
+			if (tokens.length == 2) return showHelp(context);
 			
 			FinApplication.INSTANCE.deleteTask(task.getUniqId());
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
@@ -73,7 +72,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("at")) {
 			// add tag to current task
 			
-			if (tokens.length == 2) return showEditHelp(context);
+			if (tokens.length == 2) return showHelp(context);
 
 			task.addTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -82,7 +81,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("rt")) {
 			// remove tag from task
 			
-			if (tokens.length == 2) return showEditHelp(context);
+			if (tokens.length == 2) return showHelp(context);
 
 			task.removeTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -91,7 +90,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("due")) {
 			// set new due date
 			
-			if (tokens.length == 2) return showEditHelp(context);
+			if (tokens.length == 2) return showHelp(context);
 
 			task.setDueDate(tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
