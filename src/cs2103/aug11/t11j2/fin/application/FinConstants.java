@@ -1,6 +1,9 @@
 package cs2103.aug11.t11j2.fin.application;
 
 
+import org.eclipse.swt.graphics.RGB;
+
+import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
  * 
@@ -11,8 +14,6 @@ package cs2103.aug11.t11j2.fin.application;
  * @author Joe Chee
  */
 public final class FinConstants {
-
-
 
 	/* Static Class */
 	private FinConstants() {
@@ -31,4 +32,14 @@ public final class FinConstants {
 	public static final String FIN_HASH_TAG = "fin";
 
 	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";
+	
+	public static final RGB BACKGROUND_COLOR = new RGB(10, 10, 10);
+	public static final RGB FOREGROUND_COLOR = new RGB(255, 255, 255);
+	public static final RGB BORDER_COLOR = new RGB(55, 55, 55);
+
+	public static final String DEFAULT_FONT = "consolas";
+	public static final int DEFAULT_FONTSIZE = 12; 
+	
+	public static final String INPUT_FONT = "Segoe UI";
+	public static final int INPUT_FONTSIZE = 14;
 }

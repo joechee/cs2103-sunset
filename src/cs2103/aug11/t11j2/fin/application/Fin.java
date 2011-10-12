@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.application;
 import java.io.IOException;
 
 import cs2103.aug11.t11j2.fin.ui.*;
+import cs2103.aug11.t11j2.fin.ui.CLI;
 
 /**
  * Fin is the bootstrapper which handles input from the command line 
@@ -42,14 +43,17 @@ public class Fin {
 			throws IllegalArgumentException, IOException {
 		IUserInterface UI = DEFAULT_UI;
 		String filename = DEFAULT_FILENAME;
+		
 		for (int i = 0; i < args.length; i++) {
 			args[i] = args[i].toLowerCase();
+		
 			if ((args[i].equals("-ui")) && (i + 1 < args.length)) {
 				UI = parseUI(args[i + 1]);
 			} else if ((args[i].equals("-file")) && (i + 1 < args.length)) {
 				filename = args[i + 1];
 			}
 		}
+		
 		FinApplication.INSTANCE.loadEnvironment(checkFilename(filename));
 		UI.mainLoop();
 	}
