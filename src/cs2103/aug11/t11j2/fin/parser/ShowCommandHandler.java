@@ -48,6 +48,9 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 		List<Task> tasks = null;
 		if (arguments.trim().length() == 0) {
 			tasks = FinApplication.INSTANCE.getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG));
+			for (Task i : tasks) {
+				System.out.println(i);
+			}
 		} else {
 			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
 		}

@@ -96,14 +96,14 @@ public enum FinApplication {
 	 */	
 	public List<Task> getTasksWithoutTag(String tag) {
 		List<Task> lt = getTasks();
-		for (int i = 0; i < lt.size();i++) {
-			if (lt.get(i).getTags().contains(tag)) {
-				lt.remove(i);
+		List<Task> rt = new ArrayList<Task>();
+		for (Task i: lt) {
+			if (!i.getTags().contains(tag)) {
+				rt.add(i);
 			}
 		}
-		
-		Collections.sort(lt, new TaskSortByDueDate());
-		return lt;
+		Collections.sort(rt, new TaskSortByDueDate());
+		return rt;
 	}
 	
 	/**
@@ -114,16 +114,14 @@ public enum FinApplication {
 	 */	
 	public List<Task> getTasksWithoutTags(List<String> tags) {
 		List<Task> lt = getTasks();
-		for (int i = 0; i < lt.size();i++) {
-			for (String j: tags) {
-				if (lt.get(i).getTags().contains(j)) {
-					lt.remove(i);
-				}
+		List<Task> rt = new ArrayList<Task>();
+		for (Task i: lt) {
+			if (!i.getTags().containsAll(tags)) {
+				rt.add(i);
 			}
 		}
-		
-		Collections.sort(lt, new TaskSortByDueDate());
-		return lt;
+		Collections.sort(rt, new TaskSortByDueDate());
+		return rt;
 	}
 
 	/**

@@ -187,15 +187,12 @@ public class CLI implements Fin.IUserInterface {
 		int count = 1;
 		List<Task> taskList = context.getTaskList();
 
-		List<Task> finTask = new ArrayList<Task>();
 		List<Task> imptTask = new ArrayList<Task>();
 		List<Task> normalTask = new ArrayList<Task>();
 		List<Task> newContext = new ArrayList<Task>();
 		
 		for (Task t : taskList) {
-			if (t.isFin()) {
-				finTask.add(t);
-			} else if (t.isImportant()) {
+			if (t.isImportant()) {
 				imptTask.add(t);
 			} else {
 				normalTask.add(t);
