@@ -1,7 +1,5 @@
 package cs2103.aug11.t11j2.fin.datamodel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;

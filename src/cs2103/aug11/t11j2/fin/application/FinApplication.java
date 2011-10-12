@@ -191,11 +191,20 @@ public enum FinApplication {
 
 	/**
 	 * Clears the current Fin environment (of all tasks etc.)
+	 * @param none
+	 * @return void
 	 */
 	void clearEnvironment() {
 		taskMap.clear();
 		taskList.clear();
 	}
+	
+	/**
+	 * Loads the tasks that was previously saved by the <code>saveEnvironment</code> method from a file.
+	 * @param filename
+	 * @throws IOException
+	 * @see saveEnvironment
+	 */
 
 	public void loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
@@ -208,6 +217,12 @@ public enum FinApplication {
 			fs.serialize(filename);
 		}
 	}
+	
+	/**
+	 * Saves the current state of all tasks to a file that can be loaded by the <code>loadEnvironment</code> method.
+	 * @param none
+	 * @see loadEnvironment 
+	 */
 
 	public void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
@@ -217,7 +232,7 @@ public enum FinApplication {
 			if (FinConstants.IS_PRODUCTION) {
 				e.printStackTrace();
 			} else {
-				// handle saving
+				// TODO: handle saving
 			}
 		}
 	}

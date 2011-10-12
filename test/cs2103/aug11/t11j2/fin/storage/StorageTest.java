@@ -1,4 +1,4 @@
-package cs2103.aug11.t11j2.fin.functest;
+package cs2103.aug11.t11j2.fin.storage;
 
 /* 
  * Ok guys, I've inserted JUnit inside here.
@@ -19,50 +19,18 @@ package cs2103.aug11.t11j2.fin.functest;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinSerializer;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.datamodel.Task.EImportance;
-import cs2103.aug11.t11j2.fin.jotd.Joke;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 
-public class JUnitTest {
+public class StorageTest {
 	@Test
 	public void testFailure() throws Exception {
 		fail();
-	}
-
-	@Test
-	public void testJOTD() throws IOException {
-		Joke testJoke = new Joke();
-		assertEquals("Joke", "Abortion brings out the kid in you.",
-				testJoke.generate());
-	}
-
-	@Test
-	public void testTask() throws Exception {
-		Task test = new Task("test", new ArrayList<String>(), EImportance.LOW,
-				null, 0, 0);
-
-		assertEquals("taskName", "test", test.getTaskName());
-		assertEquals("tags", new ArrayList<String>(), test.getTags());
-		assertEquals("Importance", EImportance.LOW, test.getImportance());
-		assertEquals("dueDate", null, test.getDueDate());
-		assertSame("percentageCompleted", 0, test.getPercentageCompleted());
-		assertSame("pIndex", 0, test.getpIndex());
-
-	}
-
-	@Test
-	public void testMain() throws Exception {
-
 	}
 
 	@Test
@@ -99,10 +67,6 @@ public class JUnitTest {
 		System.out.println("Test complete!");
 	}
 
-	@Test
-	public void testParser() throws IOException {
-		System.out.println(CommandParser.INSTANCE.parse("add hello", null));
 
-	}
 
 }

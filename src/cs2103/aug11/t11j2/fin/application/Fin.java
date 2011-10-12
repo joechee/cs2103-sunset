@@ -4,12 +4,21 @@ import java.io.IOException;
 
 import cs2103.aug11.t11j2.fin.ui.*;
 
-/* Usage:
+/**
+ *  Usage:
  * Fin -ui <ui> -file <filename>
  * Arguments can be swapped around.
+ * @author Joe Chee
  */
 
 public class Fin {
+	
+	/* Constants */
+
+	public static final Fin.IUserInterface DEFAULT_UI = new CLI();
+	public final static String DEFAULT_FILENAME = "fin.yaml";
+	public static final String fileExtension = ".yaml";
+	
 	public interface IUserInterface {
 		void mainLoop();
 	}
@@ -28,8 +37,8 @@ public class Fin {
 
 	private static void parseArgs(String[] args)
 			throws IllegalArgumentException, IOException {
-		IUserInterface UI = FinConstants.DEFAULT_UI;
-		String filename = FinConstants.DEFAULT_FILENAME;
+		IUserInterface UI = DEFAULT_UI;
+		String filename = DEFAULT_FILENAME;
 		for (int i = 0; i < args.length; i++) {
 			args[i] = args[i].toLowerCase();
 			if ((args[i].equals("-ui")) && (i + 1 < args.length)) {
@@ -47,7 +56,7 @@ public class Fin {
 		if (i == null) {
 			throw new IllegalArgumentException("Invalid Input!");
 		} else if (!i.endsWith(".yaml")) {
-			return i + FinConstants.fileExtension;
+			return i + fileExtension;
 		}
 		return i;
 	}
