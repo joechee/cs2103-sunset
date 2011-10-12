@@ -171,7 +171,7 @@ public class Task {
 		String sanitizedTag = sanitizeHashTag(tag);
 
 		this.tags.add(sanitizedTag);
-		this.taskName = this.taskName.trim() + " " + "#" + sanitizedTag;
+		this.taskName = this.taskName.trim() + " " + FinConstants.HASH_TAG_CHAR + sanitizedTag;
 		return true;
 	}
 
@@ -193,7 +193,7 @@ public class Task {
 	public void removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
 			this.taskName = this.taskName.replaceAll(
-					"(?i)#" + tag.toLowerCase() + "\\s*", "");
+					"(?i)"+FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*", "");
 		}
 	}
 
