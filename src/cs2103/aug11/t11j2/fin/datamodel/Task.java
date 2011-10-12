@@ -4,7 +4,6 @@ import java.util.*;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
-import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
 public class Task {
 
@@ -23,6 +22,7 @@ public class Task {
 		}
 
 		private static final Map<String, EImportance> stringToEnum = new HashMap<String, EImportance>();
+
 		static {
 			for (EImportance importanceLevel : EImportance.values()) {
 				stringToEnum.put(importanceLevel.toString(), importanceLevel);
@@ -48,6 +48,16 @@ public class Task {
 	private UUID uniqId;
 	private Integer pIndex;
 
+	// Constructors
+	
+	public Task() {
+		this.uniqId = UUID.randomUUID();
+		this.importance = EImportance.NORMAL;
+		this.timeAdded = new Date();
+		this.pIndex = 0;
+		this.percentageCompleted = 0;
+	}
+	
 	public Task(String taskName) {
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
@@ -94,14 +104,8 @@ public class Task {
 		parseTags();
 	}
 
-	public Task() {
-		this.uniqId = UUID.randomUUID();
-		this.importance = EImportance.NORMAL;
-		this.timeAdded = new Date();
-		this.pIndex = 0;
-		this.percentageCompleted = 0;
-	}
-
+	// Parsing methods
+	
 	/**
 	 * looks at the current task string, extracts all the valid hash tags and
 	 * add it to the list of tags the Task object has
@@ -152,6 +156,8 @@ public class Task {
 		return true;
 	}
 
+	// Setter and Getter methods
+	
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
@@ -177,21 +183,6 @@ public class Task {
 		this.taskName = this.taskName.trim() + " " + FinConstants.HASH_TAG_CHAR
 				+ sanitizedTag;
 		return true;
-	}
-
-	public boolean hasTag(String tag) {
-		return this.tags.contains(tag.toLowerCase().trim());
-	}
-
-	public boolean hasTags(List<String> tags) {
-		boolean has = true;
-		for (String t : tags) {
-			if (hasTag(t) == false) {
-				has = false;
-				break;
-			}
-		}
-		return has;
 	}
 
 	public void removeTag(String tag) {
@@ -221,14 +212,15 @@ public class Task {
 	public void setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
 		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			this.taskName = this.taskName.concat(" " + FinConstants.DUEDATE_PLACEHOLDER);
+			this.taskName = this.taskName.concat(" "
+					+ FinConstants.DUEDATE_PLACEHOLDER);
 		}
 	}
-	
+
 	public void setDueDate(String string) {
 		DateParser dp = new DateParser();
-		boolean parsed = dp.parse(string); 
-		
+		boolean parsed = dp.parse(string);
+
 		if (parsed) {
 			this.setDueDate(dp.getParsedDate());
 		}
@@ -237,10 +229,11 @@ public class Task {
 	public void removeDueDate() {
 		this.timeDue = null;
 		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			this.taskName = this.taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "").trim();
+			this.taskName = this.taskName.replace(
+					FinConstants.DUEDATE_PLACEHOLDER, "").trim();
 		}
 	}
-	
+
 	public Date getDueDate() {
 		return timeDue;
 	}
@@ -300,10 +293,6 @@ public class Task {
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
-	public boolean isFin() {
-		return this.hasTag(FinConstants.FIN_HASH_TAG);
-	}
-	
 	public void flag() {
 		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
@@ -311,11 +300,32 @@ public class Task {
 	public void unflag() {
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
+	
+	// Query methods
+	
+	public boolean hasTag(String tag) {
+		return this.tags.contains(tag.toLowerCase().trim());
+	}
+
+	public boolean hasTags(List<String> tags) {
+		boolean has = true;
+		for (String t : tags) {
+			if (hasTag(t) == false) {
+				has = false;
+				break;
+			}
+		}
+		return has;
+	}
+	
+	public boolean isFin() {
+		return this.hasTag(FinConstants.FIN_HASH_TAG);
+	}
 
 	public boolean isImportant() {
 		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getTaskName();
