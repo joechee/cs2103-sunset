@@ -117,7 +117,7 @@ public class Task {
 		}
 	}
 
-	private static String sanitizeHashTag(String s) {
+	public static String sanitizeHashTag(String s) {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		for (int i = 0; i < s.length(); ++i) {
@@ -134,7 +134,7 @@ public class Task {
 		return task.trim().split("\\s");
 	}
 
-	private static boolean isHashTag(String s) {
+	public static boolean isHashTag(String s) {
 		boolean hasHashTag = s.charAt(0) == FinConstants.HASH_TAG_CHAR;
 
 		if (!hasHashTag) {

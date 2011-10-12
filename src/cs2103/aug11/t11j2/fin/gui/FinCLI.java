@@ -129,7 +129,7 @@ public class FinCLI extends Composite {
 	}
 
 	public void echo(String text) {
-		Label t = new Label(display, SWT.WRAP);
+		Label t = new Label(display, SWT.WRAP | SWT.CENTER);
 
 		t.setFont(new Font(this.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NORMAL));
 		t.setText(text);

@@ -29,11 +29,13 @@ public class TaskControl extends Composite {
 
 	private static StyledText initTaskNumber(Composite parent, Task task,
 			Integer taskPosition) {
+		
 		StyledText taskNumber = new StyledText(parent, SWT.READ_ONLY);
 		taskNumber.setText(taskPosition.toString());
 
+		
+		// if task is important, give it a red !
 		if (task.isImportant()) {
-
 			String taskText = taskPosition.toString() + "!";
 			taskNumber.setText(taskText);
 
@@ -44,6 +46,8 @@ public class TaskControl extends Composite {
 
 			taskNumber.setStyleRange(redImpt);
 		}
+		
+		// if task is completed, give it a strikethrough
 		if (task.isFin()) {
 			StyleRange taskComplete = new StyleRange();
 			taskComplete.strikeout = true;
@@ -53,6 +57,7 @@ public class TaskControl extends Composite {
 
 			taskNumber.setStyleRange(taskComplete);
 		}
+		
 		taskNumber.setBackground(new Color(null, 0, 0, 0));
 		taskNumber.setForeground(new Color(null, 255, 255, 255));
 		taskNumber.setFont(new Font(parent.getDisplay(), "Segoe UI", 18,
@@ -77,6 +82,61 @@ public class TaskControl extends Composite {
 		dueBy.setEnabled(false);
 		return dueBy;
 	}
+	
+	private static StyledText initTaskText(Composite parent, Task task) {
+		StyledText taskText = new StyledText(parent, SWT.READ_ONLY);
+		
+		taskText.setText(task.toString());
+		taskText.pack();
+		taskText.setFont(new Font(parent.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NONE));
+		taskText.setBackground(new Color(null, 0, 0, 0));
+		taskText.setForeground(new Color(null, 255, 255, 255));
+		taskText.setEnabled(false);
+		
+		parseAndStyleTaskText(taskText);
+		
+		return taskText;
+	}
+
+	private static void parseAndStyleTaskText(StyledText taskText) {
+		String taskName = taskText.getText() + " ";
+		StringBuilder sb = new StringBuilder();
+
+
+		for (int i=0;i<taskName.length();++i) {
+			if (Character.isWhitespace(taskName.charAt(i))) {
+				if (sb.length() > 0 && Task.isHashTag(sb.toString())) {
+					String tag = Task.sanitizeHashTag(sb.toString());
+					if (tag.equals(FinConstants.IMPORTANT_HASH_TAG)) {
+						StyleRange redImpt = new StyleRange();
+						redImpt.foreground = new Color(null, FinConstants.RED_COLOR);
+						redImpt.start = i-sb.length();
+						redImpt.length = sb.length();
+
+						taskText.setStyleRange(redImpt);
+					} else if (tag.equals(FinConstants.FIN_HASH_TAG)) {
+						StyleRange taskComplete = new StyleRange();
+						taskComplete.strikeout = true;
+						taskComplete.strikeoutColor = new Color(null, FinConstants.RED_COLOR);
+						taskComplete.start = i-sb.length();
+						taskComplete.length = sb.length();
+
+						taskText.setStyleRange(taskComplete);						
+					} else {
+						StyleRange hashTag = new StyleRange();
+						hashTag.foreground = new Color(null, FinConstants.HASHTAG_COLOR);
+						hashTag.start = i-sb.length();
+						hashTag.length = sb.length();
+						
+						taskText.setStyleRange(hashTag);
+					}
+				}
+				sb = new StringBuilder();
+			} else {
+				sb.append(taskName.charAt(i));
+			}
+		}
+	}
 
 	public TaskControl(Composite parent, int style, Task task,
 			Integer taskPosition) {
@@ -89,13 +149,7 @@ public class TaskControl extends Composite {
 		this.taskNumber = initTaskNumber(this, task, taskPosition);
 		this.dueBy = initDueBy(this, task);
 
-		taskText = new StyledText(this, SWT.READ_ONLY);
-		taskText.setText(task.toString());
-		taskText.pack();
-		taskText.setFont(new Font(parent.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NONE));
-		taskText.setBackground(new Color(null, 0, 0, 0));
-		taskText.setForeground(new Color(null, 255, 255, 255));
-		taskText.setEnabled(false);
+		this.taskText = initTaskText(this, task);
 
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

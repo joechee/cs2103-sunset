@@ -229,7 +229,6 @@ public class SWTest implements IUserInterface {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void renderTaskListResult(CommandResult cmdRes) {
 		updateContext(cmdRes);
 		printTaskList();
@@ -264,7 +263,6 @@ public class SWTest implements IUserInterface {
 			}
 		}
 		if (finTask.size() > 0) {
-			echo("#fin\n");
 			for (Task t : finTask) {
 				newContext.add(t);
 			}
