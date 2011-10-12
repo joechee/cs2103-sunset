@@ -70,11 +70,7 @@ public class Fin {
 
 	private static IUserInterface parseUI(String UIString)
 			throws IllegalArgumentException {
-		UIString = UIString.toUpperCase();
-		if (UIString.equals("-")) {
-			throw new IllegalArgumentException("No UI provided!");
-		}
-		UIString = UIString.toUpperCase().split("-")[1];
+		
 		if (UIString.equals("CLI")) {
 			return (IUserInterface) new CLI();
 		} else if (UIString.equals("NUI")) {

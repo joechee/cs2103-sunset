@@ -16,7 +16,6 @@ public class CommandParser {
 
 		CommandResult executeCommands(String command, String arguments,
 				UIContext context) throws FinProductionException;
-
 	}
 
 	public static CommandParser INSTANCE = new CommandParser();

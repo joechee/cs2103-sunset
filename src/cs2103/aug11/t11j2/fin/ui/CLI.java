@@ -135,6 +135,9 @@ public class CLI implements Fin.IUserInterface {
 			} else {
 				echo("Command not recognized!\n\n");
 			}
+			break;
+		case InvalidTaskIndex:
+			echo("Invalid Task Index!\n\n");
 		}
 		return false;
 	}
@@ -175,7 +178,6 @@ public class CLI implements Fin.IUserInterface {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void renderTaskListResult(CommandResult cmdRes) {
 		updateContext(cmdRes);
 		printTaskList();
@@ -201,7 +203,7 @@ public class CLI implements Fin.IUserInterface {
 		}
 		
 		if (imptTask.size() > 0) {
-			echo("#important\n");
+			lineEchoWithBox(FinConstants.IMPORTANT_HASH_TAG);
 			for (Task t : imptTask) {
 				newContext.add(t);
 				echo("  " + count + ". " + t.getTaskName() + "\n");
@@ -217,16 +219,7 @@ public class CLI implements Fin.IUserInterface {
 			}
 			echo("\n");
 		}
-		if (finTask.size() > 0) {
-			echo("#fin\n");
-			for (Task t : finTask) {
-				newContext.add(t);
-				echo("  " + count + ". " + t.getTaskName() + "\n");
-				count++;	
-			}
-			echo("\n");
-		}
-		
+
 		context.setTaskList(newContext);
 
 		if (taskList.size() == 0) {
@@ -252,6 +245,24 @@ public class CLI implements Fin.IUserInterface {
 	private static void echo(String promptMessage) {
 		System.out.print(promptMessage);
 	}
+
+	/**
+	 * Outputs a line with a box surrounding it. Only works for single line input though.
+	 * @param promptMessage
+	 */
+	private static void lineEchoWithBox(String promptMessage) {
+		for (int i = 0; i < promptMessage.length()+4; i++) {
+			echo("#");
+		}
+		echo ("\n# ");
+		echo(promptMessage);
+		echo (" #\n");
+		for (int i = 0; i < promptMessage.length()+4; i++) {
+			echo("#");
+		}
+		echo("\n");
+	}
+	
 
 	private static String getInput() {
 		String userArgs = sc.nextLine();

@@ -87,6 +87,44 @@ public enum FinApplication {
 			return new ArrayList<Task>();
 		}
 	}
+	
+	/**
+	 * Get the list of tasks without a particular #tag
+	 * 
+	 * @param tag
+	 * @return List of Task with tag sorted by pIndex
+	 */	
+	public List<Task> getTasksWithoutTag(String tag) {
+		List<Task> lt = getTasks();
+		for (int i = 0; i < lt.size();i++) {
+			if (lt.get(i).getTags().contains(tag)) {
+				lt.remove(i);
+			}
+		}
+		
+		Collections.sort(lt, new TaskSortByDueDate());
+		return lt;
+	}
+	
+	/**
+	 * Get the list of tasks that don't have a list of #tags
+	 * 
+	 * @param tag
+	 * @return List of Task with tag sorted by pIndex
+	 */	
+	public List<Task> getTasksWithoutTags(List<String> tags) {
+		List<Task> lt = getTasks();
+		for (int i = 0; i < lt.size();i++) {
+			for (String j: tags) {
+				if (lt.get(i).getTags().contains(j)) {
+					lt.remove(i);
+				}
+			}
+		}
+		
+		Collections.sort(lt, new TaskSortByDueDate());
+		return lt;
+	}
 
 	/**
 	 * Get the list of tasks with a list of #tags

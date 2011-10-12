@@ -1,9 +1,11 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -42,13 +44,12 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-
+		
 		List<Task> tasks = null;
 		if (arguments.trim().length() == 0) {
-			tasks = FinApplication.INSTANCE.getTasks();
+			tasks = FinApplication.INSTANCE.getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG));
 		} else {
-			tasks = FinApplication.INSTANCE
-					.getTasksWithTags(tokenize(arguments));
+			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
 		}
 
 		return new CommandResult(this, arguments,
