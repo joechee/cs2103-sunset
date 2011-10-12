@@ -33,13 +33,12 @@ public class CLI implements Fin.IUserInterface {
 		displayTasks();
 
 		String userArgs;
-		CommandResult feedback = null;
 
 		while (RUN) {
 			showPrompt();
 			userArgs = getInput();
-			feedback = runCommand(userArgs);
-			if (renderCommandResult(feedback)) break;
+
+			if (runCommandAndRender(userArgs)) break;
 		}
 	}
 
@@ -57,12 +56,16 @@ public class CLI implements Fin.IUserInterface {
 	}
 
 	private static void displayTasks() {
-			CommandResult feedback = null;
-			feedback = runCommand("show");
-			
-			renderCommandResult(feedback);
+		runCommandAndRender("show");
 	}
 	
+	private static boolean runCommandAndRender(String userArgs) {
+		CommandResult feedback = null;
+		feedback = runCommand(userArgs);
+		
+		return renderCommandResult(feedback);
+	}
+
 	private static CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
@@ -125,10 +128,22 @@ public class CLI implements Fin.IUserInterface {
 			echo("Thank you for using Fin.\n");
 			echo("Goodbye!\n");
 			return true;
+		
 		case UnrecognizedCommand:
-			echo("Command not recognized!\n\n");
+			if (looksLikeTask(cmdRes.getArgument())) {
+				runCommandAndRender("add " + cmdRes.getArgument());
+			} else {
+				echo("Command not recognized!\n\n");
+			}
 		}
 		return false;
+	}
+
+	private static boolean looksLikeTask(String argument) {
+		boolean threeOrMoreWords = argument.split("\\s").length > 2;
+		boolean moreThanTenChar = argument.length() > 10;
+
+		return threeOrMoreWords && moreThanTenChar;
 	}
 
 	private static void renderString(CommandResult cmdRes) {

@@ -87,7 +87,7 @@ public class CommandParser {
 			UIContext context) {
 		// Check if the current command is installed in CommandParser
 		if (!commandHandlers.containsKey(command.toLowerCase())) {
-			return CommandResult.unrecognizedCommandResult;
+			return CommandResult.unrecognizedCommand(userArgs);
 		}
 
 		// Get the installed CommandHandler

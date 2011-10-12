@@ -24,8 +24,13 @@ public class CommandResult {
 	}
 
 	private CommandResult(RenderType renderType) {
+		this(renderType,"");
+	}
+	
+	private CommandResult(RenderType renderType, String argument) {
 		this.renderType = renderType;
 		this.returnObject = false;
+		this.argument = argument;
 	}
 
 	public CommandParser.ICommandHandler getCommand() {
@@ -84,13 +89,16 @@ public class CommandResult {
 		}
 	}
 
-	public final static CommandResult unrecognizedCommandResult = new CommandResult(
-			RenderType.UnrecognizedCommand);
 	public final static CommandResult invalidTaskIndex = new CommandResult(
 			RenderType.InvalidTaskIndex);
 	public final static CommandResult nullCommandResult = new CommandResult(
 			RenderType.Null);
 	public final static CommandResult exitCommandResult = new CommandResult(
 			RenderType.Exit);
+
+	public static CommandResult unrecognizedCommand(String command) {
+		return new CommandResult(
+				RenderType.UnrecognizedCommand, command);
+	}
 
 }
