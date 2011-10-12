@@ -1,8 +1,6 @@
 package cs2103.aug11.t11j2.fin.application;
 
 
-import cs2103.aug11.t11j2.fin.gui.SWTest;
-import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
  * 
