@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
+import cs2103.aug11.t11j2.fin.parser.CommandParser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -13,6 +14,13 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  *
  */
 public class ExitCommandHandler implements CommandParser.ICommandHandler {
+	
+	/**
+	 * Used in conjunction with <code>CommandParser</code>. 
+	 * 
+	 * @return List<String>
+	 * @see CommandParser#installCommand(ICommandHandler commandHandler)
+	 */
 
 	@Override
 	@SuppressWarnings("serial")

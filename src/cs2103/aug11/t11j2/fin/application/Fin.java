@@ -5,7 +5,10 @@ import java.io.IOException;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
- *  Usage:
+ * Fin is the bootstrapper which handles input from the command line 
+ * and decided which User Interface to evoke upon starting Fin.
+ * 
+ * Usage:
  * Fin -ui <ui> -file <filename>
  * Arguments can be swapped around.
  * @author Joe Chee

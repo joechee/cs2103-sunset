@@ -9,6 +9,10 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 public class Serializer {
+	/**
+	 * Serializer serializes an object and dumps it into a file using YAML.
+	 * @author Joe Chee
+	 */
 	Yaml yaml;
 
 	public Serializer() {
@@ -16,6 +20,13 @@ public class Serializer {
 		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		yaml = new Yaml(options);
 	}
+	/**
+	 * Takes in an Iterator of objects and dumps it into a file.
+	 * @param objects
+	 * @param filename
+	 * @throws IOException
+	 * @see #unserialize
+	 */
 
 	public void serialize(Iterator<Object> objects, String filename)
 			throws IOException {
@@ -28,6 +39,14 @@ public class Serializer {
 		writer.close();
 
 	}
+	/**
+	 * Takes in the filename of the file, and unserializes the file
+	 * returns all the serialized objects in the file as a list.
+	 * 
+	 * @param filename
+	 * @return List of Objects
+	 * @throws IOException
+	 */
 
 	public List<Object> unserialize(String filename) throws IOException {
 		InputStream fs = new FileInputStream(filename);

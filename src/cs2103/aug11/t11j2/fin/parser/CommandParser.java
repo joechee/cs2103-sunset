@@ -48,6 +48,12 @@ public class CommandParser {
 			}
 		}
 	}
+	/**
+	 * Installs the command into the system so that it can be called by the <code>parse</code> method.
+	 * @param commandHandler
+	 * @throws FinProductionException
+	 * @see #parse(String, UIContext)
+	 */
 
 	void installCommand(ICommandHandler commandHandler)
 			throws FinProductionException {

@@ -56,7 +56,6 @@ public class TaskParser {
 	final private static String ERROR_NO_PRIORITY = "invalid Task: Please indicate a priority, which is bracked number (X)";
 
 	private TaskParser() {
-
 	}
 
 	public static Task parse(String str) {
