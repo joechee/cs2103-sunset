@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.*;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.gui.FinCLI;
+import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputListener;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
@@ -24,12 +24,12 @@ import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
-public class SWTest implements IUserInterface {
+public class GUI implements IUserInterface {
 	private static boolean EXIT = false;
 	
 	// shell for SWT
 	Shell shell = null;
-	static FinCLI cli;
+	static FinCLIComposite cli;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
 	private static UIContext context = new UIContext();
 
@@ -76,7 +76,7 @@ public class SWTest implements IUserInterface {
 		shell.setSize(800, 500);
 		shell.open();
 
-		cli = new FinCLI(shell, SWT.NONE);
+		cli = new FinCLIComposite(shell, SWT.NONE);
 		cli.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		cli.addUserInputListener(new FinCLIInputListener() {
@@ -90,7 +90,7 @@ public class SWTest implements IUserInterface {
 
 			}
 		});
-
+		
 		createFooter(shell);
 
 		shell.layout(true);
@@ -98,7 +98,8 @@ public class SWTest implements IUserInterface {
 		displayWelcomeMessage();
 		refreshContext();
 		displayTasks();
-		
+		cli.forceFocus();
+
 
  		while (!EXIT && !shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -213,20 +214,18 @@ public class SWTest implements IUserInterface {
 		CommandParser.ICommandHandler commandHandler = cmdRes.getCommand();
 
 		if (commandHandler instanceof AddCommandHandler) {
-			echo("Task: " + taskName + " added!\n");
-			refresh();
-
 			if (refreshContext() == false) {
 				context.setFilter("");
 				refreshContext();
 			}
 			printTaskList();
+
+			echo("Task: " + taskName + " added!\n");
 		} else if (commandHandler instanceof DeleteCommandHandler) {
-			echo("Task: " + taskName + " deleted!\n");
-			refresh();
-			
 			refreshContext();
 			printTaskList();
+
+			echo("Task: " + taskName + " deleted!\n");
 		} else {
 			refreshContext();
 			printTaskList();
@@ -274,13 +273,19 @@ public class SWTest implements IUserInterface {
 
 		context.setTaskList(newContext);
 
+		cli.clear();
 		if (taskList.size() == 0) {
 			if (context.getFilter().length() == 0) {
 				echo("There are no tasks\n");
 			} else {
-				echo("There are no tasks that matches your filter\n");
+				echo("There are no tasks that matches your filter ("+context.getFilter()+")\n");
 			}
 		} else {
+			String filter = context.getFilter();
+			if (filter.length() > 0) {
+				echo(filter);
+				refresh();
+			}
 			cli.addTaskList(newContext);
 		}
 	}

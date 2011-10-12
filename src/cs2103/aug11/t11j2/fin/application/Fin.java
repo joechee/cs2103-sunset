@@ -18,7 +18,7 @@ public class Fin {
 	
 	/* Constants */
 
-	public static final Fin.IUserInterface DEFAULT_UI = new SWTest();
+	public static final Fin.IUserInterface DEFAULT_UI = new CLI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 	
@@ -73,7 +73,7 @@ public class Fin {
 		if (UIString.equals("CLI")) {
 			return (IUserInterface) new CLI();
 		} else if (UIString.equals("GUI")) {
-			return (IUserInterface) new SWTest();
+			return (IUserInterface) new GUI();
 		} else if (UIString.equals("NUI")) {
 			return (IUserInterface) null;
 		} else {

@@ -16,19 +16,20 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 
-public class FinCLI extends Composite {
+public class FinCLIComposite extends Composite {
 	Composite display;
 	ScrolledComposite displaySC;
 	Text input;
 	Vector<FinCLIInputListener> userInputListeners = new Vector<FinCLIInputListener>();
 
-	public FinCLI(Composite parent, int style) {
+	public FinCLIComposite(Composite parent, int style) {
 		super(parent, style);
 
 		GridLayout gridLayout = new GridLayout();
@@ -112,11 +113,7 @@ public class FinCLI extends Composite {
 				if (e.keyCode == 13) {
 					String userInput = input.getText().trim();
 					if (userInput.length() > 0) {
-						for (FinCLIInputListener listener : userInputListeners) {
-							listener.UserInput(new FinCLIInputEvent(input,
-									userInput));
-						}
-
+						runInput(userInput);
 						input.setText("");
 					}
 				}
@@ -124,7 +121,7 @@ public class FinCLI extends Composite {
 
 		});
 	}
-
+		
 	void resize() {
 		Rectangle r = displaySC.getClientArea();
 		displaySC.setMinSize(display.computeSize(r.width, SWT.DEFAULT));
@@ -160,12 +157,49 @@ public class FinCLI extends Composite {
 		displaySC.setOrigin(0, display.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 	}
 
+	public void clear() {
+		for (Control c : display.getChildren()) {
+			c.dispose();
+		}
+	}
+
 	public void addUserInputListener(FinCLIInputListener listener) {
 		userInputListeners.addElement(listener);
 	}
 
 	public void removeUserInputListener(FinCLIInputListener listener) {
 		userInputListeners.removeElement(listener);
+	}
+	
+	private String beforeHint;
+	private boolean inputHasFocus;
+	public void setHint(String hint) {
+		this.beforeHint = input.getText();
+	
+		this.inputHasFocus = input.isFocusControl();
+		input.setEnabled(false);
+		input.setText(hint);
+		input.setForeground(new Color(null, FinConstants.CLIHINT_COLOR));
+	}
+	public void removeHint() {
+		input.setEnabled(true);
+		input.setText(beforeHint);
+		input.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
+		
+		if (this.inputHasFocus) {
+			input.forceFocus();
+		}
+	}
+	
+	public boolean forceFocus() {
+		return input.forceFocus();
+	}
+	
+	public void runInput(String userInput) {
+		for (FinCLIInputListener listener : userInputListeners) {
+			listener.UserInput(new FinCLIInputEvent(input,
+					userInput));
+		}
 	}
 
 }

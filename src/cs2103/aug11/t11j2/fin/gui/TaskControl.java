@@ -32,6 +32,7 @@ public class TaskControl extends Composite {
 	StyledText dueBy;
 	StyledText taskNumber;
 	Button deleteCheckbox;
+	Integer taskPosition;
 
 	Composite parent = null;
     
@@ -91,11 +92,64 @@ public class TaskControl extends Composite {
 		return dueBy;
 	}
 	
-	private static Button initDeleteButton(Composite parent) {
-		Button button = new Button(parent, SWT.CHECK);
+	private static Button initDeleteButton(final Composite parent, boolean isFin) {
+		final Button button = new Button(parent, SWT.CHECK);
 		
 		button.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
 		button.setVisible(false);
+		button.setSelection(isFin);
+
+		button.addListener(SWT.MouseEnter, new Listener(){
+			@Override
+			public void handleEvent(Event event) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				if (button.getSelection() == false) {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("fin " + ((TaskControl)parent).taskPosition);
+					}
+				} else {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("unfin " + ((TaskControl)parent).taskPosition);
+					}
+				}
+			}
+		});
+		
+		button.addListener(SWT.MouseExit, new Listener(){
+			@Override
+			public void handleEvent(Event event) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				}
+			}			
+		});
+		
+		button.addListener(SWT.MouseUp, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				
+					if (button.getSelection() == false) {
+						((FinCLIComposite)fincli).runInput("unfin " + ((TaskControl)parent).taskPosition);
+					} else {
+						((FinCLIComposite)fincli).runInput("fin " + ((TaskControl)parent).taskPosition);
+					}
+				}
+			}
+		});
 		
 		return button;
 	}
@@ -110,7 +164,8 @@ public class TaskControl extends Composite {
 		this.taskNumber = initTaskNumber(this, task, taskPosition);
 		this.dueBy = initDueBy(this, task);
 		this.taskText = new TaskStyledText(this, SWT.NONE, task);
-		this.deleteCheckbox = initDeleteButton(this);
+		this.deleteCheckbox = initDeleteButton(this, task.isFin());
+		this.taskPosition = taskPosition;
 		
 		// dispose
 		this.addDisposeListener(new DisposeListener() {
@@ -135,23 +190,15 @@ public class TaskControl extends Composite {
 				if (rect.contains(event.x, event.y)) {
 					return;
 				}
-				/*for (Control control : parentClass.getChildren()) {
-					System.out.println(control + " " + event.item);
-					if (control == event.item) {
-						return;
-					}
-				}*/
 				deleteCheckbox.setVisible(false);				
 			}
 			
 		});
 		this.addListener(SWT.MouseEnter, new Listener(){
-
 			@Override
 			public void handleEvent(Event event) {
 				deleteCheckbox.setVisible(true);				
 			}
-			
 		});
 		
 
