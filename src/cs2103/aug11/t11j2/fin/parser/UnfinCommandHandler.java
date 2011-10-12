@@ -30,6 +30,12 @@ public class UnfinCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
 			return showHelp(context);
+		} else if (arguments.equals("all")) {
+			for (Task i: context.getTaskList()) {
+				FinApplication.INSTANCE.unfinTask(i.getUniqId());
+			}
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.String, "Removed the finished tag from all displayed tasks!");
 		}
 		int taskIndex;
 		try {

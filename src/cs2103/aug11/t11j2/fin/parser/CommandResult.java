@@ -75,7 +75,7 @@ public class CommandResult {
 			break;
 
 		case Task:
-			// Ensures taht returnObject is of type Task
+			// Ensures that returnObject is of type Task
 			if (!(returnObject instanceof Task)) {
 				throw (new FinProductionException(
 						"Command result type is invalid for Task"));

@@ -31,7 +31,15 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		} else if (arguments.equals("all")) {
+			for (Task i: context.getTaskList()) {
+				FinApplication.INSTANCE.unflagTask(i.getUniqId());
+			}
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.String, "Removed important tag from all tasks!");
+		}
 		int taskIndex;
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);

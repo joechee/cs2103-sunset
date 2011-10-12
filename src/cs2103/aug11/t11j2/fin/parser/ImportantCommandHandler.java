@@ -28,6 +28,12 @@ public class ImportantCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
 			return showHelp(context);
+		} else if (arguments.equals("all")) {
+			for (Task i: context.getTaskList()) {
+				FinApplication.INSTANCE.flagTask(i.getUniqId());
+			}
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.String, "Marked all displayed tasks as important!");
 		}
 		int taskIndex;
 
@@ -50,6 +56,6 @@ public class ImportantCommandHandler implements CommandParser.ICommandHandler {
 	CommandResult showHelp(UIContext context) throws FinProductionException {
 		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"imporant", context);
+				"important", context);
 	}
 }

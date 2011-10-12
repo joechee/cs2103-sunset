@@ -43,14 +43,12 @@ public enum FinApplication {
 
 	private void addTaskToTag(String tag, Task task) {
 		List<Task> taskListOfTags;
-
 		if (hashTags.containsKey(tag)) {
 			taskListOfTags = hashTags.get(tag);
 		} else {
 			taskListOfTags = new ArrayList<Task>();
 			hashTags.put(tag, taskListOfTags);
 		}
-
 		taskListOfTags.add(task);
 	}
 
@@ -81,7 +79,6 @@ public enum FinApplication {
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
 			Collections.sort(lt, new TaskSortByDueDate());
-
 			return lt;
 		} else {
 			return new ArrayList<Task>();

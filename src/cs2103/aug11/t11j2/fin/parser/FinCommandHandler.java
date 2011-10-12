@@ -35,6 +35,12 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
 			return showFinHelp(context);
+		} else if (arguments.equals("all")) {
+			for (Task i: context.getTaskList()) {
+				FinApplication.INSTANCE.finTask(i.getUniqId());
+			}
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.String, "Finished all tasks!");
 		}
 
 		int taskIndex;
