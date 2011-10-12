@@ -3,14 +3,13 @@ package cs2103.aug11.t11j2.fin.application;
 import java.io.IOException;
 
 import cs2103.aug11.t11j2.fin.ui.*;
-import cs2103.aug11.t11j2.fin.ui.CLI;
 
 /**
- * Fin is the bootstrapper which handles input from the command line 
+ * Fin is the bootstrapper which handles input from the command line \\
  * and decided which User Interface to evoke upon starting Fin.
  * 
  * Usage:
- * Fin -ui <ui> -file <filename>
+ * Fin -ui ui -file filename
  * Arguments can be swapped around.
  * @author Joe Chee
  */
@@ -73,6 +72,8 @@ public class Fin {
 		
 		if (UIString.equals("CLI")) {
 			return (IUserInterface) new CLI();
+		} else if (UIString.equals("GUI")) {
+			return (IUserInterface) new SWTest();
 		} else if (UIString.equals("NUI")) {
 			return (IUserInterface) null;
 		} else {

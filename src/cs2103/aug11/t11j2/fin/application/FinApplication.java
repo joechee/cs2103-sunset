@@ -21,8 +21,8 @@ public enum FinApplication {
 	String taskFileName = "";
 
 	List<Task> taskList = new ArrayList<Task>();
-	Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
-	UIContext context = new UIContext();
+	private Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
+	private UIContext context = new UIContext();
 
 	// Each hashTag points to a collection of Tasks
 	Map<String, List<Task>> hashTags = new HashMap<String, List<Task>>();

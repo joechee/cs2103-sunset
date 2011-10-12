@@ -2,8 +2,6 @@ package cs2103.aug11.t11j2.fin.application;
 
 import org.eclipse.swt.graphics.RGB;
 
-import cs2103.aug11.t11j2.fin.ui.*;
-
 /**
  * 
  * @version 0.1

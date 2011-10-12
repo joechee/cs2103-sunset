@@ -25,6 +25,8 @@ import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
 public class SWTest implements IUserInterface {
+	private static boolean EXIT = false;
+	
 	// shell for SWT
 	Shell shell = null;
 	static FinCLI cli;
@@ -83,7 +85,7 @@ public class SWTest implements IUserInterface {
 				CommandResult feedback = null;
 				feedback = runCommand(event.input);
 				if (renderCommandResult(feedback)) {
-					shell.dispose();
+					EXIT = true;
 				}
 
 			}
@@ -98,11 +100,14 @@ public class SWTest implements IUserInterface {
 		displayTasks();
 		
 
- 		while (!shell.isDisposed()) {
+ 		while (!EXIT && !shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
+ 		if (!shell.isDisposed()) {
+ 	 		shell.dispose();
+ 		}
 
 		display.dispose();
 	}

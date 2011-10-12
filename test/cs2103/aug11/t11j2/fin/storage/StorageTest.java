@@ -25,7 +25,7 @@ import org.junit.Test;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinSerializer;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.parser.CommandParser;
+
 
 public class StorageTest {
 	@Test
