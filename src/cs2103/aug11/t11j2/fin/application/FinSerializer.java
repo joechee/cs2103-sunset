@@ -31,7 +31,7 @@ public class FinSerializer {
 	public void serialize(String filename) throws IOException {
 		Serializer sr = new Serializer();
 		List<Object> oLyst = FinSerializer
-				.taskTreeListToList(FinApplication.INSTANCE.taskList);
+				.taskTreeListToList(FinApplication.INSTANCE.getTasks());
 
 		sr.serialize(oLyst.iterator(), filename);
 	}

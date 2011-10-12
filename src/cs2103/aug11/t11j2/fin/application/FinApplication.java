@@ -20,7 +20,7 @@ public enum FinApplication {
 
 	String taskFileName = "";
 
-	List<Task> taskList = new ArrayList<Task>();
+	private List<Task> taskList = new ArrayList<Task>();
 	private Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
 	private UIContext context = new UIContext();
 
