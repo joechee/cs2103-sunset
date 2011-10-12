@@ -24,17 +24,17 @@ public class Task {
 
 		private static final Map<String, EImportance> stringToEnum = new HashMap<String, EImportance>();
 		static {
-			for (EImportance impt : values()) {
-				stringToEnum.put(impt.toString(), impt);
+			for (EImportance importanceLevel : EImportance.values()) {
+				stringToEnum.put(importanceLevel.toString(), importanceLevel);
 			}
 		}
 
 		public static EImportance fromString(String importance) {
-			EImportance tr = stringToEnum.get(importance);
-			if (tr == null) {
+			EImportance importanceLevel = stringToEnum.get(importance);
+			if (importanceLevel == null) {
 				return NORMAL;
 			} else {
-				return tr;
+				return importanceLevel;
 			}
 		}
 	};
@@ -42,25 +42,27 @@ public class Task {
 	private String taskName;
 	private List<String> tags = new ArrayList<String>();
 	private EImportance importance;
-	private Date dueTime;
+	private Date timeDue;
 	private Integer percentageCompleted;
-	private Date addTime;
+	private Date timeAdded;
 	private UUID uniqId;
 	private Integer pIndex;
 
 	public Task(String taskName) {
-		DateParser dp = new DateParser();
-		Date due = null;
-		if (dp.parse(taskName)) {
-			taskName = dp.getParsedString();
-			due = dp.getParsedDate();
+		DateParser dateParser = new DateParser();
+		Date dueDate = null;
+		boolean parsed = dateParser.parse(taskName);
+
+		if (parsed) {
+			taskName = dateParser.getParsedString();
+			dueDate = dateParser.getParsedDate();
 		}
 
 		this.taskName = taskName;
-		this.dueTime = due;
+		this.timeDue = dueDate;
 		this.percentageCompleted = this.pIndex = 0;
 		this.uniqId = UUID.randomUUID();
-		this.addTime = new Date();
+		this.timeAdded = new Date();
 
 		parseTags();
 	}
@@ -70,27 +72,34 @@ public class Task {
 
 		this.taskName = taskName;
 		this.importance = importance;
-		this.dueTime = dueDate;
+		this.timeDue = dueDate;
 		this.percentageCompleted = percentageCompleted;
-		this.addTime = new Date();
+		this.timeAdded = new Date();
 		this.uniqId = UUID.randomUUID();
 		this.pIndex = pIndex;
 
 		parseTags();
-
 	}
 
 	public Task(Map<String, Object> dict) {
 		this.taskName = (String) dict.get("Name");
 		this.uniqId = UUID.fromString((String) dict.get("UID"));
-		this.addTime = (Date) dict.get("DateAdded");
+		this.timeAdded = (Date) dict.get("DateAdded");
 		this.pIndex = (Integer) dict.get("Priority");
 		this.importance = EImportance.fromString((String) dict
 				.get("Importance"));
 		this.percentageCompleted = (Integer) dict.get("Completed");
-		this.dueTime = (Date) dict.get("DueDate");
+		this.timeDue = (Date) dict.get("DueDate");
 
 		parseTags();
+	}
+
+	public Task() {
+		this.uniqId = UUID.randomUUID();
+		this.importance = EImportance.NORMAL;
+		this.timeAdded = new Date();
+		this.pIndex = 0;
+		this.percentageCompleted = 0;
 	}
 
 	/**
@@ -109,16 +118,16 @@ public class Task {
 	}
 
 	private static String sanitizeHashTag(String s) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 
 		for (int i = 0; i < s.length(); ++i) {
 			char c = s.charAt(i);
 			if (Character.isLetterOrDigit(c)) {
-				sb.append(Character.toLowerCase(c));
+				stringBuilder.append(Character.toLowerCase(c));
 			}
 		}
 
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 
 	private static String[] tokenize(String task) {
@@ -143,36 +152,30 @@ public class Task {
 		return true;
 	}
 
-	public Task() {
-		this.uniqId = UUID.randomUUID();
-
-		this.importance = EImportance.NORMAL;
-		this.addTime = new Date();
-		this.pIndex = 0;
-		this.percentageCompleted = 0;
-	}
-
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
 
-
 	public String getTaskName() {
-		Date due = this.getDueDate();
-		if (due != null && taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER,
-					"(" + DateParser.naturalDateFromNow(due) + ")");
+		Date dueDate = this.getDueDate();
+		if ((dueDate != null)
+				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
+			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "("
+					+ DateParser.naturalDateFromNow(dueDate) + ")");
 		} else {
 			return taskName;
 		}
 	}
 
 	public boolean addTag(String tag) {
-		if (hasTag(tag)) return false;
+		if (hasTag(tag)) {
+			return false;
+		}
 		String sanitizedTag = sanitizeHashTag(tag);
 
 		this.tags.add(sanitizedTag);
-		this.taskName = this.taskName.trim() + " " + FinConstants.HASH_TAG_CHAR + sanitizedTag;
+		this.taskName = this.taskName.trim() + " " + FinConstants.HASH_TAG_CHAR
+				+ sanitizedTag;
 		return true;
 	}
 
@@ -193,8 +196,9 @@ public class Task {
 
 	public void removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
-			this.taskName = this.taskName.replaceAll(
-					"(?i)"+FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*", "");
+			this.taskName = this.taskName.replaceAll("(?i)"
+					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
+					"");
 		}
 	}
 
@@ -215,14 +219,30 @@ public class Task {
 	}
 
 	public void setDueDate(Date dueDate) {
-		this.dueTime = dueDate;
+		this.timeDue = dueDate;
 		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
 			this.taskName = this.taskName.concat(" " + FinConstants.DUEDATE_PLACEHOLDER);
 		}
 	}
+	
+	public void setDueDate(String string) {
+		DateParser dp = new DateParser();
+		boolean parsed = dp.parse(string); 
+		
+		if (parsed) {
+			this.setDueDate(dp.getParsedDate());
+		}
+	}
 
+	public void removeDueDate() {
+		this.timeDue = null;
+		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+			this.taskName = this.taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "").trim();
+		}
+	}
+	
 	public Date getDueDate() {
-		return dueTime;
+		return timeDue;
 	}
 
 	public void setPercentageCompleted(Integer percentageCompleted) {
@@ -234,11 +254,11 @@ public class Task {
 	}
 
 	public void setDateAdded(Date dateAdded) {
-		this.addTime = dateAdded;
+		this.timeAdded = dateAdded;
 	}
 
 	public Date getDateAdded() {
-		return addTime;
+		return timeAdded;
 	}
 
 	public UUID getUniqId() {
@@ -270,11 +290,6 @@ public class Task {
 		return tr;
 	}
 
-	@Override
-	public String toString() {
-		return getTaskName();
-	}
-
 	public boolean fin() {
 		this.setPercentageCompleted(100);
 		return this.addTag(FinConstants.FIN_HASH_TAG);
@@ -285,6 +300,10 @@ public class Task {
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
+	public boolean isFin() {
+		return this.hasTag(FinConstants.FIN_HASH_TAG);
+	}
+	
 	public void flag() {
 		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
@@ -293,26 +312,12 @@ public class Task {
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 
-	public boolean isFin() {
-		return this.hasTag(FinConstants.FIN_HASH_TAG);
-	}
-	
 	public boolean isImportant() {
 		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
-
-	public void setDueDate(String string) {
-		DateParser dp = new DateParser();
-		if (dp.parse(string)) {
-			this.setDueDate(dp.getParsedDate());
-		}
+	
+	@Override
+	public String toString() {
+		return getTaskName();
 	}
-
-	public void removeDueDate() {
-		this.dueTime = null;
-		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			this.taskName = this.taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "").trim();
-		}
-	}
-
 }
