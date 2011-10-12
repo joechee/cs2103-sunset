@@ -33,6 +33,9 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
+		if (arguments.isEmpty()) {
+			return showFinHelp(context);
+		}
 
 		int taskIndex;
 		try {
@@ -50,5 +53,11 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, todelete);
+	}
+	
+	CommandResult showFinHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"fin", context);
 	}
 }

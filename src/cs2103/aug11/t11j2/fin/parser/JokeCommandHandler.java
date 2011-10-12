@@ -74,5 +74,12 @@ public class JokeCommandHandler implements CommandParser.ICommandHandler {
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.String, joke);
 	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"joke", context);
+	}
+	
 
 }

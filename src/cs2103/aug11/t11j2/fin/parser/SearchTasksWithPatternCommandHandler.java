@@ -62,12 +62,20 @@ public class SearchTasksWithPatternCommandHandler implements CommandParser.IComm
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		}
 		List<Task> tasks = null;
 		tasks = FinApplication.INSTANCE.getTasks();
 		tasks = filterTasksWithPatterns(tasks, arguments.trim());
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TaskList, tasks);
+	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"search", context);
 	}
 
 }

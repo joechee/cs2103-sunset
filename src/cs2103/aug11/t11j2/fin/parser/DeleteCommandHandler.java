@@ -33,16 +33,16 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
+		
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		}
 
 		if (arguments.toLowerCase().equals("all")) {
 			// delete all
 			DeleteAllCommandHandler delallCmdHandler = new DeleteAllCommandHandler();
 			return delallCmdHandler.executeCommands(delallCmdHandler.getCommandStrings().get(0), "",
 					context);
-		} else if (arguments.trim().length() == 0){
-			HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-			return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-					"delete", context);
 		} else {
 			int taskIndex;
 			try {
@@ -61,5 +61,11 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.Task, todelete);
 		}
+	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"delete", context);
 	}
 }

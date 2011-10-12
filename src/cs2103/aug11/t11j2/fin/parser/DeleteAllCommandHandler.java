@@ -34,6 +34,7 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
+		
 		for (Task t : context.getTaskList()) {
 			FinApplication.INSTANCE.deleteTask(t.getUniqId());			
 		}
@@ -42,6 +43,12 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 		ShowCommandHandler showCmdHandler = new ShowCommandHandler();
 		return showCmdHandler.executeCommands(showCmdHandler.getCommandStrings()
 				.get(0), "", context);
+	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"deleteall", context);
 	}
 
 }

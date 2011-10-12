@@ -34,14 +34,14 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
+		
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		}
 
 		int taskIndex;
 		String[] tokens = arguments.split("\\s",3);
 		
-		if (tokens.length < 2) {
-			return showEditHelp(context);
-		}
-
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
 		} catch (NumberFormatException nfe) {
@@ -103,13 +103,13 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 			return new CommandResult(this, tokens[0] + " " + tokens[1],
 					CommandResult.RenderType.Task, task);			
 		} else {
-			return showEditHelp(context);
+			return showHelp(context);
 		}
 	}
 	
-	CommandResult showEditHelp(UIContext context) throws FinProductionException {
+	CommandResult showHelp(UIContext context) throws FinProductionException {
 		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+		return helpCmdHandler.executeCommands(helpCmdHandler.getCommandStrings().get(0),
 				"edit", context);
 	}
 }

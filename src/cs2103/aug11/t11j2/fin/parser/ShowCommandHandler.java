@@ -54,5 +54,11 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TaskList, tasks);
 	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"show", context);
+	}
 
 }

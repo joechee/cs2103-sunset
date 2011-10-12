@@ -19,8 +19,6 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 				add("norm");
 				add("nrml");
 				add("n");
-				add("unf");
-				add("unfl");
 				add("unimpt");
 				add("uni");
 			}
@@ -30,7 +28,9 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		}
 		int taskIndex;
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
@@ -47,5 +47,10 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, todelete);
+	}
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"unimportant", context);
 	}
 }

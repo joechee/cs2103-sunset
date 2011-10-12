@@ -107,5 +107,13 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 				CommandResult.RenderType.String, help);
 	}
 	
+	CommandResult showImportnatHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"important", context);
+	}
+	
+	
+	
 	
 }

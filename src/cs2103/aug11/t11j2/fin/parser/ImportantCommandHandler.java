@@ -26,8 +26,11 @@ public class ImportantCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-
+		if (arguments.isEmpty()) {
+			return showHelp(context);
+		}
 		int taskIndex;
+
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 		} catch (NumberFormatException nfe) {
@@ -43,5 +46,10 @@ public class ImportantCommandHandler implements CommandParser.ICommandHandler {
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.Task, todelete);
+	}
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"imporant", context);
 	}
 }

@@ -32,10 +32,10 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
+		
+		
 		if (arguments.trim().length() == 0) {
-			HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-			return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-					"add", context);
+			return showHelp(context);
 		} else {
 			Task newtask = new Task(arguments);
 			FinApplication.INSTANCE.add(newtask);
@@ -44,5 +44,11 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.Task, newtask);
 		}
+	}
+	
+	CommandResult showHelp(UIContext context) throws FinProductionException {
+		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
+		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+				"add", context);
 	}
 }
