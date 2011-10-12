@@ -38,26 +38,6 @@ public class TaskContainer extends Composite {
 	public void addTask(Task t) {
 		final TaskControl taskControl = new TaskControl(this, SWT.NONE, t, ++taskCount);
 		
-		taskControl.addMouseListener(new MouseListener(){
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-				MessageBox mb = new MessageBox(taskControl.getShell());
-				mb.setMessage("Hello");
-				mb.setText("World");
-				mb.open();
-			}
-		});
-		
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
 		taskControl.setLayoutData(gridData);

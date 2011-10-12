@@ -214,6 +214,7 @@ public class SWTest implements IUserInterface {
 
 		if (commandHandler instanceof AddCommandHandler) {
 			echo("Task: " + taskName + " added!\n");
+			refresh();
 
 			if (refreshContext() == false) {
 				context.setFilter("");
@@ -222,6 +223,8 @@ public class SWTest implements IUserInterface {
 			printTaskList();
 		} else if (commandHandler instanceof DeleteCommandHandler) {
 			echo("Task: " + taskName + " deleted!\n");
+			refresh();
+			
 			refreshContext();
 			printTaskList();
 		} else {
@@ -288,10 +291,12 @@ public class SWTest implements IUserInterface {
 	}
 
 	private static void refresh() {
-		System.out.println(b.toString());
-		cli.echo(b.toString());
-		cli.refresh();
-		b = new StringBuilder();
+		if (b.length() > 0){ 
+			System.out.println(b.toString());
+			cli.echo(b.toString());
+			cli.refresh();
+			b = new StringBuilder();
+		}
 	}
 
 	private static StringBuilder b = new StringBuilder();

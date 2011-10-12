@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.KeyEvent;
@@ -51,7 +52,8 @@ public class FinCLI extends Composite {
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
-		gridLayout.horizontalSpacing = gridLayout.verticalSpacing = 0;
+		gridLayout.horizontalSpacing = 0;
+		gridLayout.verticalSpacing = 10;
 		gridLayout.marginTop = gridLayout.marginLeft = gridLayout.marginRight = gridLayout.marginBottom = -5;
 
 		display.setLayout(gridLayout);
@@ -129,16 +131,18 @@ public class FinCLI extends Composite {
 	}
 
 	public void echo(String text) {
-		Label t = new Label(display, SWT.WRAP | SWT.CENTER);
+		StyledText t = new StyledText(display, SWT.WRAP);
 
 		t.setFont(new Font(this.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NORMAL));
-		t.setText(text);
+		t.setText(text.trim());
 
 		t.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
 		t.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
+		
 
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
+		gridData.verticalIndent = gridData.horizontalIndent = 10;
 		t.setLayoutData(gridData);
 	}
 
