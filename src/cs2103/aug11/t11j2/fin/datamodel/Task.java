@@ -4,6 +4,7 @@ import java.util.*;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
 public class Task {
 
@@ -215,6 +216,9 @@ public class Task {
 
 	public void setDueDate(Date dueDate) {
 		this.dueTime = dueDate;
+		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+			this.taskName = this.taskName.concat(" " + FinConstants.DUEDATE_PLACEHOLDER);
+		}
 	}
 
 	public Date getDueDate() {
@@ -295,6 +299,20 @@ public class Task {
 	
 	public boolean isImportant() {
 		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
+	}
+
+	public void setDueDate(String string) {
+		DateParser dp = new DateParser();
+		if (dp.parse(string)) {
+			this.setDueDate(dp.getParsedDate());
+		}
+	}
+
+	public void removeDueDate() {
+		this.dueTime = null;
+		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+			this.taskName = this.taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "").trim();
+		}
 	}
 
 }

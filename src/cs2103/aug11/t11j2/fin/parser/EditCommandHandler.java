@@ -6,6 +6,7 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
+import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -61,23 +62,46 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		
 		if (tokens[1].equals("to")) {
 			// replace current task with new task
+			
+			if (tokens.length == 2) return showEditHelp(context);
+			
 			FinApplication.INSTANCE.deleteTask(task.getUniqId());
-
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
 			return addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
 					.get(0), tokens[2], context);
 			
 		} else if (tokens[1].equals("at")) {
 			// add tag to current task
-			task.addTag(tokens[2]);
+			
+			if (tokens.length == 2) return showEditHelp(context);
 
+			task.addTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.Task, task);
+			
 		} else if (tokens[1].equals("rt")) {
 			// remove tag from task
-			task.removeTag(tokens[2]);			
+			
+			if (tokens.length == 2) return showEditHelp(context);
+
+			task.removeTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.Task, task);
+			
+		} else if (tokens[1].equals("due")) {
+			// set new due date
+			
+			if (tokens.length == 2) return showEditHelp(context);
+
+			task.setDueDate(tokens[1] + " " + tokens[2]);
+			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
+					CommandResult.RenderType.Task, task);			
+		} else if (tokens[1].equals("rd")) {
+			// remove due date
+			
+			task.removeDueDate();
+			return new CommandResult(this, tokens[0] + " " + tokens[1],
+					CommandResult.RenderType.Task, task);			
 		} else {
 			return showEditHelp(context);
 		}
