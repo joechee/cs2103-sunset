@@ -236,11 +236,8 @@ public class SWTest implements IUserInterface {
 	}
 
 	private static void printTaskList() {
-		int count = 1;
 		List<Task> taskList = context.getTaskList();
 
-		List<Task> newOrder = new ArrayList<Task>();
-		
 		List<Task> finTask = new ArrayList<Task>();
 		List<Task> imptTask = new ArrayList<Task>();
 		List<Task> normalTask = new ArrayList<Task>();
@@ -259,20 +256,17 @@ public class SWTest implements IUserInterface {
 		if (imptTask.size() > 0) {
 			for (Task t : imptTask) {
 				newContext.add(t);
-				count++;
 			}
 		}
 		if (normalTask.size() > 0) {
 			for (Task t : normalTask) {
 				newContext.add(t);
-				count++;
 			}
 		}
 		if (finTask.size() > 0) {
 			echo("#fin\n");
 			for (Task t : finTask) {
 				newContext.add(t);
-				count++;
 			}
 		}
 
