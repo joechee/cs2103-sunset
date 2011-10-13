@@ -12,6 +12,7 @@ import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
 /**
@@ -156,7 +157,7 @@ public class CLI implements Fin.IUserInterface {
 
 	private static void renderTaskResult(CommandResult cmdRes) {
 		String taskName = ((Task) cmdRes.getReturnObject()).getTaskName();
-		CommandParser.ICommandHandler commandHandler = cmdRes.getCommand();
+		ICommandHandler commandHandler = cmdRes.getCommand();
 
 		if (commandHandler instanceof AddCommandHandler) {
 			echo("Task: " + taskName + " added!\n");
