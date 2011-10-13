@@ -65,4 +65,16 @@ public class UntagTaskWithTagsCommandHandler implements CommandParser.ICommandHa
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"untag", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "untag <task number> <tag>\t\tUntags a <task> with <tag>";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		final String result = "untag <task number> <tag>\n\tUntags a <task> with <tag>";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

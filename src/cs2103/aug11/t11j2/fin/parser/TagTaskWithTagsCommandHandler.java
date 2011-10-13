@@ -61,7 +61,20 @@ public class TagTaskWithTagsCommandHandler implements CommandParser.ICommandHand
 	
 	CommandResult showHelp(UIContext context) throws FinProductionException {
 		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
+		return helpCmdHandler.executeCommands(helpCmdHandler.getCommandStrings().get(0),
 				"tag", context);
+	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "tag <task number> <tag>\t\t\tTags a <task> with <tag>";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "tag <task number> <tag>\n\tTags a <task> with <tag>";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
 	}
 }

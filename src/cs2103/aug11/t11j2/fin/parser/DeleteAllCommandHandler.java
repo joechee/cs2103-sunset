@@ -51,4 +51,16 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 				"deleteall", context);
 	}
 
+	@Override
+	public String showAbridgedHelp() {
+		return "";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, "");
+	}
+
 }

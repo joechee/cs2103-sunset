@@ -66,4 +66,18 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"fin", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		// TODO Auto-generated method stub
+		return "fin <task number>\t\t\tMarks a task as completed";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "fin <task number>\n\tMarks a task as completed";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

@@ -39,6 +39,19 @@ public class ExitCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		return CommandResult.exitCommandResult;
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, "");
+	}
 	
 
 }

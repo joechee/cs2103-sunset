@@ -111,4 +111,21 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands(helpCmdHandler.getCommandStrings().get(0),
 				"edit", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		// TODO Auto-generated method stub
+		return "edit <task number> to <new task> \tChanges a task to the new task";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "edit <task number> <command>\n\tEdits a task base on the following command\n" +
+		"\t - edit <task> to <newtask>\tedits the task to new task\n" +
+		"\t - edit <task> due <duedate>\tchange/add due date for a task\n" +
+		"\t - edit <task> rd\t\tremove due date from a task";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

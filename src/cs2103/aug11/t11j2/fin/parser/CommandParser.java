@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.parser;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,14 +18,19 @@ public class CommandParser {
 
 		CommandResult executeCommands(String command, String arguments,
 				UIContext context) throws FinProductionException;
+		
+		public String showAbridgedHelp();
+		public CommandResult showHelp() throws FinProductionException;
 	}
 
 	public static CommandParser INSTANCE = new CommandParser();
 
 	private Map<String, ICommandHandler> commandHandlers = new HashMap<String, ICommandHandler>();
+	private List<ICommandHandler> commandHandlerLyst = new ArrayList<ICommandHandler>();
 
 	private CommandParser() {
 		try {
+			installCommand(new HelpCommandHandler());
 			installCommand(new ShowCommandHandler());
 			installCommand(new AddCommandHandler());
 			installCommand(new FinCommandHandler());
@@ -34,7 +41,6 @@ public class CommandParser {
 			installCommand(new DeleteAllCommandHandler());
 			installCommand(new JokeCommandHandler());
 			installCommand(new EditCommandHandler());
-			installCommand(new HelpCommandHandler());
 			installCommand(new ExitCommandHandler());
 			installCommand(new SearchTasksWithPatternCommandHandler());
 			installCommand(new UntagTaskWithTagsCommandHandler());
@@ -64,6 +70,7 @@ public class CommandParser {
 				commandHandlers.put(command, commandHandler);
 			}
 		}
+		commandHandlerLyst.add(commandHandler);
 	}
 
 	public CommandResult parse(String userArgs, UIContext context) {
@@ -105,6 +112,10 @@ public class CommandParser {
 		}
 
 		return res;
+	}
+	
+	List<ICommandHandler> getCommandHandlers(){
+		return new ArrayList<ICommandHandler>(commandHandlerLyst);
 	}
 
 }

@@ -62,4 +62,17 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 				"show", context);
 	}
 
+	@Override
+	public String showAbridgedHelp() {
+		return "show <filters>\t\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "show <filters>\n\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
+
 }

@@ -51,4 +51,16 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"add", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "add <task>\t\t\t\tAdds <task> to your task list";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		String result = "add <task>\n\tAdds <task> to your task list";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);		
+	}
 }

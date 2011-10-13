@@ -80,6 +80,17 @@ public class JokeCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"joke", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, "");
+	}
 	
 
 }

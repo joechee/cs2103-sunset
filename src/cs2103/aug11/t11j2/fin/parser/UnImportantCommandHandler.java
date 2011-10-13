@@ -63,4 +63,17 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"unimportant", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "unimportant\t\t\t\tUnmarks an important task";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "unimportant <task>\n\tUnmarks an important task";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

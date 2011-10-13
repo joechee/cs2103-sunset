@@ -59,4 +59,18 @@ public class UnfinCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"unfin", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "unfin <task number>\t\t\tUnmarks the completed task";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "unfin <task number>\n\tUnmarks the completed task";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
+	
 }

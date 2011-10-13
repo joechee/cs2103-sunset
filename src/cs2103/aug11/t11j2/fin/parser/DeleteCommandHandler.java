@@ -68,4 +68,18 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"delete", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		// TODO Auto-generated method stub
+		return "delete <task number>\t\t\tDeletes a task from your tasklist";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "delete <task number>\n\tDeletes a task from your tasklist";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

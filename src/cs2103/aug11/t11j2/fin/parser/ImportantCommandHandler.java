@@ -58,4 +58,17 @@ public class ImportantCommandHandler implements CommandParser.ICommandHandler {
 		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
 				"important", context);
 	}
+
+	@Override
+	public String showAbridgedHelp() {
+		return "important\t\t\t\tMarks a task as important";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "important <task>\n\tMarks a task as important";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
 }

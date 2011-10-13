@@ -78,4 +78,17 @@ public class SearchTasksWithPatternCommandHandler implements CommandParser.IComm
 				"search", context);
 	}
 
+	@Override
+	public String showAbridgedHelp() {
+		return "search <patterns>\t\t\tSearch the tasks containing the (all) the <patterns>";
+	}
+
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		// TODO Auto-generated method stub
+		final String result = "search <patterns>\n\tSearch the tasks containing the (all) the <patterns>";
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
+
 }
