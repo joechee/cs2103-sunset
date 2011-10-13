@@ -192,7 +192,6 @@ public class GUI implements IUserInterface {
 			renderTaskResult(cmdRes);
 			break;
 		case Exit:
-			FinApplication.INSTANCE.saveEnvironment();
 			echo("Thank you for using Fin.\n");
 			echo("Goodbye!\n");
 			return true;

@@ -37,7 +37,6 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 		for (Task t : context.getTaskList()) {
 			FinApplication.INSTANCE.deleteTask(t.getUniqId());			
 		}
-
 		// after a delete all, invoke a show
 		ShowCommandHandler showCmdHandler = new ShowCommandHandler();
 		return showCmdHandler.executeCommands(showCmdHandler.getCommandStrings()

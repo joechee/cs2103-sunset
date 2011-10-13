@@ -40,8 +40,6 @@ public class AddCommandHandler implements ICommandHandler {
 		} else {
 			Task newtask = new Task(arguments);
 			FinApplication.INSTANCE.add(newtask);
-			FinApplication.INSTANCE.saveEnvironment();
-
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.Task, newtask);
 		}

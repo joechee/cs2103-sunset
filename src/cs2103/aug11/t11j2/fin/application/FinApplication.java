@@ -39,6 +39,7 @@ public enum FinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
+		saveEnvironment();
 	}
 
 	private void addTaskToTag(String tag, Task task) {
@@ -58,11 +59,7 @@ public enum FinApplication {
 	 * @return List of Tasks sorted by pIndex
 	 */
 	public List<Task> getTasks() {
-		List<Task> tasks = new ArrayList<Task>();
-
-		for (Task t : taskList) {
-			tasks.add(t);
-		}
+		List<Task> tasks = new ArrayList<Task>(taskList);
 
 		Collections.sort(tasks, new TaskSortByDueDate());
 
@@ -150,6 +147,7 @@ public enum FinApplication {
 		if (todelete != null) {
 			taskMap.remove(taskUID);
 			taskList.remove(todelete);
+			saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -167,6 +165,7 @@ public enum FinApplication {
 
 		if (task != null) {
 			task.flag();
+			saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -183,6 +182,7 @@ public enum FinApplication {
 
 		if (task != null) {
 			task.unflag();
+			saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -199,7 +199,9 @@ public enum FinApplication {
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
-			return task.fin();
+			boolean finTask = task.fin();
+			saveEnvironment();
+			return finTask;
 		} else {
 			return false;
 		}
@@ -216,6 +218,7 @@ public enum FinApplication {
 
 		if (task != null) {
 			task.unfin();
+			saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -230,6 +233,7 @@ public enum FinApplication {
 	void clearEnvironment() {
 		taskMap.clear();
 		taskList.clear();
+		saveEnvironment();
 	}
 	
 	/**
@@ -257,7 +261,7 @@ public enum FinApplication {
 	 * @see loadEnvironment 
 	 */
 
-	public void saveEnvironment() {
+	private void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
 		try {
 			fs.serialize(taskFileName);

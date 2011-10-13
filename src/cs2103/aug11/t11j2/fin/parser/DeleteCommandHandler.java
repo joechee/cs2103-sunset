@@ -57,7 +57,6 @@ public class DeleteCommandHandler implements ICommandHandler {
 	
 			Task todelete = context.getTaskList().get(taskIndex - 1);
 			FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
-	
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.Task, todelete);
 		}
