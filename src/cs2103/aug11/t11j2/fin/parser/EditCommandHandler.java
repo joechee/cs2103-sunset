@@ -15,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  * 
  */
-public class EditCommandHandler implements CommandParser.ICommandHandler {
+public class EditCommandHandler implements ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -35,7 +35,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		
 		if (arguments.isEmpty()) {
-			return showHelp(context);
+			return showHelp();
 		}
 
 		int taskIndex;
@@ -62,7 +62,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		if (tokens[1].equals("to")) {
 			// replace current task with new task
 			
-			if (tokens.length == 2) return showHelp(context);
+			if (tokens.length == 2) return showHelp();
 			
 			FinApplication.INSTANCE.deleteTask(task.getUniqId());
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
@@ -72,7 +72,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("at")) {
 			// add tag to current task
 			
-			if (tokens.length == 2) return showHelp(context);
+			if (tokens.length == 2) return showHelp();
 
 			task.addTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -81,7 +81,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("rt")) {
 			// remove tag from task
 			
-			if (tokens.length == 2) return showHelp(context);
+			if (tokens.length == 2) return showHelp();
 
 			task.removeTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -90,7 +90,7 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 		} else if (tokens[1].equals("due")) {
 			// set new due date
 			
-			if (tokens.length == 2) return showHelp(context);
+			if (tokens.length == 2) return showHelp();
 
 			task.setDueDate(tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -102,15 +102,10 @@ public class EditCommandHandler implements CommandParser.ICommandHandler {
 			return new CommandResult(this, tokens[0] + " " + tokens[1],
 					CommandResult.RenderType.Task, task);			
 		} else {
-			return showHelp(context);
+			return showHelp();
 		}
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands(helpCmdHandler.getCommandStrings().get(0),
-				"edit", context);
-	}
 
 	@Override
 	public String showAbridgedHelp() {

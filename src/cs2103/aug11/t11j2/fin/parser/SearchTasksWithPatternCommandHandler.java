@@ -12,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for the "search tasks" command Usage: search [filters]
  * 
  */
-public class SearchTasksWithPatternCommandHandler implements CommandParser.ICommandHandler {
+public class SearchTasksWithPatternCommandHandler implements ICommandHandler {
 	
 	@Override
 	@SuppressWarnings("serial")
@@ -63,7 +63,7 @@ public class SearchTasksWithPatternCommandHandler implements CommandParser.IComm
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
-			return showHelp(context);
+			return showHelp();
 		}
 		List<Task> tasks = null;
 		tasks = FinApplication.INSTANCE.getTasks();
@@ -72,11 +72,6 @@ public class SearchTasksWithPatternCommandHandler implements CommandParser.IComm
 				CommandResult.RenderType.TaskList, tasks);
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"search", context);
-	}
 
 	@Override
 	public String showAbridgedHelp() {

@@ -12,7 +12,7 @@ public class CommandResult {
 
 	private RenderType renderType;
 	private Object returnObject;
-	private CommandParser.ICommandHandler command;
+	private ICommandHandler command;
 	private String argument;
 
 	public RenderType getRenderType() {
@@ -33,7 +33,7 @@ public class CommandResult {
 		this.argument = argument;
 	}
 
-	public CommandParser.ICommandHandler getCommand() {
+	public ICommandHandler getCommand() {
 		return command;
 	}
 
@@ -41,7 +41,7 @@ public class CommandResult {
 		return argument;
 	}
 
-	CommandResult(CommandParser.ICommandHandler command, String argument,
+	CommandResult(ICommandHandler command, String argument,
 			RenderType renderType, Object returnObject)
 			throws FinProductionException {
 		this.command = command;

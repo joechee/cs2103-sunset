@@ -11,7 +11,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public class JokeCommandHandler implements CommandParser.ICommandHandler {
+public class JokeCommandHandler implements ICommandHandler {
 	class Joke {
 		List<String> jokeList;
 		Serializer jokeSerial;
@@ -75,12 +75,6 @@ public class JokeCommandHandler implements CommandParser.ICommandHandler {
 				CommandResult.RenderType.String, joke);
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"joke", context);
-	}
-
 	@Override
 	public String showAbridgedHelp() {
 		return "";

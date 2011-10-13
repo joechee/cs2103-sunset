@@ -6,7 +6,6 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parser.CommandParser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -45,12 +44,6 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 				.get(0), "", context);
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"deleteall", context);
-	}
-
 	@Override
 	public String showAbridgedHelp() {
 		return "";

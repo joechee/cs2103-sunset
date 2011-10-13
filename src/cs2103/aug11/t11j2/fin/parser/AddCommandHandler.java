@@ -15,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  * 
  */
-public class AddCommandHandler implements CommandParser.ICommandHandler {
+public class AddCommandHandler implements ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -25,6 +25,7 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 				add("a");
 				add("ad");
 				add("add");
+				add("+");
 			}
 		};
 	}
@@ -35,7 +36,7 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 		
 		
 		if (arguments.trim().length() == 0) {
-			return showHelp(context);
+			return showHelp();
 		} else {
 			Task newtask = new Task(arguments);
 			FinApplication.INSTANCE.add(newtask);
@@ -46,12 +47,6 @@ public class AddCommandHandler implements CommandParser.ICommandHandler {
 		}
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"add", context);
-	}
-
 	@Override
 	public String showAbridgedHelp() {
 		return "add <task>\t\t\t\tAdds <task> to your task list";

@@ -8,7 +8,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public class UnImportantCommandHandler implements CommandParser.ICommandHandler {
+public class UnImportantCommandHandler implements ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -32,7 +32,7 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
-			return showHelp(context);
+			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
 				FinApplication.INSTANCE.unflagTask(i.getUniqId());
@@ -58,11 +58,7 @@ public class UnImportantCommandHandler implements CommandParser.ICommandHandler 
 				CommandResult.RenderType.Task, todelete);
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"unimportant", context);
-	}
+
 
 	@Override
 	public String showAbridgedHelp() {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parser.CommandParser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -13,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  * 
  */
-public class HelpCommandHandler implements CommandParser.ICommandHandler {
+public class HelpCommandHandler implements ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -86,7 +85,7 @@ public class HelpCommandHandler implements CommandParser.ICommandHandler {
 	public CommandResult showHelp() throws FinProductionException {
 		// TODO Auto-generated method stub
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, "");
+				CommandResult.RenderType.String, "help\n\tBrings you to this page. Hope that helped!");
 	}
 	
 	

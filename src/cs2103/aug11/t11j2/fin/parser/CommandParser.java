@@ -1,7 +1,6 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +11,6 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class CommandParser {
-
-	public static interface ICommandHandler {
-		public List<String> getCommandStrings();
-
-		CommandResult executeCommands(String command, String arguments,
-				UIContext context) throws FinProductionException;
-		
-		public String showAbridgedHelp();
-		public CommandResult showHelp() throws FinProductionException;
-	}
 
 	public static CommandParser INSTANCE = new CommandParser();
 

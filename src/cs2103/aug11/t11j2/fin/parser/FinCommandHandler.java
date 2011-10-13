@@ -13,7 +13,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class FinCommandHandler implements CommandParser.ICommandHandler {
+public class FinCommandHandler implements ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -34,7 +34,7 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
-			return showFinHelp(context);
+			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
 				FinApplication.INSTANCE.finTask(i.getUniqId());
@@ -61,12 +61,6 @@ public class FinCommandHandler implements CommandParser.ICommandHandler {
 				CommandResult.RenderType.Task, todelete);
 	}
 	
-	CommandResult showFinHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"fin", context);
-	}
-
 	@Override
 	public String showAbridgedHelp() {
 		// TODO Auto-generated method stub

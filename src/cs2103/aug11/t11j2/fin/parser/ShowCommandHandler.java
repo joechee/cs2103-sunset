@@ -15,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class ShowCommandHandler implements CommandParser.ICommandHandler {
+public class ShowCommandHandler implements ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -28,6 +28,12 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 				add("show");
 				add("ls");
 				add("list");
+				add("view");
+				add("v");
+				add("vi");
+				add("vie");
+				add("viwe");
+				
 			}
 		};
 	}
@@ -56,12 +62,6 @@ public class ShowCommandHandler implements CommandParser.ICommandHandler {
 				CommandResult.RenderType.TaskList, tasks);
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"show", context);
-	}
-
 	@Override
 	public String showAbridgedHelp() {
 		return "show <filters>\t\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";

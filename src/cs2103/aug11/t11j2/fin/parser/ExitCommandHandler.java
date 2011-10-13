@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parser.CommandParser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
@@ -13,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Joe Chee
  *
  */
-public class ExitCommandHandler implements CommandParser.ICommandHandler {
+public class ExitCommandHandler implements ICommandHandler {
 	
 	/**
 	 * Used in conjunction with <code>CommandParser</code>. 
@@ -42,8 +41,7 @@ public class ExitCommandHandler implements CommandParser.ICommandHandler {
 
 	@Override
 	public String showAbridgedHelp() {
-		// TODO Auto-generated method stub
-		return "";
+		return "exit\t\t\t\t\tSaves your task list and terminates Fin.";
 	}
 
 	@Override

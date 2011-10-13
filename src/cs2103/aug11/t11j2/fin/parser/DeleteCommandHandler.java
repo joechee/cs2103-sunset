@@ -13,7 +13,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class DeleteCommandHandler implements CommandParser.ICommandHandler {
+public class DeleteCommandHandler implements ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -35,7 +35,7 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 			UIContext context) throws FinProductionException {
 		
 		if (arguments.isEmpty()) {
-			return showHelp(context);
+			return showHelp();
 		}
 
 		if (arguments.toLowerCase().equals("all")) {
@@ -63,11 +63,7 @@ public class DeleteCommandHandler implements CommandParser.ICommandHandler {
 		}
 	}
 	
-	CommandResult showHelp(UIContext context) throws FinProductionException {
-		HelpCommandHandler helpCmdHandler = new HelpCommandHandler();
-		return helpCmdHandler.executeCommands( helpCmdHandler.getCommandStrings().get(0),
-				"delete", context);
-	}
+
 
 	@Override
 	public String showAbridgedHelp() {
