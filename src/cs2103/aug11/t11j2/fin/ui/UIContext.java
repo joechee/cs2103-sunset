@@ -26,11 +26,11 @@ public class UIContext {
 		return status;
 	}
 
-	void setFilter(String filter) {
+	public void setFilter(String filter) {
 		this.filter = filter;
 	}
 
-	String getFilter() {
+	public String getFilter() {
 		return this.filter;
 	}
 
