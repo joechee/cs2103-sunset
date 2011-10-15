@@ -1,5 +1,6 @@
 package cs2103.aug11.t11j2.fin.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -28,6 +29,9 @@ public class FinCLIComposite extends Composite {
 	ScrolledComposite displaySC;
 	Text input;
 	Vector<FinCLIInputListener> userInputListeners = new Vector<FinCLIInputListener>();
+	
+	private List<String> userInputHistory = new ArrayList<String>();
+	private int userInputHistoryPointer = 0;
 
 	public FinCLIComposite(Composite parent, int style) {
 		super(parent, style);
@@ -105,7 +109,21 @@ public class FinCLIComposite extends Composite {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				return;
+				if (e.keyCode == SWT.ARROW_UP) {
+					if (userInputHistoryPointer > 0) {
+						userInputHistoryPointer--;
+						input.setText(userInputHistory.get(userInputHistoryPointer));
+					}
+				} else if (e.keyCode == SWT.ARROW_DOWN) {
+					if (userInputHistoryPointer < userInputHistory.size()) {
+						userInputHistoryPointer++;
+						if (userInputHistoryPointer < userInputHistory.size()) {
+							input.setText(userInputHistory.get(userInputHistoryPointer));
+						} else {
+							input.setText("");
+						}
+					}
+				}
 			}
 
 			@Override
@@ -113,10 +131,13 @@ public class FinCLIComposite extends Composite {
 				if (e.keyCode == 13) {
 					String userInput = input.getText().trim();
 					if (userInput.length() > 0) {
+						userInputHistory.add(userInput);
+						userInputHistoryPointer = userInputHistory.size();
+						
 						runInput(userInput);
 						input.setText("");
 					}
-				}
+				} 
 			}
 
 		});
