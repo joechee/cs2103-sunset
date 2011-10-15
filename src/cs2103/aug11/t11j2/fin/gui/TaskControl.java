@@ -1,5 +1,6 @@
 package cs2103.aug11.t11j2.fin.gui;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,12 +13,22 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.internal.gdip.Rect;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -33,8 +44,150 @@ public class TaskControl extends Composite {
 	StyledText taskNumber;
 	Button deleteCheckbox;
 	Integer taskPosition;
+	
+	Composite quickActions = null;
 
 	Composite parent = null;
+	
+	
+	private Listener onFinEnter;
+	private Listener onFinExit;
+	private Listener onFinClick;
+	
+	private Listener onImptEnter;
+	private Listener onImptExit;
+	private Listener onImptClick;
+	
+	private Listener onDeleteEnter;
+	private Listener onDeleteExit;
+	private Listener onDeleteClick;
+	
+
+	private static Canvas createQuickButton(Composite parent, InputStream image, InputStream imageHover) {
+	    ImageData delImageData = new ImageData(image);
+	    ImageData delImageOverData = new ImageData(imageHover);
+	    final Image delImage = new Image(parent.getDisplay(), delImageData);
+	    final Image delImageOver = new Image(parent.getDisplay(), delImageOverData);
+
+		final Canvas canvas = new Canvas(parent, SWT.None);
+		canvas.setData(false);
+		canvas.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				if ((Boolean) canvas.getData() == false) {
+					e.gc.drawImage(delImage,-2,-2);
+				} else {
+					e.gc.drawImage(delImageOver,-2,-2);
+				}
+			}
+	    });
+		canvas.setLayoutData(new GridData(GridData.CENTER, GridData.CENTER, true, true));
+		
+		canvas.addListener(SWT.MouseEnter, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				canvas.setData(true);
+				canvas.redraw();
+			}
+		});
+		
+		canvas.addListener(SWT.MouseExit, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				canvas.setData(false);
+				canvas.redraw();
+			}
+		});
+		
+		canvas.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
+		
+		return canvas;
+	}
+
+	
+	private static void initDeleteEvent(Canvas deleteCanvas, final TaskControl parent) {
+	    deleteCanvas.addListener(SWT.MouseEnter, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onDeleteEnter != null) {
+	    			parent.onDeleteEnter.handleEvent(e);
+	    		}
+	    	}
+	    });
+	    deleteCanvas.addListener(SWT.MouseExit, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onDeleteExit != null) {
+	    			parent.onDeleteExit.handleEvent(e);
+	    		}
+	    	}
+	    });
+	    deleteCanvas.addListener(SWT.MouseUp, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onDeleteClick != null) {
+	    			parent.onDeleteClick.handleEvent(e);
+	    		}
+	    	}
+	    });
+	}
+	
+	private static void initImptEvent(Canvas imptCanvas, final TaskControl parent) {
+	    imptCanvas.addListener(SWT.MouseEnter, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onImptEnter != null) {
+	    			parent.onImptEnter.handleEvent(e);
+	    		}
+	    	}
+	    });
+	    imptCanvas.addListener(SWT.MouseExit, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onImptExit != null) {
+	    			parent.onImptExit.handleEvent(e);
+	    		}
+	    	}
+	    });
+	    imptCanvas.addListener(SWT.MouseUp, new Listener() {
+	    	@Override
+	    	public void handleEvent(Event e) {
+	    		if (parent.onImptClick != null) {
+	    			parent.onImptClick.handleEvent(e);
+	    		}
+	    	}
+	    });
+	}
+	
+	private static Composite initQuickActions(final TaskControl parent, Task task) {
+		final Composite tr = new Composite(parent, SWT.NONE);
+				
+	    GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+	    tr.setLayout(gridLayout);
+	    
+	    
+	    Canvas deleteCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("del.png"), 
+	    		parent.getClass().getResourceAsStream("delo.png"));
+	    
+	    // if current task is important, set the default impt button to the highlighted one
+	    Canvas imptCanvas;
+	    if (task.isImportant()) {
+	    	imptCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("impto.png"), 
+	    			parent.getClass().getResourceAsStream("impt.png"));	    	
+	    } else {
+	    	imptCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("impt.png"), 
+	    			parent.getClass().getResourceAsStream("impto.png"));
+	    }
+	    
+	    
+	    initDeleteEvent(deleteCanvas, parent);
+		initImptEvent(imptCanvas, parent);
+
+		tr.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
+		
+		return tr;
+	}
     
 	private static StyledText initTaskNumber(Composite parent, Task task,
 			Integer taskPosition) {
@@ -92,7 +245,9 @@ public class TaskControl extends Composite {
 		return dueBy;
 	}
 	
-	private static Button initDeleteButton(final Composite parent, boolean isFin) {
+	
+		
+	private static Button initFinButton(final TaskControl parent, boolean isFin) {
 		final Button button = new Button(parent, SWT.CHECK);
 		
 		button.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
@@ -102,19 +257,8 @@ public class TaskControl extends Composite {
 		button.addListener(SWT.MouseEnter, new Listener(){
 			@Override
 			public void handleEvent(Event event) {
-				Composite fincli = parent.getParent();
-				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
-					fincli = fincli.getParent();
-				}
-				
-				if (button.getSelection() == false) {
-					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("fin " + ((TaskControl)parent).taskPosition);
-					}
-				} else {
-					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("unfin " + ((TaskControl)parent).taskPosition);
-					}
+				if (parent.onFinEnter != null) {
+					parent.onFinEnter.handleEvent(event);
 				}
 			}
 		});
@@ -122,12 +266,8 @@ public class TaskControl extends Composite {
 		button.addListener(SWT.MouseExit, new Listener(){
 			@Override
 			public void handleEvent(Event event) {
-				Composite fincli = parent.getParent();
-				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
-					fincli = fincli.getParent();
-				}
-				if (fincli instanceof FinCLIComposite) {
-					((FinCLIComposite)fincli).removeHint();
+				if (parent.onFinExit != null) {
+					parent.onFinExit.handleEvent(event);
 				}
 			}			
 		});
@@ -135,25 +275,16 @@ public class TaskControl extends Composite {
 		button.addListener(SWT.MouseUp, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				Composite fincli = parent.getParent();
-				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
-					fincli = fincli.getParent();
-				}
-				if (fincli instanceof FinCLIComposite) {
-					((FinCLIComposite)fincli).removeHint();
-				
-					if (button.getSelection() == false) {
-						((FinCLIComposite)fincli).runInput("unfin " + ((TaskControl)parent).taskPosition);
-					} else {
-						((FinCLIComposite)fincli).runInput("fin " + ((TaskControl)parent).taskPosition);
-					}
+				if (parent.onFinClick != null) {
+					parent.onFinClick.handleEvent(event);
 				}
 			}
 		});
 		
 		return button;
 	}
-
+	
+	public boolean mouseOver = false;
 	public TaskControl(Composite parent, int style, Task task,
 			Integer taskPosition) {
 
@@ -164,8 +295,9 @@ public class TaskControl extends Composite {
 		this.taskNumber = initTaskNumber(this, task, taskPosition);
 		this.dueBy = initDueBy(this, task);
 		this.taskText = new TaskStyledText(this, SWT.NONE, task);
-		this.deleteCheckbox = initDeleteButton(this, task.isFin());
+		this.deleteCheckbox = initFinButton(this, task.isFin());
 		this.taskPosition = taskPosition;
+		this.quickActions = initQuickActions(this, task);
 		
 		// dispose
 		this.addDisposeListener(new DisposeListener() {
@@ -180,27 +312,7 @@ public class TaskControl extends Composite {
 				TaskControl.this.controlResized(e);
 			}
 		});
-		
-		final Composite parentClass = this;
-		
-		this.addListener(SWT.MouseExit, new Listener(){
-			@Override
-			public void handleEvent(Event event) {
-				Rectangle rect = parentClass.getClientArea();
-				if (rect.contains(event.x, event.y)) {
-					return;
-				}
-				deleteCheckbox.setVisible(false);				
-			}
-			
-		});
-		this.addListener(SWT.MouseEnter, new Listener(){
-			@Override
-			public void handleEvent(Event event) {
-				deleteCheckbox.setVisible(true);				
-			}
-		});
-		
+				
 
 		this.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
 		resize();
@@ -224,8 +336,17 @@ public class TaskControl extends Composite {
 		taskNumber.setBounds(checkExtent.x + 20, 0, taskNumberExtent.x, taskNumberExtent.y);
 		taskText.setBounds(checkExtent.x + 20 + taskNumberExtent.x + 20, taskNumberExtent.y
 				- taskTextExtent.y - 2, taskTextExtent.x, taskTextExtent.y);
-		dueBy.setBounds(width - dueByExtent.x - 5, taskNumberExtent.y
-				- dueByExtent.y - 2, dueByExtent.x, dueByExtent.y);
+		
+		if (mouseOver) {
+			quickActions.setBounds(width - taskNumberExtent.y * 2, 1, (taskNumberExtent.y-2) * 2, (taskNumberExtent.y-2));
+			dueBy.setBounds(0,0,0,0);
+			deleteCheckbox.setVisible(true);
+		} else {
+			quickActions.setBounds(0,0,0,0);
+			dueBy.setBounds(width - dueByExtent.x - 5, taskNumberExtent.y
+					- dueByExtent.y - 2, dueByExtent.x, dueByExtent.y);
+			deleteCheckbox.setVisible(false);
+		}
 	}
 
 	public Point computeSize(int wHint, int hHint, boolean changed) {
@@ -248,5 +369,52 @@ public class TaskControl extends Composite {
 
 	private int max(int a, int b) {
 		return (a > b ? a : b);
+	}
+
+	
+	/**
+	 * Whether the current task is flagged as important
+	 * @return true if task is important and false otherwise
+	 */
+	public boolean isImportant() {
+		return task.isImportant();
+	}
+	/**
+	 * Whether the current task is flagged as finished
+	 * @return true if task is finished and false otherwise
+	 */
+	public boolean isFin() {
+		return task.isFin();
+	}
+
+
+	public void setOnFinEnter(Listener onFinEnter) {
+		this.onFinEnter = onFinEnter;
+	}
+	public void setOnFinExit(Listener onFinExit) {
+		this.onFinExit = onFinExit;
+	}
+	public void setOnFinClick(Listener onFinClick) {
+		this.onFinClick = onFinClick;
+	}
+
+	public void setOnDeleteEnter(Listener onDeleteEnter) {
+		this.onDeleteEnter = onDeleteEnter;
+	}
+	public void setOnDeleteExit(Listener onDeleteExit) {
+		this.onDeleteExit = onDeleteExit;
+	}
+	public void setOnDeleteClick(Listener onDeleteClick) {
+		this.onDeleteClick = onDeleteClick;
+	}
+
+	public void setOnImptEnter(Listener onImptEnter) {
+		this.onImptEnter = onImptEnter;
+	}
+	public void setOnImptExit(Listener onImptExit) {
+		this.onImptExit = onImptExit;
+	}
+	public void setOnImptClick(Listener onImptClick) {
+		this.onImptClick = onImptClick;
 	}
 }

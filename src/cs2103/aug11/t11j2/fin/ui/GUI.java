@@ -83,9 +83,7 @@ public class GUI implements IUserInterface {
 		cli.addUserInputListener(new FinCLIInputListener() {
 			@Override
 			public void UserInput(FinCLIInputEvent event) {
-				CommandResult feedback = null;
-				feedback = runCommand(event.input);
-				if (renderCommandResult(feedback)) {
+				if (runCommandAndRender(event.input)) {
 					EXIT = true;
 				}
 
@@ -113,6 +111,19 @@ public class GUI implements IUserInterface {
 
 		display.dispose();
 	}
+	
+	/**
+	 * Checks if a user input resembles a task 
+	 * 
+	 * @param (String) user input
+	 * @return true if the user input resembles a task
+	 */
+	private static boolean looksLikeTask(String argument) {
+		boolean threeOrMoreWords = argument.split("\\s").length > 2;
+		boolean moreThanTenChar = argument.length() > 10;
+		
+		return threeOrMoreWords && moreThanTenChar;
+	}
 
 	/**
 	 * refresh current context by calling show command
@@ -128,12 +139,15 @@ public class GUI implements IUserInterface {
 	}
 
 	private static void displayTasks() {
-		CommandResult feedback = null;
-		feedback = runCommand("show");
-
-		renderCommandResult(feedback);
+		runCommandAndRender("show");
 	}
 
+	private static boolean runCommandAndRender(String userArgs) {
+		CommandResult feedback = null;
+		feedback = runCommand(userArgs);
+		
+		return renderCommandResult(feedback);
+	}
 	private static CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
@@ -196,7 +210,12 @@ public class GUI implements IUserInterface {
 			echo("Goodbye!\n");
 			return true;
 		case UnrecognizedCommand:
-			echo("Command not recognized!\n");
+			if (looksLikeTask(cmdRes.getArgument())) {
+				runCommandAndRender("add " + cmdRes.getArgument());
+			} else {
+				echo("Command not recognized!\n\n");
+			}
+			break;
 		}
 
 		refresh();

@@ -6,18 +6,25 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Scrollable;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 
 public class TaskContainer extends Composite {
 	int taskCount = 0;
+	
 	public TaskContainer(Composite parent, int style) {
 		super(parent, style);
 		
@@ -33,7 +40,34 @@ public class TaskContainer extends Composite {
 				false);
 		this.setLayoutData(gridData);
 		
+		final Composite self = this;
+		
+		this.addListener(SWT.MouseMove, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				for (Control c : self.getChildren() ) {
+					Rectangle r = c.getBounds();
+					if (r.contains(event.x, event.y)) { 
+						if (c instanceof TaskControl) {
+							
+							if (previousOver != null) {
+								previousOver.mouseOver = false;
+								previousOver.resize();
+								previousOver.setEnabled(false);
+							}
+							
+							((TaskControl) c).mouseOver = true;
+							((TaskControl) c).resize();
+							((TaskControl) c).setEnabled(true);
+							previousOver = ((TaskControl)c);
+						}
+					}
+				}
+			}
+		});
 	}
+	
+	TaskControl previousOver = null;
 	
 	public void addTask(Task t) {
 		final TaskControl taskControl = new TaskControl(this, SWT.NONE, t, ++taskCount);
@@ -41,8 +75,180 @@ public class TaskContainer extends Composite {
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
 		taskControl.setLayoutData(gridData);
+		taskControl.setEnabled(false);
+		
+		initTaskEvent(taskControl);
 		
 		this.layout(true);
 	}
+	
+	private void initTaskEvent(final TaskControl taskControl) {
 
+		// fin events deal with what happens when the user interacts
+		// with the button to Fin. an event
+		initFinEvent(taskControl);
+		
+		// delete events deal with what happens when user interacts
+		// with the delete button
+		initDeleteEvent(taskControl);
+		
+		// delete events deal with what happens when user interacts
+		// with the impt button
+		initImptEvent(taskControl);
+	}
+	
+	private void initDeleteEvent(final TaskControl taskControl) {
+		// when user mouse over: shows the hint
+		taskControl.setOnDeleteEnter(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).setHint("delete " + ((TaskControl)taskControl).taskPosition);
+				}
+			}
+		});
+		
+		taskControl.setOnDeleteExit(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				}
+			}			
+		});
+		
+		taskControl.setOnDeleteClick(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				
+					((FinCLIComposite)fincli).runInput("delete " + ((TaskControl)taskControl).taskPosition);
+				}
+			}
+		});
+	}
+	
+	private void initFinEvent(final TaskControl taskControl) {
+		// when user mouse over: shows the hint
+		taskControl.setOnFinEnter(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				if (((Button)e.widget).getSelection() == false) {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("fin " + ((TaskControl)taskControl).taskPosition);
+					}
+				} else {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("unfin " + ((TaskControl)taskControl).taskPosition);
+					}
+				}
+			}
+		});
+		
+		taskControl.setOnFinExit(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				}
+			}			
+		});
+		
+		taskControl.setOnFinClick(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				
+					if (((Button)e.widget).getSelection() == false) {
+						((FinCLIComposite)fincli).runInput("unfin " + ((TaskControl)taskControl).taskPosition);
+					} else {
+						((FinCLIComposite)fincli).runInput("fin " + ((TaskControl)taskControl).taskPosition);
+					}
+				}
+			}
+		});
+	}
+
+	private void initImptEvent(final TaskControl taskControl) {
+		// when user mouse over: shows the hint
+		taskControl.setOnImptEnter(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				if (taskControl.isImportant()) {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("unimpt " + ((TaskControl)taskControl).taskPosition);
+					}
+				} else {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("impt " + ((TaskControl)taskControl).taskPosition);
+					}
+				}
+			}
+		});
+		
+		taskControl.setOnImptExit(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				}
+			}			
+		});
+		
+		taskControl.setOnImptClick(new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = taskControl.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).removeHint();
+				
+					if (taskControl.isImportant()) {
+						((FinCLIComposite)fincli).runInput("unimpt " + ((TaskControl)taskControl).taskPosition);
+					} else {
+						((FinCLIComposite)fincli).runInput("impt " + ((TaskControl)taskControl).taskPosition);
+					}
+				}
+			}
+		});
+	}
 }
