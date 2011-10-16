@@ -38,13 +38,20 @@ public class AddCommandHandler implements ICommandHandler {
 		if (arguments.trim().length() == 0) {
 			return showHelp();
 		} else {
-			Task newtask = new Task(arguments);
-			FinApplication.INSTANCE.add(newtask);
-			return new CommandResult(this, arguments,
-					CommandResult.RenderType.Task, newtask);
+			try {
+				Task newtask = new Task(arguments);
+				FinApplication.INSTANCE.add(newtask);
+				return new CommandResult(this, arguments,
+						CommandResult.RenderType.Task, newtask);
+			} catch (Exception IllegalArgumentException) {
+				return new CommandResult(this,arguments,
+						CommandResult.RenderType.Error,"Illegal placeholder used!");
+			}
 		}
 	}
 	
+
+
 	@Override
 	public String showAbridgedHelp() {
 		return "add <task>\t\t\t\tAdds <task> to your task list";

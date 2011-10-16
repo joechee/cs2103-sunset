@@ -232,6 +232,9 @@ public class GUI implements IUserInterface {
 				echo("Command not recognized!\n");
 			}
 			break;
+		case Error:
+			renderString(cmdRes);
+			break;
 		}
 
 		refresh();

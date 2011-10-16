@@ -7,7 +7,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 
 public class CommandResult {
 	public static enum RenderType {
-		TaskList, Task, String, UnrecognizedCommand, InvalidTaskIndex, Null, Exit
+		TaskList, Task, String, UnrecognizedCommand, InvalidTaskIndex, Null, Exit, Error
 	};
 
 	private RenderType renderType;
@@ -85,7 +85,19 @@ public class CommandResult {
 			this.returnObject = returnObject;
 
 			break;
+		
+		case Error:
+			// Ensures that returnObject is of type String
+			// Ensures that returnObject is of type String
+			if (!(returnObject instanceof String)) {
+				throw (new FinProductionException(
+						"Command result type is invalid for String"));
+			}
 
+			this.renderType = renderType;
+			this.returnObject = returnObject;
+
+			break;	
 		}
 	}
 

@@ -56,7 +56,10 @@ public class Task {
 		this.pIndex = 0;
 	}
 	
-	public Task(String taskName) {
+	public Task(String taskName) throws IllegalArgumentException{
+		if (!validateTaskName(taskName)) {
+			throw new IllegalArgumentException("Invalid string within task description!");
+		}
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		boolean parsed = dateParser.parse(taskName);
@@ -74,6 +77,13 @@ public class Task {
 		this.importance = EImportance.NORMAL;
 
 		parseTags();
+	}
+
+	private boolean validateTaskName(String s) {
+		if (s.contains(FinConstants.DUEDATE_PLACEHOLDER)){
+			return false;
+		}
+		return true;
 	}
 
 	public Task(Map<String, Object> dict) {
@@ -105,7 +115,7 @@ public class Task {
 		}
 	}
 
-	public static String sanitizeHashTag(String s) {
+	public static String sanitizeHashTag(String s) {  
 		StringBuilder stringBuilder = new StringBuilder();
 
 		for (int i = 0; i < s.length(); ++i) {
@@ -123,6 +133,10 @@ public class Task {
 	}
 
 	public static boolean isHashTag(String s) {
+		if (s.isEmpty()) {
+			return false;
+		}
+		
 		boolean hasHashTag = s.charAt(0) == FinConstants.HASH_TAG_CHAR;
 
 		if (!hasHashTag) {

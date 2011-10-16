@@ -138,6 +138,10 @@ public class CLI implements Fin.IUserInterface {
 			break;
 		case InvalidTaskIndex:
 			echo("Invalid Task Index!\n\n");
+			break;
+		case Error:
+			renderString(cmdRes);
+			break;
 		}
 		return false;
 	}
