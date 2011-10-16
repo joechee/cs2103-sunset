@@ -40,6 +40,6 @@ public final class FinConstants {
 	public static final String DEFAULT_FONT = "consolas";
 	public static final int DEFAULT_FONTSIZE = 12;
 
-	public static final String INPUT_FONT = "Segoe UI";
+	public static final String INPUT_FONT = "Calibri";
 	public static final int INPUT_FONTSIZE = 14;
 }

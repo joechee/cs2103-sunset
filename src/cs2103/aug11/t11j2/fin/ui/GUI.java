@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -79,7 +80,6 @@ public class GUI implements IUserInterface {
 
 		cli = new FinCLIComposite(shell, SWT.NONE);
 		cli.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
 		cli.addUserInputListener(new FinCLIInputListener() {
 			@Override
 			public void UserInput(FinCLIInputEvent event) {
@@ -92,6 +92,15 @@ public class GUI implements IUserInterface {
 		
 		createFooter(shell);
 
+		
+
+	    ImageData finIconData = new ImageData(this.getClass().getResourceAsStream("fin_icon.png"));
+	    Image finIcon = new Image(display, finIconData);
+	    GC gc = new GC(finIcon);
+	    gc.dispose();
+
+	    shell.setText("Fin.");
+	    shell.setImage(finIcon);
 		shell.layout(true);
 
 		displayWelcomeMessage();
