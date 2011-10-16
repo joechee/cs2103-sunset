@@ -46,6 +46,8 @@ public class Task {
 	private Date timeAdded;
 	private UUID uniqId;
 	private Integer pIndex;
+	private boolean finished;
+	private boolean important;
 
 	// Constructors
 	
@@ -53,7 +55,9 @@ public class Task {
 		this.uniqId = UUID.randomUUID();
 		this.importance = EImportance.NORMAL;
 		this.timeAdded = new Date();
-		this.pIndex = 0;
+//		this.pIndex = 0;
+		this.finished = false;
+		this.important = false;
 	}
 	
 	public Task(String taskName) throws IllegalArgumentException{
@@ -71,10 +75,12 @@ public class Task {
 
 		this.taskName = taskName;
 		this.timeDue = dueDate;
-		this.pIndex = 0;
+//		this.pIndex = 0;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
-		this.importance = EImportance.NORMAL;
+//		this.importance = EImportance.NORMAL;
+		this.finished = false;
+		this.important = false;		
 
 		parseTags();
 	}
@@ -90,10 +96,12 @@ public class Task {
 		this.taskName = (String) dict.get("Name");
 		this.uniqId = UUID.fromString((String) dict.get("UID"));
 		this.timeAdded = (Date) dict.get("DateAdded");
-		this.pIndex = (Integer) dict.get("Priority");
-		this.importance = EImportance.fromString((String) dict
-				.get("Importance"));
+//		this.pIndex = (Integer) dict.get("Priority");
+//		this.importance = EImportance.fromString((String) dict
+//				.get("Importance"));
 		this.timeDue = (Date) dict.get("DueDate");
+		this.finished = (boolean) dict.get("Finished");
+		this.important = (boolean) dict.get("Important");
 
 		parseTags();
 	}
@@ -199,13 +207,13 @@ public class Task {
 		return newTags;
 	}
 
-	public void setImportance(EImportance importance) {
-		this.importance = importance;
-	}
-
-	public EImportance getImportance() {
-		return importance;
-	}
+//	public void setImportance(EImportance importance) {
+//		this.importance = importance;
+//	}
+//
+//	public EImportance getImportance() {
+//		return importance;
+//	}
 
 	public void setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
@@ -248,13 +256,13 @@ public class Task {
 		return uniqId;
 	}
 
-	public void setpIndex(Integer pIndex) {
+/*	public void setpIndex(Integer pIndex) {
 		this.pIndex = pIndex;
 	}
 
 	public Integer getpIndex() {
 		return pIndex;
-	}
+	}*/
 
 	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
@@ -262,8 +270,10 @@ public class Task {
 		tr.put("Name", this.taskName);
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
-		tr.put("Priority", this.getpIndex());
-		tr.put("Importance", this.getImportance().importance);
+//		tr.put("Priority", this.getpIndex());
+//		tr.put("Importance", this.getImportance().importance);
+		tr.put("Finished", this.isFin());
+		tr.put("Important", this.isImportant());
 
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());
@@ -273,18 +283,22 @@ public class Task {
 	}
 
 	public boolean fin() {
+		this.finished = true;
 		return this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	public void unfin() {
+		this.finished = false;
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	public void flag() {
+		this.important = true;
 		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 
 	public void unflag() {
+		this.important = false;
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 	
@@ -306,11 +320,13 @@ public class Task {
 	}
 	
 	public boolean isFin() {
-		return this.hasTag(FinConstants.FIN_HASH_TAG);
+//		return this.hasTag(FinConstants.FIN_HASH_TAG);
+		return this.finished;
 	}
 
 	public boolean isImportant() {
-		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
+//		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
+		return this.important;
 	}
 
 	@Override
