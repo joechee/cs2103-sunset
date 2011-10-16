@@ -43,7 +43,6 @@ public class Task {
 	private List<String> tags = new ArrayList<String>();
 	private EImportance importance;
 	private Date timeDue;
-	private Integer percentageCompleted;
 	private Date timeAdded;
 	private UUID uniqId;
 	private Integer pIndex;
@@ -55,7 +54,6 @@ public class Task {
 		this.importance = EImportance.NORMAL;
 		this.timeAdded = new Date();
 		this.pIndex = 0;
-		this.percentageCompleted = 0;
 	}
 	
 	public Task(String taskName) {
@@ -70,23 +68,9 @@ public class Task {
 
 		this.taskName = taskName;
 		this.timeDue = dueDate;
-		this.percentageCompleted = this.pIndex = 0;
+		this.pIndex = 0;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
-
-		parseTags();
-	}
-
-	Task(String taskName, EImportance importance, Date dueDate,
-			Integer percentageCompleted, Integer pIndex) {
-
-		this.taskName = taskName;
-		this.importance = importance;
-		this.timeDue = dueDate;
-		this.percentageCompleted = percentageCompleted;
-		this.timeAdded = new Date();
-		this.uniqId = UUID.randomUUID();
-		this.pIndex = pIndex;
 
 		parseTags();
 	}
@@ -98,7 +82,6 @@ public class Task {
 		this.pIndex = (Integer) dict.get("Priority");
 		this.importance = EImportance.fromString((String) dict
 				.get("Importance"));
-		this.percentageCompleted = (Integer) dict.get("Completed");
 		this.timeDue = (Date) dict.get("DueDate");
 
 		parseTags();
@@ -238,14 +221,6 @@ public class Task {
 		return timeDue;
 	}
 
-	public void setPercentageCompleted(Integer percentageCompleted) {
-		this.percentageCompleted = percentageCompleted;
-	}
-
-	public Integer getPercentageCompleted() {
-		return percentageCompleted;
-	}
-
 	public void setDateAdded(Date dateAdded) {
 		this.timeAdded = dateAdded;
 	}
@@ -273,8 +248,7 @@ public class Task {
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
 		tr.put("Priority", this.getpIndex());
-		// tr.put("Importance", this.getImportance().importance);
-		tr.put("Completed", this.getPercentageCompleted());
+		tr.put("Importance", this.getImportance().importance);
 
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());
@@ -284,12 +258,10 @@ public class Task {
 	}
 
 	public boolean fin() {
-		this.setPercentageCompleted(100);
 		return this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	public void unfin() {
-		this.setPercentageCompleted(0);
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
