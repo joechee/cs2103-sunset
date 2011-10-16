@@ -41,11 +41,9 @@ public class Task {
 
 	private String taskName;
 	private List<String> tags = new ArrayList<String>();
-	private EImportance importance;
 	private Date timeDue;
 	private Date timeAdded;
 	private UUID uniqId;
-	private Integer pIndex;
 	private boolean finished;
 	private boolean important;
 
@@ -53,9 +51,7 @@ public class Task {
 	
 	public Task() {
 		this.uniqId = UUID.randomUUID();
-		this.importance = EImportance.NORMAL;
 		this.timeAdded = new Date();
-//		this.pIndex = 0;
 		this.finished = false;
 		this.important = false;
 	}
@@ -75,10 +71,8 @@ public class Task {
 
 		this.taskName = taskName;
 		this.timeDue = dueDate;
-//		this.pIndex = 0;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
-//		this.importance = EImportance.NORMAL;
 		this.finished = false;
 		this.important = false;		
 
@@ -96,9 +90,6 @@ public class Task {
 		this.taskName = (String) dict.get("Name");
 		this.uniqId = UUID.fromString((String) dict.get("UID"));
 		this.timeAdded = (Date) dict.get("DateAdded");
-//		this.pIndex = (Integer) dict.get("Priority");
-//		this.importance = EImportance.fromString((String) dict
-//				.get("Importance"));
 		this.timeDue = (Date) dict.get("DueDate");
 		this.finished = (boolean) dict.get("Finished");
 		this.important = (boolean) dict.get("Important");
@@ -207,14 +198,6 @@ public class Task {
 		return newTags;
 	}
 
-//	public void setImportance(EImportance importance) {
-//		this.importance = importance;
-//	}
-//
-//	public EImportance getImportance() {
-//		return importance;
-//	}
-
 	public void setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
 		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
@@ -256,22 +239,12 @@ public class Task {
 		return uniqId;
 	}
 
-/*	public void setpIndex(Integer pIndex) {
-		this.pIndex = pIndex;
-	}
-
-	public Integer getpIndex() {
-		return pIndex;
-	}*/
-
 	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
 
 		tr.put("Name", this.taskName);
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
-//		tr.put("Priority", this.getpIndex());
-//		tr.put("Importance", this.getImportance().importance);
 		tr.put("Finished", this.isFin());
 		tr.put("Important", this.isImportant());
 
@@ -320,12 +293,10 @@ public class Task {
 	}
 	
 	public boolean isFin() {
-//		return this.hasTag(FinConstants.FIN_HASH_TAG);
 		return this.finished;
 	}
 
 	public boolean isImportant() {
-//		return this.hasTag(FinConstants.IMPORTANT_HASH_TAG);
 		return this.important;
 	}
 
