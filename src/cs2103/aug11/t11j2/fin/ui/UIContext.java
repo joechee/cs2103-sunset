@@ -26,7 +26,7 @@ public class UIContext {
 		return status;
 	}
 
-	public void setFilter(String filter) {
+	void setFilter(String filter) {
 		this.filter = filter;
 	}
 
