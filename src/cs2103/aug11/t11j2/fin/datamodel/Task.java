@@ -248,7 +248,7 @@ public class Task {
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
 		tr.put("Priority", this.getpIndex());
-		tr.put("Importance", this.getImportance().importance);
+//		tr.put("Importance", this.getImportance().importance);
 
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());
