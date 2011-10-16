@@ -80,7 +80,7 @@ public class FinFooter {
 						public void mouseDown(MouseEvent e){
 							input.setFocus();
 							input.setText("");
-							input.append("add");
+							input.append("add ");
 						}						
 					});
 				break;
@@ -89,7 +89,7 @@ public class FinFooter {
 					public void mouseDown(MouseEvent e){
 						input.setFocus();
 						input.setText("");
-						input.append("search");
+						input.append("search ");
 					}						
 				});
 				break;
@@ -98,7 +98,7 @@ public class FinFooter {
 					public void mouseDown(MouseEvent e){
 						input.setFocus();
 						input.setText("");
-						input.append("show");
+						input.append("show ");
 					}						
 				});
 				break;
