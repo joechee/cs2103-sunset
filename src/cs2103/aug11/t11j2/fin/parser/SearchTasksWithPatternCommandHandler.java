@@ -66,7 +66,8 @@ public class SearchTasksWithPatternCommandHandler implements ICommandHandler {
 			return showHelp();
 		}
 		List<Task> tasks = null;
-		tasks = FinApplication.INSTANCE.getTasks();
+//		tasks = FinApplication.INSTANCE.getTasks();
+		tasks = context.getTaskList();
 		String contextFilter = context.getFilter();
 		String filters = arguments.trim() + " " + contextFilter;
 		tasks = filterTasksWithPatterns(tasks, filters);
