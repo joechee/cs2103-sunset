@@ -29,12 +29,13 @@ public class play_shell {
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		shell.setSize(800,500);
+		shell.setBackground(new Color(display,0,0,0));
 		shell.open();
 		text = new Text(shell, SWT.BORDER | SWT.H_SCROLL);
 		text.setBounds(0, 350, 800, 50);
-		FinFooter footButtons = new FinFooter(display, shell, text, 0, 420, 50, 30, 10);
+		FinFooter footButtons = new FinFooter(display, shell, text, 20, 420, 50, 30, 10);
 		
-		int n = footButtons.buttonList.size();
+		int n = footButtons.labelList.size();
 		
 		while (!shell.isDisposed()){
 			if (!display.readAndDispatch())
