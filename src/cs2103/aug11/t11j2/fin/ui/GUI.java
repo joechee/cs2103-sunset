@@ -3,6 +3,10 @@ package cs2103.aug11.t11j2.fin.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -219,16 +223,29 @@ public class GUI implements IUserInterface {
 			echo("Goodbye!\n");
 			return true;
 		case UnrecognizedCommand:
-			if (looksLikeTask(cmdRes.getArgument())) {
+			String expr = evaluateMathExpression(cmdRes.getArgument());
+			if (expr != null) {
+				echo(expr);
+			} else if (looksLikeTask(cmdRes.getArgument())) {
 				runCommandAndRender("add " + cmdRes.getArgument());
 			} else {
-				echo("Command not recognized!\n\n");
+				echo("Command not recognized!\n");
 			}
 			break;
 		}
 
 		refresh();
 		return false;
+	}
+	
+	private static String evaluateMathExpression(String expression) {
+	    try {
+		    ScriptEngineManager mgr = new ScriptEngineManager();
+		    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+			return engine.eval(expression).toString();
+		} catch (ScriptException e) {
+			return null;
+		}		
 	}
 
 	private static void renderString(CommandResult cmdRes) {
