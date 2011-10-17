@@ -91,8 +91,8 @@ public class Task {
 		this.uniqId = UUID.fromString((String) dict.get("UID"));
 		this.timeAdded = (Date) dict.get("DateAdded");
 		this.timeDue = (Date) dict.get("DueDate");
-		this.finished = (boolean) dict.get("Finished");
-		this.important = (boolean) dict.get("Important");
+		this.finished = (Boolean) dict.get("Finished");
+		this.important = (Boolean) dict.get("Important");
 
 		parseTags();
 	}
@@ -163,8 +163,8 @@ public class Task {
 		Date dueDate = this.getDueDate();
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "("
-					+ DateParser.naturalDateFromNow(dueDate) + ")");
+			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "["
+					+ DateParser.naturalDateFromNow(dueDate) + "]");
 		} else {
 			return taskName;
 		}
