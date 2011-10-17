@@ -136,7 +136,6 @@ public class EditCommandHandler extends ICommandHandler {
 		} catch (NumberFormatException nfe) {
 			return null;
 		}
-		System.out.println(taskIndex);
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
 			return null;
