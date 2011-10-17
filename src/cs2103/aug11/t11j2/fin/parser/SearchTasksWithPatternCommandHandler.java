@@ -12,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for the "search tasks" command Usage: search [filters]
  * 
  */
-public class SearchTasksWithPatternCommandHandler implements ICommandHandler {
+public class SearchTasksWithPatternCommandHandler extends ICommandHandler {
 	
 	@Override
 	@SuppressWarnings("serial")
@@ -77,16 +77,14 @@ public class SearchTasksWithPatternCommandHandler implements ICommandHandler {
 	
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "search <patterns>\t\t\tSearch the tasks containing the (all) the <patterns>";
 	}
-
+	
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "search <patterns>\n\tSearch the tasks containing the (all) the <patterns>";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+	public String getHelp() {
+		return "search <patterns>\n\tSearch the tasks containing the (all) the <patterns>";
 	}
+
 
 }

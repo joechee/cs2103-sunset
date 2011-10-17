@@ -51,6 +51,9 @@ public class CommandParser {
 
 	void installCommand(ICommandHandler commandHandler)
 			throws FinProductionException {
+		if (commandHandler.getCommandStrings().isEmpty()) {
+			throw (new FinProductionException ("CommandHandler that can't be accessed has been installed"));
+		}
 		for (String command : commandHandler.getCommandStrings()) {
 			if (commandHandlers.containsKey(command)) {
 				throw (new FinProductionException(

@@ -11,7 +11,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Joe Chee
  *
  */
-public class ExitCommandHandler implements ICommandHandler {
+public class ExitCommandHandler extends ICommandHandler {
 	
 	/**
 	 * Used in conjunction with <code>CommandParser</code>. 
@@ -39,8 +39,13 @@ public class ExitCommandHandler implements ICommandHandler {
 	}
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "exit\t\t\t\t\tSaves your task list and terminates Fin.";
+	}
+	
+	@Override
+	public String getHelp() {
+		return "";
 	}
 
 	@Override

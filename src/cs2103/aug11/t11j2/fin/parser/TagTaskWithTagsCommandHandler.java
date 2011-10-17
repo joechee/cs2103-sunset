@@ -11,7 +11,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * CommandHandler for "tag" command Usage: tag [task index] [tags]
  * adds the [tags] to the index-th task. eg: tag 7 cs math.
  */
-public class TagTaskWithTagsCommandHandler implements ICommandHandler {
+public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -60,15 +60,13 @@ public class TagTaskWithTagsCommandHandler implements ICommandHandler {
 	}
 	
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "tag <task number> <tag>\t\t\tTags a <task> with <tag>";
 	}
-
+	
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "tag <task number> <tag>\n\tTags a <task> with <tag>";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+	public String getHelp() {
+		return "tag <task number> <tag>\n\tTags a <task> with <tag>";
 	}
+
 }

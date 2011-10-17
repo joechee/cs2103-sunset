@@ -13,7 +13,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class DeleteCommandHandler implements ICommandHandler {
+public class DeleteCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -65,16 +65,16 @@ public class DeleteCommandHandler implements ICommandHandler {
 
 
 	@Override
-	public String showAbridgedHelp() {
-		// TODO Auto-generated method stub
+	public String getAbridgedHelp() {
 		return "delete <task number>\t\t\tDeletes a task from your tasklist";
 	}
-
+	
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "delete <task number>\n\tDeletes a task from your tasklist";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+	public String getHelp() {
+		return "delete <task number>\n\tDeletes a task from your tasklist";
 	}
+	
+	
+
+
 }

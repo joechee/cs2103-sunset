@@ -14,7 +14,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  *
  */
-public class DeleteAllCommandHandler implements ICommandHandler {
+public class DeleteAllCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -44,7 +44,7 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 	}
 	
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "";
 	}
 
@@ -53,6 +53,11 @@ public class DeleteAllCommandHandler implements ICommandHandler {
 		// TODO Auto-generated method stub
 		return new CommandResult(this, "",
 				CommandResult.RenderType.String, "");
+	}
+
+	@Override
+	public String getHelp() {
+		return "";
 	}
 
 }

@@ -8,7 +8,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public class UnImportantCommandHandler implements ICommandHandler {
+public class UnImportantCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -61,15 +61,13 @@ public class UnImportantCommandHandler implements ICommandHandler {
 
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "unimportant\t\t\t\tUnmarks an important task";
 	}
-
+	
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "unimportant <task>\n\tUnmarks an important task";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+	public String getHelp() {
+		return "unimportant <task>\n\tUnmarks an important task";
 	}
+
 }

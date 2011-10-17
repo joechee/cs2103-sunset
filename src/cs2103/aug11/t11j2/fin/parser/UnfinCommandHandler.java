@@ -13,7 +13,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class UnfinCommandHandler implements ICommandHandler {
+public class UnfinCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -56,16 +56,14 @@ public class UnfinCommandHandler implements ICommandHandler {
 	}
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "unfin <task number>\t\t\tUnmarks the completed task";
 	}
-
-	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "unfin <task number>\n\tUnmarks the completed task";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
-	}
 	
+	@Override
+	public String getHelp() {
+		return "unfin <task number>\n\tUnmarks the completed task";
+	}
+
+
 }

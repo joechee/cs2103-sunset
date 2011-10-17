@@ -15,8 +15,8 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  * 
  */
-public class AddCommandHandler implements ICommandHandler {
-
+public class AddCommandHandler extends ICommandHandler {
+	
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -53,14 +53,13 @@ public class AddCommandHandler implements ICommandHandler {
 
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "add <task>\t\t\t\tAdds <task> to your task list";
 	}
 
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		String result = "add <task>\n\tAdds <task> to your task list";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);		
+	public String getHelp() {
+		// TODO Auto-generated method stub
+		return "add <task>\n\tAdds <task> to your task list";
 	}
 }

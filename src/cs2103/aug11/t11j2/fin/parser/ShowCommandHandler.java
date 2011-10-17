@@ -15,7 +15,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * 
  * @author Koh Zi Chun
  */
-public class ShowCommandHandler implements ICommandHandler {
+public class ShowCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -63,16 +63,13 @@ public class ShowCommandHandler implements ICommandHandler {
 	}
 	
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "show <filters>\t\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
 	}
-
+	
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "show <filters>\n\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+	public String getHelp() {
+		return "show <filters>\n\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
 	}
 
 }

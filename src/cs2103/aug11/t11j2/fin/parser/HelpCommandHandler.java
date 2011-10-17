@@ -12,7 +12,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
  * @author Koh Zi Chun
  * 
  */
-public class HelpCommandHandler implements ICommandHandler {
+public class HelpCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
@@ -66,8 +66,8 @@ public class HelpCommandHandler implements ICommandHandler {
 	private CommandResult showDefaultHelp() throws FinProductionException {
 		String help = "Fin. is a ToDo manager that will allow you to keep track of your daily tasks the way you want it to be tracked.\n\n";
 		for (ICommandHandler i: CommandParser.INSTANCE.getCommandHandlers()) {
-			if (!i.showAbridgedHelp().isEmpty()) {
-				help = help+i.showAbridgedHelp()+"\n";
+			if (!i.getAbridgedHelp().isEmpty()) {
+				help = help+i.getAbridgedHelp()+"\n";
 			}
 		}
 		help = help + "\nFor more detailed help on a specific command, type \"help <command>\"";
@@ -77,15 +77,13 @@ public class HelpCommandHandler implements ICommandHandler {
 	}
 	
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "help\t\t\t\t\tBrings you to this page";
 	}
 
 	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		return new CommandResult(this, "",
-				CommandResult.RenderType.String, "help\n\tBrings you to this page. Hope that helped!");
+	public String getHelp() {
+		return "help\n\tBrings you to this page. Hope that helped!";
 	}
 	
 	

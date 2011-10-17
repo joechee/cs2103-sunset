@@ -8,7 +8,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public class ImportantCommandHandler implements ICommandHandler {
+public class ImportantCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -57,14 +57,23 @@ public class ImportantCommandHandler implements ICommandHandler {
 
 
 	@Override
-	public String showAbridgedHelp() {
+	public String getAbridgedHelp() {
 		return "important\t\t\t\tMarks a task as important";
+	}
+	
+	@Override
+	public String getHelp() {
+		return "important <task>\n\tMarks a task as important";
 	}
 
 	@Override
 	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
-		final String result = "important <task>\n\tMarks a task as important";
+		String result = getHelp();
+		result = result + "\nAliases: ";
+		for (String i: getCommandStrings()) {
+			result = result + i + ", ";
+		}
+		result=result.substring(0,result.length()-2);
 		return new CommandResult(this, "",
 				CommandResult.RenderType.String, result);
 	}

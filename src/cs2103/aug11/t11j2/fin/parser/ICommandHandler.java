@@ -5,13 +5,26 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
-public interface ICommandHandler {
-	public List<String> getCommandStrings();
+public abstract class ICommandHandler {
+	public abstract List<String> getCommandStrings();
 
-	CommandResult executeCommands(String command, String arguments,
+	abstract CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException;
 	
-	public String showAbridgedHelp();
 	
-	CommandResult showHelp() throws FinProductionException;
+	CommandResult showHelp() throws FinProductionException {
+		String result = getHelp();
+		result = result + "\nAliases: ";
+		for (String i: getCommandStrings()) {
+			result = result + i + ", ";
+		}
+		result=result.substring(0,result.length()-2);
+		return new CommandResult(this, "",
+				CommandResult.RenderType.String, result);
+	}
+
+	abstract public String getAbridgedHelp();
+
+	
+	abstract public String getHelp();
 }
