@@ -48,6 +48,7 @@ public class DateParser {
 	List<PatternChecker> patternCheckers = new LinkedList<PatternChecker>();
 
 	public DateParser() {
+
 		// by/due tomorrow
 		patternCheckers.add(new PatternChecker(
 				Pattern.compile("(due\\sby|due|by)\\s*(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
@@ -149,7 +150,7 @@ public class DateParser {
 
 		// in [number] days
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due)?\\s*in\\s*(\\d*)\\s*(days)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due\\sby|due\\sin|due|in|by)?\\s*(\\d*)\\s*(days)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						
@@ -255,25 +256,6 @@ public class DateParser {
 		return false;
 	}
 	
-	/*public static void test(String s) {
-		DateParser dp = new DateParser();
-		Boolean d = dp.parse(s);
-		
-		if (d) {
-			System.out.println(dp.parsedDate);
-			System.out.println(dp.parsedString);
-		} else {
-			System.out.println("cant parse");
-		}
-		
-	}
-	
-	public static void main (String[] args) {
-		test("do something due by    15/10");
-		test("do on 15 oct something");
-		test("do something on oct 15");
-	}*/
-
 	public String getParsedString() {
 		return parsedString;
 	}
@@ -298,8 +280,8 @@ public class DateParser {
 	 * @param date d
 	 */
 	public static String naturalDateFromNow(Date d) {
-		Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
-		DateFormat df = new SimpleDateFormat("dd MMM");
+		final Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
+		final DateFormat df = new SimpleDateFormat("dd MMM");
 
 		due.setTime(d);
 

@@ -84,6 +84,8 @@ public class FinCLIComposite extends Composite {
 
 	private void createInput() {
 		input = new StyledText(this, SWT.SINGLE);
+		input.setLeftMargin(5);
+		input.setTopMargin(3);
 
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
@@ -243,6 +245,7 @@ public class FinCLIComposite extends Composite {
 	}
 	
 	private String beforeHint;
+	private boolean isInHint = false;
 	private boolean inputHasFocus;
 	
 	/**
@@ -262,10 +265,15 @@ public class FinCLIComposite extends Composite {
 	 * @param additionalMessage
 	 */
 	public void setHint(String hint, String additionalMessage) {
+		
 		hint = hint.trim();
 		additionalMessage = additionalMessage.trim();
+
+		if (isInHint == false) {
+			isInHint = true;
+			this.beforeHint = input.getText();
+		}
 		
-		this.beforeHint = input.getText();
 		this.inputHasFocus = input.isFocusControl();
 		
 		input.setEnabled(false);
@@ -291,6 +299,7 @@ public class FinCLIComposite extends Composite {
 	 * Remove hints from input box and revert what the original command was
 	 */
 	public void removeHint() {
+		isInHint = false;
 		input.setEnabled(true);
 		input.setText(beforeHint);
 		input.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));

@@ -8,6 +8,8 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
@@ -20,17 +22,42 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
  *
  */
 public class TaskStyledText extends StyledText {
+	
+	Task task;
+	
 	public TaskStyledText(Composite parent, int style, Task task) {
-		super(parent, SWT.READ_ONLY);
+		super(parent, SWT.SINGLE);
 		
-		this.setText(task.toString());
 		this.pack();
 		this.setFont(new Font(parent.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NONE));
 		this.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
 		this.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
-		this.setEnabled(false);
+		this.setWordWrap(false);
 		
-		parseAndStyleTaskText(this);		
+		this.task = task;
+		
+		renderMode(task.getTaskName());
+	}
+	
+	/**
+	 * Set control to render mode, which is readonly
+	 * 
+	 * @param text of the current control
+	 */
+	public void renderMode(String text) {
+		this.setText(text);
+		parseAndStyleTaskText(this);
+		this.setEditable(false);
+	}
+
+	/** 
+	 * Set control to editable 
+	 * 
+	 * @param text
+	 */
+	public void editMode(String text) {
+		this.setText(text);
+		this.setEditable(true);
 	}
 	
 	private static void parseAndStyleTaskText(StyledText taskText) {

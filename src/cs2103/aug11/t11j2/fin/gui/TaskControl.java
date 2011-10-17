@@ -284,6 +284,69 @@ public class TaskControl extends Composite {
 		return button;
 	}
 	
+	private static TaskStyledText initTaskText(final TaskControl parent, Task task) {
+		final TaskStyledText taskText = new TaskStyledText(parent, SWT.NONE, task);
+
+		taskText.addListener(SWT.FocusIn, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				String editText = taskText.task.getEditableTaskName();
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).setHint("edit " + parent.taskPosition + " to " + editText); 
+				}
+				
+				taskText.editMode(editText);
+			}
+		});
+		
+		final Listener completeEdit = new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+
+				//taskText.renderMode(taskText.getText());
+				
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).runInput("edit " + parent.taskPosition + " to " + taskText.getText());
+					((FinCLIComposite)fincli).removeHint();
+				}
+			}
+		};
+		
+		taskText.addListener(SWT.FocusOut, completeEdit);
+		taskText.addListener(SWT.KeyUp, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				if (e.keyCode == SWT.CR || e.keyCode == 13 || e.keyCode == SWT.KEYPAD_CR) {
+					completeEdit.handleEvent(e);
+				}
+			}
+		});
+		
+		taskText.addListener(SWT.KeyDown, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				Composite fincli = parent.getParent();
+				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+					fincli = fincli.getParent();
+				}
+				
+				if (fincli instanceof FinCLIComposite) {
+					((FinCLIComposite)fincli).setHint("edit " + parent.taskPosition + " to " + taskText.getText()); 
+				}
+			}
+		});
+		
+		return taskText;
+	}
 	public boolean mouseOver = false;
 	public TaskControl(Composite parent, int style, Task task,
 			Integer taskPosition) {
@@ -294,10 +357,10 @@ public class TaskControl extends Composite {
 		this.parent = parent;
 		this.taskNumber = initTaskNumber(this, task, taskPosition);
 		this.dueBy = initDueBy(this, task);
-		this.taskText = new TaskStyledText(this, SWT.NONE, task);
 		this.deleteCheckbox = initFinButton(this, task.isFin());
 		this.taskPosition = taskPosition;
 		this.quickActions = initQuickActions(this, task);
+		this.taskText = initTaskText(this, task);
 		
 		// dispose
 		this.addDisposeListener(new DisposeListener() {
@@ -334,8 +397,10 @@ public class TaskControl extends Composite {
 		
 		deleteCheckbox.setBounds(10, 10, checkExtent.x, checkExtent.y);
 		taskNumber.setBounds(checkExtent.x + 20, 0, taskNumberExtent.x, taskNumberExtent.y);
-		taskText.setBounds(checkExtent.x + 20 + taskNumberExtent.x + 20, taskNumberExtent.y
-				- taskTextExtent.y - 2, taskTextExtent.x, taskTextExtent.y);
+		
+		int taskTextLeft = checkExtent.x + 20 + taskNumberExtent.x + 20;
+		taskText.setBounds(taskTextLeft, taskNumberExtent.y
+				- taskTextExtent.y - 2, width - taskTextLeft - dueByExtent.x, taskTextExtent.y);
 		
 		if (mouseOver) {
 			quickActions.setBounds(width - taskNumberExtent.y * 2, 1, (taskNumberExtent.y-2) * 2, (taskNumberExtent.y-2));
