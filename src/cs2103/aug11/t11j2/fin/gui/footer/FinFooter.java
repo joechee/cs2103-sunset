@@ -21,13 +21,13 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class FinFooter {
 	
-	public static final String [] labelText = {"add", "search", "show", "help"};
-	public static String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
-	public static int STRING_NOT_FOUND = -1;
+	static final String [] OUTPUT_TEXT = {"add", "search", "show", "help"};
+	static final String [] LABEL_TEXT = {"Add", "Search", "Show", "Help"};
+	static String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
+	static int STRING_NOT_FOUND = -1;
 	
-	public List <Label> labelList = new ArrayList<Label>();
-	
-	public static Text input;
+	public List <Label> labelList = new ArrayList<Label>();	
+	static Text input;
 	
 	/*
 	 * @param display, shell: the devices containing the footer.
@@ -42,14 +42,15 @@ public class FinFooter {
 		input = text;
 		Color color = shell.getBackground();
 		Color fcolor = new Color(display, 80, 70, 60);
-		int n = labelText.length;
+		int n = LABEL_TEXT.length;
 		for (int i=0; i<n; i++){
-			System.out.println(i + " " + labelText[i]);
+			System.out.println(i + " " + LABEL_TEXT[i]);
 			this.labelList.add(new Label(shell, SWT.PUSH));
 			formatLabel(this.labelList.get(i), x, y, 
-						 width, height, color, fcolor, labelText[i]);
+						 width, height, color, fcolor, LABEL_TEXT[i]);
 			x = x + width + gap;
 			addListener(i);
+			addMouseoverEffect(this.labelList.get(i));
 		}
 		int countOutstanding = getOutstandingTask();
 		fcolor = new Color(display, 255, 0, 0);
@@ -61,7 +62,7 @@ public class FinFooter {
 		x = x + width +gap;
 	}
 	
-	public void formatLabel(Label label, int x, int y, int width, int height,
+	void formatLabel(Label label, int x, int y, int width, int height,
 			Color color, Color fcolor, String name){
 		
 		label.setLocation(x, y);
@@ -71,7 +72,7 @@ public class FinFooter {
 		label.setText(name);
 	}
 	
-	public void addListener(int index){
+	void addListener(int index){
 		
 		switch(index){
 		
@@ -112,6 +113,27 @@ public class FinFooter {
 				});
 				break;		
 		}			
+	}
+	
+	void addMouseoverEffect(Label label){
+		final Label targetLabel = label;
+		final Color preFcolor = label.getForeground();
+		targetLabel.addListener(SWT.MouseEnter,
+				new Listener(){
+					@Override
+					public void handleEvent(Event e){
+						Color fcolor = new Color(null, 255, 255, 255);
+						targetLabel.setForeground(fcolor);
+					}
+				});
+		targetLabel.addListener(SWT.MouseExit,
+				new Listener(){
+					@Override
+					public void handleEvent(Event e){
+						targetLabel.setForeground(preFcolor);
+					}
+			
+		});
 	}
 	
 	int getOutstandingTask(){
