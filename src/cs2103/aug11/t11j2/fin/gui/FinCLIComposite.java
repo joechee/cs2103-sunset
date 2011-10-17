@@ -12,6 +12,8 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Rectangle;
@@ -107,6 +109,18 @@ public class FinCLIComposite extends Composite {
 
 	private String previousString = "";
 	void handlerUserInput() {
+		
+		input.addTraverseListener(new TraverseListener() {
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.detail == SWT.TRAVERSE_TAB_NEXT && onAutoComplete) {
+					e.doit = true;
+					input.setSelection(input.getText().length());
+					onAutoComplete = false;
+				}
+			}
+		});
+		
 		input.addKeyListener(new KeyListener() {
 
 			@Override
@@ -116,6 +130,7 @@ public class FinCLIComposite extends Composite {
 						userInputHistoryPointer--;
 						input.setText(userInputHistory.get(userInputHistoryPointer));
 					}
+					e.doit = false;
 				} else if (e.keyCode == SWT.ARROW_DOWN) {
 					if (userInputHistoryPointer < userInputHistory.size()) {
 						userInputHistoryPointer++;
@@ -125,13 +140,14 @@ public class FinCLIComposite extends Composite {
 							input.setText("");
 						}
 					}
+					e.doit = false;
 				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (onAutoComplete) {
-					if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10 || e.keyCode == SWT.TAB) {
+					if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10) {
 						input.setSelection(input.getText().length());
 						onAutoComplete = false;
 					}
@@ -152,6 +168,8 @@ public class FinCLIComposite extends Composite {
 					previousString = input.getText();
 					onAutoComplete = false;
 					onChange(previousString);
+				} else {
+					onAutoComplete = false;
 				}
 			}
 
@@ -171,17 +189,18 @@ public class FinCLIComposite extends Composite {
 	public void echo(String text) {
 		StyledText t = new StyledText(display, SWT.WRAP);
 
-		t.setFont(new Font(this.getDisplay(), FinConstants.DEFAULT_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.NORMAL));
+		t.setFont(new Font(this.getDisplay(), FinConstants.CLI_FONT, FinConstants.CLI_FONTSIZE, SWT.NORMAL));
 		t.setText(text.trim());
 
 		t.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
-		t.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
+		t.setForeground(new Color(null, FinConstants.CLI_FOREGROUND_COLOR));		
 		
 
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
 		gridData.verticalIndent = gridData.horizontalIndent = 10;
 		t.setLayoutData(gridData);
+		t.setEnabled(false);
 	}
 
 	/**

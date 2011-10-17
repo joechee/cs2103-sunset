@@ -19,7 +19,7 @@ public class JokeCommandHandler extends ICommandHandler {
 		public Joke() throws IOException {
 			jokeList = new ArrayList<String>();
 			jokeSerial = new Serializer();
-			// System.out.println(jokeSerial.unserialize("Joke.yaml").get(1));
+
 			List<Object> serialList = jokeSerial.unserialize("Joke.yaml");
 			Iterator<Object> serialListIterator = serialList.iterator();
 			while (serialListIterator.hasNext()) {
