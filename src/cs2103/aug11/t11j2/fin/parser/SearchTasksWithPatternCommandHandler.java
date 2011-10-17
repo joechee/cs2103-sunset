@@ -72,7 +72,7 @@ public class SearchTasksWithPatternCommandHandler extends ICommandHandler {
 		String filters = arguments.trim() + " " + contextFilter;
 		tasks = filterTasksWithPatterns(tasks, filters);
 		return new CommandResult(this, filters,
-				CommandResult.RenderType.TaskList, tasks);
+				CommandResult.RenderType.TASKLIST, tasks);
 	}
 	
 

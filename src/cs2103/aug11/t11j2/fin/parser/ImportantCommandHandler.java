@@ -34,7 +34,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 				FinApplication.INSTANCE.flagTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
-					CommandResult.RenderType.String, "Marked all displayed tasks as important!");
+					CommandResult.RenderType.STRING, "Marked all displayed tasks as important!");
 		}
 		int taskIndex;
 
@@ -52,7 +52,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 		FinApplication.INSTANCE.flagTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, todelete);
+				CommandResult.RenderType.TASK, todelete);
 	}
 
 
@@ -75,6 +75,6 @@ public class ImportantCommandHandler extends ICommandHandler {
 		}
 		result=result.substring(0,result.length()-2);
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+				CommandResult.RenderType.STRING, result);
 	}
 }

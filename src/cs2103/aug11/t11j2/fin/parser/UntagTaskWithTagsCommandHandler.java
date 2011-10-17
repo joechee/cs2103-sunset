@@ -58,7 +58,7 @@ public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 			task.removeTag(tokens[i]);
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, task);
+				CommandResult.RenderType.TASK, task);
 	}
 
 

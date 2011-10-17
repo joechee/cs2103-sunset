@@ -20,7 +20,7 @@ public abstract class ICommandHandler {
 		}
 		result=result.substring(0,result.length()-2);
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, result);
+				CommandResult.RenderType.STRING, result);
 	}
 
 	abstract public String getAbridgedHelp();

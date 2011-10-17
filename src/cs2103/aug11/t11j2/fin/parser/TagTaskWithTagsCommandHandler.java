@@ -56,7 +56,7 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 		
 		
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, task);
+				CommandResult.RenderType.TASK, task);
 	}
 	
 	@Override

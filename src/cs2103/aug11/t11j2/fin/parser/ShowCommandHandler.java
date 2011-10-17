@@ -59,7 +59,7 @@ public class ShowCommandHandler extends ICommandHandler {
 		}
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.TaskList, tasks);
+				CommandResult.RenderType.TASKLIST, tasks);
 	}
 	
 	@Override

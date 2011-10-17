@@ -73,7 +73,7 @@ public class HelpCommandHandler extends ICommandHandler {
 		help = help + "\nFor more detailed help on a specific command, type \"help <command>\"";
 			
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, help);
+				CommandResult.RenderType.STRING, help);
 	}
 	
 	@Override

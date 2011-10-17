@@ -184,7 +184,7 @@ public class GUI implements IUserInterface {
 	private static boolean updateContext(CommandResult cmdResult) {
 		boolean different = false;
 
-		if (cmdResult.getRenderType() == CommandResult.RenderType.TaskList) {
+		if (cmdResult.getRenderType() == CommandResult.RenderType.TASKLIST) {
 			List<Task> taskList = (List<Task>) cmdResult.getReturnObject();
 
 			if (context.getTaskList().size() == taskList.size()) {
@@ -218,20 +218,20 @@ public class GUI implements IUserInterface {
 	 */
 	private static boolean renderCommandResult(CommandResult cmdRes) {
 		switch (cmdRes.getRenderType()) {
-		case String:
+		case STRING:
 			renderString(cmdRes);
 			break;
-		case TaskList:
+		case TASKLIST:
 			renderTaskListResult(cmdRes);
 			break;
-		case Task:
+		case TASK:
 			renderTaskResult(cmdRes);
 			break;
-		case Exit:
+		case EXIT:
 			echo("Thank you for using Fin.\n");
 			echo("Goodbye!\n");
 			return true;
-		case UnrecognizedCommand:
+		case UNRECOGNIZED_COMMAND:
 			String expr = evaluateMathExpression(cmdRes.getArgument());
 			if (expr != null) {
 				echo(expr);
@@ -241,8 +241,8 @@ public class GUI implements IUserInterface {
 				echo("Command not recognized!\n");
 			}
 			break;
-		case Error:
-			renderString(cmdRes);
+		case ERROR_INVALID_TASK_INDEX:
+			echo("Invalid Task Index!");
 			break;
 		}
 

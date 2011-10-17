@@ -7,7 +7,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 
 public class CommandResult {
 	public static enum RenderType {
-		TaskList, Task, String, UnrecognizedCommand, InvalidTaskIndex, Null, Exit, Error
+		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, ERROR_INVALID_TASK_INDEX, EXIT
 	};
 
 	private RenderType renderType;
@@ -48,7 +48,7 @@ public class CommandResult {
 		this.argument = argument;
 
 		switch (renderType) {
-		case TaskList:
+		case TASKLIST:
 			// Ensures that returnObject is of type List<Task>
 			if (!(returnObject instanceof List<?>)
 					|| (((List<?>) returnObject).size() > 0 && !(((List<?>) returnObject)
@@ -62,7 +62,7 @@ public class CommandResult {
 
 			break;
 
-		case String:
+		case STRING:
 			// Ensures that returnObject is of type String
 			if (!(returnObject instanceof String)) {
 				throw (new FinProductionException(
@@ -74,7 +74,7 @@ public class CommandResult {
 
 			break;
 
-		case Task:
+		case TASK:
 			// Ensures that returnObject is of type Task
 			if (!(returnObject instanceof Task)) {
 				throw (new FinProductionException(
@@ -85,32 +85,17 @@ public class CommandResult {
 			this.returnObject = returnObject;
 
 			break;
-		
-		case Error:
-			// Ensures that returnObject is of type String
-			// Ensures that returnObject is of type String
-			if (!(returnObject instanceof String)) {
-				throw (new FinProductionException(
-						"Command result type is invalid for String"));
-			}
-
-			this.renderType = renderType;
-			this.returnObject = returnObject;
-
-			break;	
 		}
 	}
 
 	public final static CommandResult invalidTaskIndex = new CommandResult(
-			RenderType.InvalidTaskIndex);
-	public final static CommandResult nullCommandResult = new CommandResult(
-			RenderType.Null);
+			RenderType.ERROR_INVALID_TASK_INDEX);
 	public final static CommandResult exitCommandResult = new CommandResult(
-			RenderType.Exit);
+			RenderType.EXIT);
 
 	public static CommandResult unrecognizedCommand(String command) {
 		return new CommandResult(
-				RenderType.UnrecognizedCommand, command);
+				RenderType.UNRECOGNIZED_COMMAND, command);
 	}
 
 }

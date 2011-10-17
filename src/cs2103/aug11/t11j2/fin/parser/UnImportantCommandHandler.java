@@ -38,7 +38,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 				FinApplication.INSTANCE.unflagTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
-					CommandResult.RenderType.String, "Removed important tag from all tasks!");
+					CommandResult.RenderType.STRING, "Removed important tag from all tasks!");
 		}
 		int taskIndex;
 		try {
@@ -55,7 +55,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 		FinApplication.INSTANCE.unflagTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, todelete);
+				CommandResult.RenderType.TASK, todelete);
 	}
 	
 

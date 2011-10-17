@@ -35,7 +35,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 				FinApplication.INSTANCE.unfinTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
-					CommandResult.RenderType.String, "Removed the finished tag from all displayed tasks!");
+					CommandResult.RenderType.STRING, "Removed the finished tag from all displayed tasks!");
 		}
 		int taskIndex;
 		try {
@@ -52,7 +52,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 		FinApplication.INSTANCE.unfinTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, todelete);
+				CommandResult.RenderType.TASK, todelete);
 	}
 
 	@Override

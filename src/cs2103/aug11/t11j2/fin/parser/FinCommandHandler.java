@@ -40,7 +40,7 @@ public class FinCommandHandler extends ICommandHandler {
 				FinApplication.INSTANCE.finTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
-					CommandResult.RenderType.String, "Finished all tasks!");
+					CommandResult.RenderType.STRING, "Finished all tasks!");
 		}
 
 		int taskIndex;
@@ -58,7 +58,7 @@ public class FinCommandHandler extends ICommandHandler {
 		FinApplication.INSTANCE.finTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.Task, todelete);
+				CommandResult.RenderType.TASK, todelete);
 	}
 	
 	@Override

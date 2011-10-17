@@ -72,7 +72,7 @@ public class JokeCommandHandler extends ICommandHandler {
 			joke = "The Joke's on FIN";
 		}
 		return new CommandResult(this, arguments,
-				CommandResult.RenderType.String, joke);
+				CommandResult.RenderType.STRING, joke);
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class JokeCommandHandler extends ICommandHandler {
 	@Override
 	public CommandResult showHelp() throws FinProductionException {
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, "");
+				CommandResult.RenderType.STRING, "");
 	}
 	
 

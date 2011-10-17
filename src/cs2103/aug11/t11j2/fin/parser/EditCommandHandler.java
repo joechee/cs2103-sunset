@@ -76,7 +76,7 @@ public class EditCommandHandler extends ICommandHandler {
 
 			task.addTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.Task, task);
+					CommandResult.RenderType.TASK, task);
 			
 		} else if (tokens[1].equals("rt")) {
 			// remove tag from task
@@ -85,7 +85,7 @@ public class EditCommandHandler extends ICommandHandler {
 
 			task.removeTag(tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.Task, task);
+					CommandResult.RenderType.TASK, task);
 			
 		} else if (tokens[1].equals("due")) {
 			// set new due date
@@ -94,13 +94,13 @@ public class EditCommandHandler extends ICommandHandler {
 
 			task.setDueDate(tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.Task, task);			
+					CommandResult.RenderType.TASK, task);			
 		} else if (tokens[1].equals("undue")) {
 			// remove due date
 			
 			task.removeDueDate();
 			return new CommandResult(this, tokens[0] + " " + tokens[1],
-					CommandResult.RenderType.Task, task);			
+					CommandResult.RenderType.TASK, task);			
 		} else {
 			return showHelp();
 		}

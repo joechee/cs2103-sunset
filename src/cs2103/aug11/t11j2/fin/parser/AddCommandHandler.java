@@ -38,15 +38,10 @@ public class AddCommandHandler extends ICommandHandler {
 		if (arguments.trim().length() == 0) {
 			return showHelp();
 		} else {
-			try {
-				Task newtask = new Task(arguments);
-				FinApplication.INSTANCE.add(newtask);
-				return new CommandResult(this, arguments,
-						CommandResult.RenderType.Task, newtask);
-			} catch (Exception IllegalArgumentException) {
-				return new CommandResult(this,arguments,
-						CommandResult.RenderType.Error,"Illegal placeholder used!");
-			}
+			Task newtask = new Task(arguments);
+			FinApplication.INSTANCE.add(newtask);
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.TASK, newtask);
 		}
 	}
 	

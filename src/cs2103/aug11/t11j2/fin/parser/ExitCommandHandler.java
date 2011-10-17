@@ -52,7 +52,7 @@ public class ExitCommandHandler extends ICommandHandler {
 	public CommandResult showHelp() throws FinProductionException {
 		// TODO Auto-generated method stub
 		return new CommandResult(this, "",
-				CommandResult.RenderType.String, "");
+				CommandResult.RenderType.STRING, "");
 	}
 	
 
