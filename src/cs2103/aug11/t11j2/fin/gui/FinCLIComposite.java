@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -27,7 +28,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 public class FinCLIComposite extends Composite {
 	Composite display;
 	ScrolledComposite displaySC;
-	Text input;
+	StyledText input;
 	Vector<FinCLIInputListener> userInputListeners = new Vector<FinCLIInputListener>();
 	
 	private List<String> userInputHistory = new ArrayList<String>();
@@ -80,7 +81,7 @@ public class FinCLIComposite extends Composite {
 	}
 
 	private void createInput() {
-		input = new Text(this, SWT.NONE);
+		input = new StyledText(this, SWT.SINGLE);
 
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);
@@ -128,7 +129,7 @@ public class FinCLIComposite extends Composite {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.keyCode == 13) {
+				if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10) {
 					String userInput = input.getText().trim();
 					if (userInput.length() > 0) {
 						userInputHistory.add(userInput);
@@ -137,7 +138,9 @@ public class FinCLIComposite extends Composite {
 						runInput(userInput);
 						input.setText("");
 					}
-				} 
+				} else if (e.keyCode == SWT.ESC) {
+					input.setText("");
+				}
 			}
 
 		});
@@ -148,6 +151,11 @@ public class FinCLIComposite extends Composite {
 		displaySC.setMinSize(display.computeSize(r.width, SWT.DEFAULT));
 	}
 
+	/** 
+	 * Echos the text onto the CLI
+	 * 
+	 * @param text text to echo
+	 */
 	public void echo(String text) {
 		StyledText t = new StyledText(display, SWT.WRAP);
 
@@ -164,6 +172,11 @@ public class FinCLIComposite extends Composite {
 		t.setLayoutData(gridData);
 	}
 
+	/**
+	 * Add a list of task to the FinCLI
+	 * 
+	 * @param taskList
+	 */
 	public void addTaskList(List<Task> taskList) {
 		TaskContainer tc = new TaskContainer(display, SWT.NONE);
 		for (Task t : taskList) {
@@ -172,12 +185,18 @@ public class FinCLIComposite extends Composite {
 		refresh();
 	}
 
+	/**
+	 * Refresh the layout of the component
+	 */
 	public void refresh() {
 		display.layout(true);
 		resize();
 		displaySC.setOrigin(0, display.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 	}
 
+	/**
+	 * Clear the screen of FinCLI control
+	 */
 	public void clear() {
 		for (Control c : display.getChildren()) {
 			c.dispose();
@@ -194,14 +213,52 @@ public class FinCLIComposite extends Composite {
 	
 	private String beforeHint;
 	private boolean inputHasFocus;
-	public void setHint(String hint) {
-		this.beforeHint = input.getText();
 	
+	/**
+	 * Set hint in the input box to describe what a GUI action does
+	 * 
+	 * @param hint
+	 */
+	public void setHint(String hint) {
+		setHint(hint, "");
+	}
+	
+	/**
+	 * Set hint with additional message in the inputbox, with an additional message
+	 * to describe what the hint action does
+	 * 
+	 * @param hint
+	 * @param additionalMessage
+	 */
+	public void setHint(String hint, String additionalMessage) {
+		hint = hint.trim();
+		additionalMessage = additionalMessage.trim();
+		
+		this.beforeHint = input.getText();
 		this.inputHasFocus = input.isFocusControl();
+		
 		input.setEnabled(false);
-		input.setText(hint);
+		if (additionalMessage.length() == 0) {
+			input.setText(hint);
+		} else {
+			input.setText(hint + " : "  + additionalMessage);
+
+			StyleRange taskComplete = new StyleRange();
+			taskComplete.font = new Font(this.getDisplay(), FinConstants.HINT_FONT, FinConstants.HINT_FONTSIZE, SWT.NORMAL);
+			taskComplete.foreground = new Color(null, FinConstants.CLIHINTMESSAGE_COLOR);
+			taskComplete.start = hint.length();
+			taskComplete.length = additionalMessage.length() + 3;
+
+			input.setStyleRange(taskComplete);
+		}
+		
 		input.setForeground(new Color(null, FinConstants.CLIHINT_COLOR));
 	}
+	
+	
+	/**
+	 * Remove hints from input box and revert what the original command was
+	 */
 	public void removeHint() {
 		input.setEnabled(true);
 		input.setText(beforeHint);
@@ -212,10 +269,18 @@ public class FinCLIComposite extends Composite {
 		}
 	}
 	
+	/**
+	 * force focus on the FinCli input
+	 */
 	public boolean forceFocus() {
 		return input.forceFocus();
 	}
 	
+	/**
+	 * Programmatically run a user input on the command interface
+	 * 
+	 * @param userInput
+	 */
 	public void runInput(String userInput) {
 		for (FinCLIInputListener listener : userInputListeners) {
 			listener.UserInput(new FinCLIInputEvent(input,

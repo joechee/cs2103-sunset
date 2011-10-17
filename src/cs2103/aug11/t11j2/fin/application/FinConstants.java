@@ -36,10 +36,14 @@ public final class FinConstants {
 	public static final RGB RED_COLOR = new RGB(255, 0, 0);
 	public static final RGB HASHTAG_COLOR = new RGB(50, 150, 200);
 	public static final RGB CLIHINT_COLOR = new RGB(100, 100, 100);
+	public static final RGB CLIHINTMESSAGE_COLOR = new RGB(45, 45, 45);
 
 	public static final String DEFAULT_FONT = "consolas";
 	public static final int DEFAULT_FONTSIZE = 12;
 
 	public static final String INPUT_FONT = "Calibri";
 	public static final int INPUT_FONTSIZE = 14;
+
+	public static final String HINT_FONT = "Calibri";
+	public static final int HINT_FONTSIZE = 11;
 }

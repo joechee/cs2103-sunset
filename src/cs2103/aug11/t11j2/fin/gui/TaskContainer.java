@@ -108,7 +108,8 @@ public class TaskContainer extends Composite {
 				}
 				
 				if (fincli instanceof FinCLIComposite) {
-					((FinCLIComposite)fincli).setHint("delete " + ((TaskControl)taskControl).taskPosition);
+					((FinCLIComposite)fincli).setHint("delete " + ((TaskControl)taskControl).taskPosition, 
+							"Delete the task: " + ((TaskControl)taskControl).task.getTaskName());
 				}
 			}
 		});
@@ -154,11 +155,13 @@ public class TaskContainer extends Composite {
 				
 				if (((Button)e.widget).getSelection() == false) {
 					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("fin " + ((TaskControl)taskControl).taskPosition);
+						((FinCLIComposite)fincli).setHint("fin " + ((TaskControl)taskControl).taskPosition,
+								"Fin. task " + taskControl.task.getTaskName() + "!");
 					}
 				} else {
 					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("unfin " + ((TaskControl)taskControl).taskPosition);
+						((FinCLIComposite)fincli).setHint("unfin " + ((TaskControl)taskControl).taskPosition,
+								"UnFin-ish task " + taskControl.task.getTaskName() + " :(");
 					}
 				}
 			}
@@ -209,11 +212,13 @@ public class TaskContainer extends Composite {
 				
 				if (taskControl.isImportant()) {
 					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("unimpt " + ((TaskControl)taskControl).taskPosition);
+						((FinCLIComposite)fincli).setHint("unimpt " + ((TaskControl)taskControl).taskPosition,
+								"Mark this task as unimportant");
 					}
 				} else {
 					if (fincli instanceof FinCLIComposite) {
-						((FinCLIComposite)fincli).setHint("impt " + ((TaskControl)taskControl).taskPosition);
+						((FinCLIComposite)fincli).setHint("impt " + ((TaskControl)taskControl).taskPosition,
+								"Flag this task as important!");
 					}
 				}
 			}

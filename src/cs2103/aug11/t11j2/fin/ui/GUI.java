@@ -79,7 +79,7 @@ public class GUI implements IUserInterface {
 		gridLayout.marginTop = gridLayout.marginLeft = gridLayout.marginRight = gridLayout.marginBottom = -5;
 		shell.setLayout(gridLayout);
 
-		shell.setSize(800, 500);
+		//shell.setSize(800, 500);
 		shell.open();
 
 		cli = new FinCLIComposite(shell, SWT.NONE);
