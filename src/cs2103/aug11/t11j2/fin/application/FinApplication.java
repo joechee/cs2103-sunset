@@ -256,11 +256,23 @@ public enum FinApplication {
 	}
 	
 	/**
+	 * Get the list of hashtags in the Fin Environment 
+	 * 
+	 * @return list of hashtags
+	 */
+	public List<String> getHashTags() {
+		List<String> tr = new ArrayList<String>();
+		for (String s : hashTags.keySet()) {
+			tr.add(s);
+		}
+		return tr;
+	}
+	
+	/**
 	 * Saves the current state of all tasks to a file that can be loaded by the <code>loadEnvironment</code> method.
 	 * @param none
 	 * @see loadEnvironment 
 	 */
-
 	private void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
 		try {

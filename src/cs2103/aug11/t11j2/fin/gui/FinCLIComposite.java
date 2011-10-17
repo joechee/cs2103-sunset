@@ -125,15 +125,17 @@ public class FinCLIComposite extends Composite {
 							input.setText("");
 						}
 					}
-				} else if(!input.getText().equals(previousString)) {
-					previousString = input.getText();
-					onChange(previousString);
 				}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10) {
+				if (onAutoComplete) {
+					if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10 || e.keyCode == SWT.TAB) {
+						input.setSelection(input.getText().length());
+						onAutoComplete = false;
+					}
+				} else if (e.keyCode == SWT.KEYPAD_CR || e.keyCode == 13 || e.keyCode == 10) {
 					String userInput = input.getText().trim();
 					if (userInput.length() > 0) {
 						userInputHistory.add(userInput);
@@ -144,6 +146,12 @@ public class FinCLIComposite extends Composite {
 					}
 				} else if (e.keyCode == SWT.ESC) {
 					input.setText("");
+				}
+				
+				if (!input.getText().equals(previousString)) {
+					previousString = input.getText();
+					onAutoComplete = false;
+					onChange(previousString);
 				}
 			}
 
@@ -303,6 +311,9 @@ public class FinCLIComposite extends Composite {
 		}
 	}
 	
+	// this marks if CLI is on autocomplete
+	private boolean onAutoComplete = false;
+	
 	/**
 	 * Set an autocomplete string. The right difference between current text and new 
 	 * text will be selected
@@ -321,6 +332,9 @@ public class FinCLIComposite extends Composite {
 		
 		input.setText(autoComplete);
 		input.setSelection(start, autoComplete.length());
+		if (start < autoComplete.length()) {
+			onAutoComplete = true;
+		}
 	}
 
 }
