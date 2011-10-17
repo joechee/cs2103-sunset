@@ -97,5 +97,9 @@ public class CommandResult {
 		return new CommandResult(
 				RenderType.UNRECOGNIZED_COMMAND, command);
 	}
+	
+	void setCommand(ICommandHandler command) {
+		this.command = command;
+	}
 
 }

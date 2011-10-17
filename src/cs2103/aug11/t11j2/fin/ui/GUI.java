@@ -28,6 +28,7 @@ import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
@@ -283,6 +284,11 @@ public class GUI implements IUserInterface {
 			printTaskList();
 
 			echo("Task: " + taskName + " deleted!\n");
+		} else if (commandHandler instanceof EditCommandHandler) {
+			refreshContext();
+			printTaskList();
+
+			echo("Task: " + taskName + " editted!\n");			
 		} else {
 			refreshContext();
 			printTaskList();

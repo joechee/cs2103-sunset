@@ -66,8 +66,11 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			FinApplication.INSTANCE.deleteTask(task.getUniqId());
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
-			return addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
-					.get(0), tokens[2], context);
+			CommandResult res = addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
+																.get(0), tokens[2], context);
+			
+			res.setCommand(this);
+			return res;
 			
 		} else if (tokens[1].equals("at")) {
 			// add tag to current task
