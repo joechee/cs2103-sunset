@@ -42,13 +42,13 @@ public class CommandParser {
 			}
 		}
 	}
+	
 	/**
 	 * Installs the command into the system so that it can be called by the <code>parse</code> method.
 	 * @param commandHandler
 	 * @throws FinProductionException
 	 * @see #parse(String, UIContext)
 	 */
-
 	void installCommand(ICommandHandler commandHandler)
 			throws FinProductionException {
 		if (commandHandler.getCommandStrings().isEmpty()) {
@@ -65,11 +65,34 @@ public class CommandParser {
 		commandHandlerLyst.add(commandHandler);
 	}
 
+	/**
+	 * parse a command from the UI
+	 * 
+	 * @param userArgs command that was input
+	 * @param context current User Interface context
+	 * @return
+	 */
 	public CommandResult parse(String userArgs, UIContext context) {
 		String command = "";
 
 		command = getCommand(userArgs);
 		return runCommand(command, userArgs, context);
+	}
+	
+	public String autoComplete(String userArgs, UIContext context) {
+		String command = getCommand(userArgs);
+
+		// Check if the current command is installed in CommandParser
+		if (!commandHandlers.containsKey(command.toLowerCase())) {
+			return null;
+		}
+
+		// Get the installed CommandHandler
+		ICommandHandler commandHandler = commandHandlers.get(command
+				.toLowerCase());
+		String cmdArgs = userArgs.replaceFirst(Pattern.quote(command), "").trim();
+		
+		return commandHandler.autoComplete(userArgs, command, cmdArgs, context);
 	}
 
 	private String getCommand(String userArgs) {

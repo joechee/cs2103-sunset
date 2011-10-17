@@ -39,7 +39,7 @@ public class EditCommandHandler extends ICommandHandler {
 		}
 
 		int taskIndex;
-		String[] tokens = arguments.split("\\s",3);
+		String[] tokens = arguments.split("\\s+",3);
 		
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
@@ -95,7 +95,7 @@ public class EditCommandHandler extends ICommandHandler {
 			task.setDueDate(tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.Task, task);			
-		} else if (tokens[1].equals("rd")) {
+		} else if (tokens[1].equals("undue")) {
 			// remove due date
 			
 			task.removeDueDate();
@@ -117,7 +117,53 @@ public class EditCommandHandler extends ICommandHandler {
 		return "edit <task number> <command>\n\tEdits a task base on the following command\n" +
 		"\t - edit <task> to <newtask>\tedits the task to new task\n" +
 		"\t - edit <task> due <duedate>\tchange/add due date for a task\n" +
-		"\t - edit <task> rd\t\tremove due date from a task";
+		"\t - edit <task> undue\t\tremove due date from a task";
+	}
+	
+	private static final String[] editCommands = {"to", "at", "rt", "due", "undue"};
+	@Override
+	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
+		int taskIndex;
+		String[] tokens = arguments.split("\\s+",3);
+//		System.out.println(arguments);
+		
+		if (tokens.length >= 3) {
+			return null;
+		}
+
+		try {
+			taskIndex = Integer.parseInt(tokens[0]);
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+		System.out.println(taskIndex);
+
+		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
+			return null;
+		}
+		Task task = context.getTaskList().get(taskIndex - 1);
+
+		// only a valid task Index provided
+		// auto complete "edit [] to [task]"
+		if (tokens.length == 1) {
+			return fullCommand.trim().replaceAll("\\s+$", "") + " to " + task.getEditableTaskName();
+		}
+		
+		
+		if (tokens[1].equals("to")) {
+			// edit [] to provided
+			// complete with task
+			return fullCommand.trim().replaceAll("\\s+$", "") + " " + task.getEditableTaskName();
+		} else {
+			// complete with whatever task
+			for (int i=0;i<editCommands.length;++i) {
+				if (editCommands[i].startsWith(tokens[1]) && editCommands[i].length() != tokens[1].length()) {
+					return fullCommand.trim().replaceAll("\\s+$", "").replaceAll(tokens[1]+"$", "") + editCommands[i];					
+				}
+			}
+			
+		}
+		return null;
 	}
 
 

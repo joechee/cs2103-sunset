@@ -8,6 +8,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -86,11 +87,19 @@ public class GUI implements IUserInterface {
 		cli.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		cli.addUserInputListener(new FinCLIInputListener() {
 			@Override
-			public void UserInput(FinCLIInputEvent event) {
+			public void userInput(FinCLIInputEvent event) {
 				if (runCommandAndRender(event.input)) {
 					EXIT = true;
 				}
 
+			}
+
+			@Override
+			public void onChange(FinCLIInputEvent event) {
+				String complete = CommandParser.INSTANCE.autoComplete(event.input, context);
+				if (complete != null) {
+					cli.setAutoComplete(complete);
+				}
 			}
 		});
 		

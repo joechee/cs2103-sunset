@@ -105,6 +105,7 @@ public class FinCLIComposite extends Composite {
 		label.setBackground(new Color(null, FinConstants.BORDER_COLOR));
 	}
 
+	private String previousString = "";
 	void handlerUserInput() {
 		input.addKeyListener(new KeyListener() {
 
@@ -124,6 +125,9 @@ public class FinCLIComposite extends Composite {
 							input.setText("");
 						}
 					}
+				} else if(!input.getText().equals(previousString)) {
+					previousString = input.getText();
+					onChange(previousString);
 				}
 			}
 
@@ -277,15 +281,46 @@ public class FinCLIComposite extends Composite {
 	}
 	
 	/**
+	 * Programmatically invoke an onchange event
+	 * 
+	 * @param userInput
+	 */
+	public void onChange(String userInput) {
+		for (FinCLIInputListener listener : userInputListeners) {
+			listener.onChange(new FinCLIInputEvent(input, userInput));
+		}
+	}
+	
+	/**
 	 * Programmatically run a user input on the command interface
 	 * 
 	 * @param userInput
 	 */
 	public void runInput(String userInput) {
 		for (FinCLIInputListener listener : userInputListeners) {
-			listener.UserInput(new FinCLIInputEvent(input,
+			listener.userInput(new FinCLIInputEvent(input,
 					userInput));
 		}
+	}
+	
+	/**
+	 * Set an autocomplete string. The right difference between current text and new 
+	 * text will be selected
+	 * 
+	 * @param autoComplete new string to autocomplete
+	 */
+	public void setAutoComplete(String autoComplete) {
+		String cur = input.getText();
+		int start = cur.length();
+		int m = Math.min(cur.length(), autoComplete.length());
+		for (int i=0;i<m;++i) {
+			if (cur.charAt(i) != autoComplete.charAt(i)) {
+				start = i;
+			}
+		}
+		
+		input.setText(autoComplete);
+		input.setSelection(start, autoComplete.length());
 	}
 
 }

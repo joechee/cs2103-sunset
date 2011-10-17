@@ -45,7 +45,7 @@ public class FinCommandHandler extends ICommandHandler {
 
 		int taskIndex;
 		try {
-			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
+			taskIndex = Integer.parseInt(arguments.split("\\s+")[0]);
 		} catch (NumberFormatException nfe) {
 			return CommandResult.invalidTaskIndex;
 		}

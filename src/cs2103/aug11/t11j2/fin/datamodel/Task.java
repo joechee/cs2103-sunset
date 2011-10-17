@@ -159,6 +159,16 @@ public class Task {
 		this.taskName = taskName;
 	}
 
+	public String getEditableTaskName() {
+		Date dueDate = this.getDueDate();
+		if ((dueDate != null)
+				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
+			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
+					+ DateParser.naturalDateFromNow(dueDate));
+		} else {
+			return taskName;
+		}		
+	}
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
 		if ((dueDate != null)

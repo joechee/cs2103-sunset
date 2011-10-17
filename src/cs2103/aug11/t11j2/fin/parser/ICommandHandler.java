@@ -24,7 +24,10 @@ public abstract class ICommandHandler {
 	}
 
 	abstract public String getAbridgedHelp();
-
 	
 	abstract public String getHelp();
+	
+	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
+		return null;
+	}
 }
