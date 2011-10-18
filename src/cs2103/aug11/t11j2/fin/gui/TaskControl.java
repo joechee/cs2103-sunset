@@ -286,7 +286,8 @@ public class TaskControl extends Composite {
 	
 	private static TaskStyledText initTaskText(final TaskControl parent, Task task) {
 		final TaskStyledText taskText = new TaskStyledText(parent, SWT.NONE, task);
-
+		final String originalString = taskText.getText();
+		
 		taskText.addListener(SWT.FocusIn, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
@@ -299,8 +300,7 @@ public class TaskControl extends Composite {
 				if (fincli instanceof FinCLIComposite) {
 					((FinCLIComposite)fincli).setHint("edit " + parent.taskPosition + " to " + editText); 
 				}
-				
-				taskText.editMode(editText);
+				taskText.editMode(editText);				
 			}
 		});
 		
@@ -308,24 +308,35 @@ public class TaskControl extends Composite {
 			@Override
 			public void handleEvent(Event e) {
 				Composite fincli = parent.getParent();
+				
 				while(fincli != null && !(fincli instanceof FinCLIComposite)) {
 					fincli = fincli.getParent();
 				}
-
-				//taskText.renderMode(taskText.getText());
 				
-				if (fincli instanceof FinCLIComposite) {
-					((FinCLIComposite)fincli).runInput("edit " + parent.taskPosition + " to " + taskText.getText());
-					((FinCLIComposite)fincli).removeHint();
+				if (e.doit && !taskText.isInRenderMode()) {
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).runInput("edit " + parent.taskPosition + " to " + taskText.getText());
+						((FinCLIComposite)fincli).removeHint();
+					}
+				} else {
+					taskText.renderMode(originalString);
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).removeHint();
+					}
+					((FinCLIComposite)fincli).forceFocus();
 				}
 			}
 		};
 		
+		// when user focus out of control, save the edit
 		taskText.addListener(SWT.FocusOut, completeEdit);
 		taskText.addListener(SWT.KeyUp, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
 				if (e.keyCode == SWT.CR || e.keyCode == 13 || e.keyCode == SWT.KEYPAD_CR) {
+					completeEdit.handleEvent(e);
+				} else if (e.keyCode == SWT.ESC) {
+					e.doit = false;
 					completeEdit.handleEvent(e);
 				}
 			}
@@ -343,6 +354,38 @@ public class TaskControl extends Composite {
 					((FinCLIComposite)fincli).setHint("edit " + parent.taskPosition + " to " + taskText.getText()); 
 				}
 			}
+		});
+		
+		taskText.addListener(SWT.MouseEnter, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				if (taskText.isInRenderMode()) {
+					Composite fincli = parent.getParent();
+					while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+						fincli = fincli.getParent();
+					}
+					
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).setHint("edit " + parent.taskPosition + " to " + taskText.getText()); 
+					}					
+				}
+			}			
+		});
+		
+		taskText.addListener(SWT.MouseExit, new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				if (taskText.isInRenderMode()) {
+					Composite fincli = parent.getParent();
+					while(fincli != null && !(fincli instanceof FinCLIComposite)) {
+						fincli = fincli.getParent();
+					}
+					
+					if (fincli instanceof FinCLIComposite) {
+						((FinCLIComposite)fincli).removeHint(); 
+					}					
+				}
+			}						
 		});
 		
 		return taskText;

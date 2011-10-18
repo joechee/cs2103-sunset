@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.gui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -45,24 +46,29 @@ public class TaskContainer extends Composite {
 		this.addListener(SWT.MouseMove, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				for (Control c : self.getChildren() ) {
-					Rectangle r = c.getBounds();
-					if (r.contains(event.x, event.y)) { 
-						if (c instanceof TaskControl) {
+				try {
+					for (Control c : self.getChildren() ) {
+						Rectangle r = c.getBounds();
+						if (r.contains(event.x, event.y)) { 
+							if (c instanceof TaskControl) {
+								
+								if (previousOver != null) {
+									previousOver.mouseOver = false;
+									previousOver.resize();
+									previousOver.setEnabled(false);
+								}
 							
-							if (previousOver != null) {
-								previousOver.mouseOver = false;
-								previousOver.resize();
-								previousOver.setEnabled(false);
+								((TaskControl) c).mouseOver = true;
+								((TaskControl) c).resize();
+								((TaskControl) c).setEnabled(true);
+								previousOver = ((TaskControl)c);
 							}
-							
-							((TaskControl) c).mouseOver = true;
-							((TaskControl) c).resize();
-							((TaskControl) c).setEnabled(true);
-							previousOver = ((TaskControl)c);
 						}
 					}
+				} catch (SWTException e) {
+					// taskcontrol is disposed
 				}
+
 			}
 		});
 	}

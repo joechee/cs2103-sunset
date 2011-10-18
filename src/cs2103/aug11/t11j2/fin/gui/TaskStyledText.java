@@ -39,15 +39,18 @@ public class TaskStyledText extends StyledText {
 		renderMode(task.getTaskName());
 	}
 	
+	private boolean inRenderMode = false; 
+	
 	/**
 	 * Set control to render mode, which is readonly
 	 * 
 	 * @param text of the current control
 	 */
 	public void renderMode(String text) {
+		setInRenderMode(true);
+		this.setEditable(false);
 		this.setText(text);
 		parseAndStyleTaskText(this);
-		this.setEditable(false);
 	}
 
 	/** 
@@ -56,6 +59,7 @@ public class TaskStyledText extends StyledText {
 	 * @param text
 	 */
 	public void editMode(String text) {
+		setInRenderMode(false);
 		this.setText(text);
 		this.setEditable(true);
 	}
@@ -175,4 +179,12 @@ public class TaskStyledText extends StyledText {
         }
         return rgb;
     }
+
+	public boolean isInRenderMode() {
+		return inRenderMode;
+	}
+
+	void setInRenderMode(boolean inRenderMode) {
+		this.inRenderMode = inRenderMode;
+	}
 }
