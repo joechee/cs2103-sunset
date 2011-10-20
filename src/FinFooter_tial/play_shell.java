@@ -35,7 +35,7 @@ public class play_shell {
 		text.setBounds(0, 350, 800, 50);
 		FinFooter footButtons = new FinFooter(display, shell, text, 20, 420, 50, 30, 10);
 		
-		int n = footButtons.labelList.size();
+		int n = footButtons.buttonList.size();
 		
 		while (!shell.isDisposed()){
 			if (!display.readAndDispatch())
