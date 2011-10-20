@@ -2,12 +2,17 @@ package cs2103.aug11.t11j2.fin.gui.footer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
@@ -21,12 +26,13 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class FinFooter {
 	
-	static final String [] OUTPUT_TEXT = {"add", "search", "show", "help"};
-	static final String [] LABEL_TEXT = {"Add", "Search", "Show", "Help"};
+	static final String [] OUTPUT_TEXT = {"add", "del", "search", "help"};
+	static final String [] LABEL_TEXT = {"Add", "Delete", "Search", "Help"};
 	static String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
 	static int STRING_NOT_FOUND = -1;
 	
-	public List <Label> labelList = new ArrayList<Label>();	
+	public List <Button> buttonList = new ArrayList<Button>();	
+	public List <Label> labelList = new ArrayList<Label>();
 	static Text input;
 	
 	/*
@@ -41,42 +47,55 @@ public class FinFooter {
 
 		input = text;
 		Color color = shell.getBackground();
-		Color fcolor = new Color(display, 80, 70, 60);
+		Color fcolor = new Color(display, 0, 0, 0);
 		int n = LABEL_TEXT.length;
 		for (int i=0; i<n; i++){
-			System.out.println(i + " " + LABEL_TEXT[i]);
-			this.labelList.add(new Label(shell, SWT.PUSH));
-			formatLabel(this.labelList.get(i), x, y, 
-						 width, height, color, fcolor, LABEL_TEXT[i]);
+			this.buttonList.add(new Button(shell, SWT.PUSH));
+			InputStream inputStream;
+			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+".bmp");
+			Image img = new Image(display, inputStream);
+		
+			formatButton(this.buttonList.get(i), x, y, 
+						 width, height, color, fcolor, img);
 			x = x + width + gap;
 			addListener(i);
-			addMouseoverEffect(this.labelList.get(i));
+			addMouseoverEffect(this.buttonList.get(i));
 		}
 		int countOutstanding = getOutstandingTask();
 		fcolor = new Color(display, 255, 0, 0);
 		addOutstandingNum(shell, x, y, width, height, color, fcolor, countOutstanding);
-		x = x + width;
+		x = x + width + 10;
 		fcolor = new Color(display, 105, 0, 255);
-		addLabelOutstanding(shell,  x, y, width*3, height, 
+		addLabelOutstanding(shell,  x, y, width*4, height, 
 				color, fcolor, "Tasks "+WITHIN_ONE_DAY);
 		x = x + width +gap;
 	}
 	
-	void formatLabel(Label label, int x, int y, int width, int height,
-			Color color, Color fcolor, String name){
+	void formatButton(Button bt, int x, int y, int width, int height,
+			Color color, Color fcolor, Image img){
 		
-		label.setLocation(x, y);
-		label.setSize(width, height);
+		bt.setLocation(x, y);
+		bt.setSize(width, height);
+		bt.setBackground(color);
+		bt.setForeground(fcolor);
+		bt.setImage(img);
+	}
+	
+	void formatLabel(Label label, int x, int y, int width, int height,
+			Color color, Color fcolor, String labelText){
+		
+		label.setLocation(x-5, y+5);
+		label.setSize(width+10, height+10);
 		label.setBackground(color);
 		label.setForeground(fcolor);
-		label.setText(name);
+		label.setText(labelText);
 	}
 	
 	void addListener(int index){
 		
 		switch(index){
 		
-		case 0:	this.labelList.get(index).addMouseListener(
+		case 0:	this.buttonList.get(index).addMouseListener(
 					new MouseAdapter(){
 						public void mouseDown(MouseEvent e){
 							input.setFocus();
@@ -85,7 +104,16 @@ public class FinFooter {
 						}						
 					});
 				break;
-		case 1: this.labelList.get(index).addMouseListener(
+		case 1: this.buttonList.get(index).addMouseListener(
+				new MouseAdapter(){
+					public void mouseDown(MouseEvent e){
+						input.setFocus();
+						input.setText("");
+						input.append("del ");
+					}						
+				});
+				break;
+		case 2: this.buttonList.get(index).addMouseListener(
 				new MouseAdapter(){
 					public void mouseDown(MouseEvent e){
 						input.setFocus();
@@ -94,16 +122,7 @@ public class FinFooter {
 					}						
 				});
 				break;
-		case 2: this.labelList.get(index).addMouseListener(
-				new MouseAdapter(){
-					public void mouseDown(MouseEvent e){
-						input.setFocus();
-						input.setText("");
-						input.append("show ");
-					}						
-				});
-				break;
-		case 3: this.labelList.get(index).addMouseListener(
+		case 3: this.buttonList.get(index).addMouseListener(
 				new MouseAdapter(){
 					public void mouseDown(MouseEvent e){
 						input.setFocus();
@@ -115,22 +134,32 @@ public class FinFooter {
 		}			
 	}
 	
-	void addMouseoverEffect(Label label){
-		final Label targetLabel = label;
-		final Color preFcolor = label.getForeground();
-		targetLabel.addListener(SWT.MouseEnter,
+	void addMouseoverEffect(Button bt){
+		final Button targetBt = bt;
+		final Color preFcolor = bt.getBackground();
+		targetBt.addListener(SWT.MouseEnter,
 				new Listener(){
 					@Override
 					public void handleEvent(Event e){
-						Color fcolor = new Color(null, 255, 255, 255);
-						targetLabel.setForeground(fcolor);
+						Rectangle rt = targetBt.getBounds();
+						rt.x-=5;
+						rt.y-=5;
+						rt.height+=10;
+						rt.width+=10;
+						targetBt.setBounds(rt);
+						
 					}
 				});
-		targetLabel.addListener(SWT.MouseExit,
+		targetBt.addListener(SWT.MouseExit,
 				new Listener(){
 					@Override
 					public void handleEvent(Event e){
-						targetLabel.setForeground(preFcolor);
+						Rectangle rt = targetBt.getBounds();
+						rt.x+=5;
+						rt.y+=5;
+						rt.height-=10;
+						rt.width-=10;
+						targetBt.setBounds(rt);
 					}
 			
 		});
