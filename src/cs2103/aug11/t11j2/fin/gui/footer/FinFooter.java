@@ -28,9 +28,14 @@ public class FinFooter {
 	
 	static final String [] OUTPUT_TEXT = {"add", "del", "search", "help"};
 	static final String [] LABEL_TEXT = {"Add", "Delete", "Search", "Help"};
-	static String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
-	static int STRING_NOT_FOUND = -1;
-	
+	static final String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
+	static final int STRING_NOT_FOUND = -1;
+	static final int DEFAULT_X = 20;
+	static final int DEFAULT_DY = -100;
+	static final int DEFAULT_WIDTH = 50;
+	static final int DEFAULT_HEIGHT = 30;
+	static final int DEFAULT_GAP = 10;
+		
 	public List <Button> buttonList = new ArrayList<Button>();	
 	public List <Label> labelList = new ArrayList<Label>();
 	static Text input;
@@ -41,10 +46,42 @@ public class FinFooter {
 	 * @param x, y: location of the footer.
 	 * @param width, height: size of the labels.
 	 * @param gap: the gap between the labels.
-	 */
-	public FinFooter( Display display, Shell shell, Text text,
+	 */	
+	public FinFooter(Display display, Shell shell, Text text,
 			int x, int y, int width, int height, int gap){
 
+		input = text;
+		Color color = shell.getBackground();
+		Color fcolor = new Color(display, 0, 0, 0);
+		int n = LABEL_TEXT.length;
+		for (int i=0; i<n; i++){
+			this.buttonList.add(new Button(shell, SWT.PUSH));
+			InputStream inputStream;
+			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+".bmp");
+			Image img = new Image(display, inputStream);
+		
+			formatButton(this.buttonList.get(i), x, y, 
+						 width, height, color, fcolor, img);
+			x = x + width + gap;
+			addListener(i);
+			addMouseoverEffect(this.buttonList.get(i));
+		}
+		int countOutstanding = getOutstandingTask();
+		fcolor = new Color(display, 255, 0, 0);
+		addOutstandingNum(shell, x, y, width, height, color, fcolor, countOutstanding);
+		x = x + width + 10;
+		fcolor = new Color(display, 105, 0, 255);
+		addLabelOutstanding(shell,  x, y, width*4, height, 
+				color, fcolor, "Tasks "+WITHIN_ONE_DAY);
+		x = x + width +gap;
+	}
+
+	public FinFooter(Display display, Shell shell, Text text){
+		int x = DEFAULT_X;
+		int y = shell.getSize().y + DEFAULT_DY;
+		int width = DEFAULT_WIDTH;
+		int height = DEFAULT_HEIGHT;
+		int gap = DEFAULT_GAP;
 		input = text;
 		Color color = shell.getBackground();
 		Color fcolor = new Color(display, 0, 0, 0);
