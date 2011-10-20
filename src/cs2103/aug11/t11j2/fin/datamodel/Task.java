@@ -7,38 +7,6 @@ import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
 
-	public enum EImportance {
-		LOW("Low"), NORMAL("Normal"), HIGH("Important");
-
-		String importance;
-
-		EImportance(String importance) {
-			this.importance = importance;
-		}
-
-		@Override
-		public String toString() {
-			return importance;
-		}
-
-		private static final Map<String, EImportance> stringToEnum = new HashMap<String, EImportance>();
-
-		static {
-			for (EImportance importanceLevel : EImportance.values()) {
-				stringToEnum.put(importanceLevel.toString(), importanceLevel);
-			}
-		}
-
-		public static EImportance fromString(String importance) {
-			EImportance importanceLevel = stringToEnum.get(importance);
-			if (importanceLevel == null) {
-				return NORMAL;
-			} else {
-				return importanceLevel;
-			}
-		}
-	};
-
 	private String taskName;
 	private List<String> tags = new ArrayList<String>();
 	private Date timeDue;
@@ -56,10 +24,10 @@ public class Task {
 		this.important = false;
 	}
 	
-	public Task(String taskName) throws IllegalArgumentException{
-		if (!validateTaskName(taskName)) {
-			throw new IllegalArgumentException("Invalid string within task description!");
-		}
+	public Task(String taskName) {
+		
+		taskName = sanitizeInput(taskName);
+		
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		boolean parsed = dateParser.parse(taskName);
@@ -77,13 +45,6 @@ public class Task {
 		this.important = false;		
 
 		parseTags();
-	}
-
-	private boolean validateTaskName(String s) {
-		if (s.contains(FinConstants.DUEDATE_PLACEHOLDER)){
-			return false;
-		}
-		return true;
 	}
 
 	public Task(Map<String, Object> dict) {
@@ -104,7 +65,7 @@ public class Task {
 	 * add it to the list of tags the Task object has
 	 */
 	private void parseTags() {
-		String[] tokens = tokenize(this.taskName);
+		String[] tokens = tokenize(this.getTaskName());
 
 		// parse hashTags of task
 		for (String s : tokens) {
@@ -155,12 +116,10 @@ public class Task {
 
 	// Setter and Getter methods
 	
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
-	}
 
 	public String getEditableTaskName() {
 		Date dueDate = this.getDueDate();
+		String taskName = this.getTaskName();
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
 			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
@@ -171,6 +130,7 @@ public class Task {
 	}
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
+		String taskName = unsanitizeString(this.taskName);
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
 			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "["
@@ -185,11 +145,15 @@ public class Task {
 			return false;
 		}
 		String sanitizedTag = sanitizeHashTag(tag);
-
 		this.tags.add(sanitizedTag);
-		this.taskName = this.taskName.trim() + " " + FinConstants.HASH_TAG_CHAR
-				+ sanitizedTag;
+		setTaskName(getTaskName().trim() + " " + FinConstants.HASH_TAG_CHAR
+				+ sanitizedTag);
 		return true;
+	}
+
+	private void setTaskName(String string) {
+		this.taskName = sanitizeInput(string);
+		
 	}
 
 	public void removeTag(String tag) {
@@ -309,9 +273,23 @@ public class Task {
 	public boolean isImportant() {
 		return this.important;
 	}
+	
+	private String sanitizeInput(String s) {
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR), 
+				Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR);
+		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER, FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
+		return s;
+	}
+	
+	private String unsanitizeString(String s) {
+		s = s.replace(FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER,FinConstants.DUEDATE_PLACEHOLDER);
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR, 
+				Character.toString(FinConstants.ESCAPE_CHAR));
+		return s;
+	}
 
 	@Override
 	public String toString() {
-		return getTaskName();
+		return unsanitizeString(getTaskName());
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;

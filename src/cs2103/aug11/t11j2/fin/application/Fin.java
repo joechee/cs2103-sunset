@@ -18,7 +18,7 @@ public class Fin {
 	
 	/* Constants */
 
-	public static final Fin.IUserInterface DEFAULT_UI = new CLI();
+	public static final Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 	

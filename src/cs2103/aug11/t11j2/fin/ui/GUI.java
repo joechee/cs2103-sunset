@@ -73,7 +73,7 @@ public class GUI implements IUserInterface {
 
 	void initShell() {
 		final Display display = new Display();
-		shell = new Shell(display);
+		shell = new Shell(display,SWT.NO_TRIM);
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
