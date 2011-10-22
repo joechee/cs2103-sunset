@@ -247,8 +247,16 @@ public class DateParser {
 			DateStringBufferPair dateSBPair = patternChecker.handler.handleMatches(m);
 			
 			if (dateSBPair != null) {
+				System.out.println("success!");
+				Calendar c = Calendar.getInstance();
+				c.setTime(dateSBPair.date);
+				c.set(Calendar.HOUR_OF_DAY, 23);
+				c.set(Calendar.MINUTE, 59);
+				c.set(Calendar.SECOND, 59);
+				dateSBPair.date = c.getTime();
 				setParsedString(dateSBPair.sb.toString());
 				setParsedDate(dateSBPair.date);
+				System.out.println(getParsedDate());
 				return true;
 			}
 		}
@@ -273,7 +281,6 @@ public class DateParser {
 	}
 	
 	
-	private static final long DAY = 24 * 60 * 60 * 1000;
 	/**
 	 * Returns a string representing a date from now in natural language 
 	 * 
