@@ -26,6 +26,12 @@ public class ShowCommandHandler extends ICommandHandler {
 				add("sh");
 				add("sho");
 				add("show");
+				add("search");
+				add("sear");
+				add("lookfor");
+				add("lookup");
+				add("check");
+				add("find");
 				add("ls");
 				add("list");
 				add("view");
@@ -46,20 +52,51 @@ public class ShowCommandHandler extends ICommandHandler {
 		}
 		return tokenList;
 	}
+	
+	public static List<Task> filterTasksWithPatterns(List<Task>tasks, String filters){
+		List <String> patterns = tokenize(filters);
+		List <Task> tasksAfterFilter = new ArrayList<Task>();
+		int numOfTasks = tasks.size();
+		int numOfPatterns = patterns.size();
+		for (int i=0; i<numOfTasks; i++){
+			boolean filtered = false; //whether the task[i] is filtered out;
+			String taskString = tasks.get(i).toString().toUpperCase();
+			for (int j=0; j<numOfPatterns; j++){
+				if (taskString.indexOf(patterns.get(j).toUpperCase())==-1){
+					filtered = true;
+					break;
+				}
+			}
+			if(!filtered){
+				tasksAfterFilter.add(tasks.get(i));
+			}
+		}
+		return tasksAfterFilter;		
+	}
 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		
 		List<Task> tasks = null;
+		
 		if (arguments.trim().length() == 0) {
-			tasks = FinApplication.INSTANCE.getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG));
+			tasks = FinApplication.INSTANCE.getTasks();
 		} else {
 			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
 		}
-
+		
+		List<Task> searchTasks = FinApplication.INSTANCE.getTasks();
+		String filters = arguments.trim();
+		searchTasks = filterTasksWithPatterns(searchTasks, filters);
+		for (Task i: searchTasks) {
+			if (!tasks.contains(i)) {
+				tasks.add(i);
+			}
+		}
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASKLIST, tasks);
+
 	}
 	
 	@Override

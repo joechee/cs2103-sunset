@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -65,8 +66,7 @@ public class SearchTasksWithPatternCommandHandler extends ICommandHandler {
 			return showHelp();
 		}
 		List<Task> tasks = null;
-//		tasks = FinApplication.INSTANCE.getTasks();
-		tasks = context.getTaskList();
+		tasks = FinApplication.INSTANCE.getTasks();
 		String contextFilter = context.getFilter();
 		String filters = arguments.trim() + " " + contextFilter;
 		tasks = filterTasksWithPatterns(tasks, filters);

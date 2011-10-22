@@ -275,7 +275,7 @@ public class DateParser {
 	
 	private static final long DAY = 24 * 60 * 60 * 1000;
 	/**
-	 * Returns a string represeting a date from now in natural language 
+	 * Returns a string representing a date from now in natural language 
 	 * 
 	 * @param date d
 	 */
@@ -284,22 +284,61 @@ public class DateParser {
 		final DateFormat df = new SimpleDateFormat("dd MMM");
 
 		due.setTime(d);
+		
+		if (due.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
+			return df.format(due.getTime());
+		} 
 
-		long diff = due.getTimeInMillis() - now.getTimeInMillis();
+		int diff = due.get(Calendar.DAY_OF_YEAR) - now.get(Calendar.DAY_OF_YEAR);
+		
+		if (due.get(Calendar.YEAR) > now.get(Calendar.YEAR)){
+			diff = diff + (due.get(Calendar.YEAR) - now.get(Calendar.YEAR))* 365
+					+ (findLeapYears(now.get(Calendar.YEAR),due.get(Calendar.YEAR)));
+		}
+
 
 		if (diff < 0) {
 			return df.format(due.getTime());
-		} else if (diff <= DAY) {
-			return "WITHIN 24 HOURS!";
-		} else if (diff <= 2 * DAY) {
+		} else if (diff == 0) {
+			return "DUE TODAY!";
+		} else if (diff <= 1) {
 			return "tomorrow";
-		} else if (diff <= 5 * DAY) {
-			return "in " + (int) (Math.floor(diff / DAY) + 1) + " days";
-		} else if (diff <= 14 * DAY) {
+		} else if (diff <= 5) {
+			return "in " + diff + " days";
+		} else if (diff <= 14) {
 			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
 			return "next " + dayFormat.format(due.getTime());
 		} else {
 			return df.format(due.getTime());
 		}
 	}
+	
+	private static boolean isLeapYear(int year) {
+		if (year % 4 == 0) {
+			if (year % 100 == 0) {
+				if (year % 400 == 0) {
+					return true;
+				}
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private static int findLeapYears(int start, int end) {
+		assert (end >= start);
+		if (end<start) {
+			return 0;
+		}
+		int leapYears = 0;
+		for (int i = start; i < end; i++) {
+			if (isLeapYear(i)) {
+				leapYears++;
+			}
+		}
+		
+		return leapYears;
+	}
+	
 }
