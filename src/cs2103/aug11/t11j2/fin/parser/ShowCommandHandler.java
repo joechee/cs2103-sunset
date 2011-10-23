@@ -79,14 +79,15 @@ public class ShowCommandHandler extends ICommandHandler {
 			UIContext context) throws FinProductionException {
 		
 		List<Task> tasks = null;
+		final List<Task> unfinishedTasks = FinApplication.INSTANCE.getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
 		
 		if (arguments.trim().length() == 0) {
-			tasks = FinApplication.INSTANCE.getTasks();
+			tasks = unfinishedTasks;
 		} else {
 			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
 		}
 		
-		List<Task> searchTasks = FinApplication.INSTANCE.getTasks();
+		List<Task> searchTasks = unfinishedTasks;
 		String filters = arguments.trim();
 		searchTasks = filterTasksWithPatterns(searchTasks, filters);
 		for (Task i: searchTasks) {
