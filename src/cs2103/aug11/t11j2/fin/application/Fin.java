@@ -1,7 +1,10 @@
 package cs2103.aug11.t11j2.fin.application;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
+import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
@@ -24,6 +27,22 @@ public class Fin {
 	
 	public interface IUserInterface {
 		void mainLoop();
+	}
+	
+	public interface IFinApplication {
+		public void add(Task task);
+		public List<Task> getTasksWithTag(String tag);
+		public List<Task> getTasks();
+		public List<Task> getTasksWithoutTag(String tag);
+		public List<Task> getTasksWithoutTags(List<String> tags);
+		public List<Task> getTasksWithTags(List<String> tags);
+		public boolean deleteTask(UUID taskUID);
+		public boolean flagTask(UUID taskUID);
+		public boolean unflagTask(UUID taskUID);
+		public boolean finTask(UUID taskUID);
+		public boolean unfinTask(UUID taskUID);
+		public void loadEnvironment(String filename) throws IOException;
+		public List<String> getHashTags();
 	}
 
 	public static void main(String[] args) {

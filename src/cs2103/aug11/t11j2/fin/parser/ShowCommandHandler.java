@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
@@ -79,12 +78,12 @@ public class ShowCommandHandler extends ICommandHandler {
 			UIContext context) throws FinProductionException {
 		
 		List<Task> tasks = null;
-		final List<Task> unfinishedTasks = FinApplication.INSTANCE.getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
+		final List<Task> unfinishedTasks = context.getFinApplication().getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
 		
 		if (arguments.trim().length() == 0) {
 			tasks = unfinishedTasks;
 		} else {
-			tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
+			tasks = context.getFinApplication().getTasksWithTags(tokenize(arguments));
 		}
 		
 		List<Task> searchTasks = unfinishedTasks;
@@ -137,7 +136,7 @@ public class ShowCommandHandler extends ICommandHandler {
 		
 		String lastToken = sb.toString();
 		
-		List<String> hashTags = FinApplication.INSTANCE.getHashTags();
+		List<String> hashTags = context.getFinApplication().getHashTags();
 		for (String s : hashTags) {
 			if (s.startsWith(lastToken)) {
 				return fullCommand.replaceAll(lastToken+"$", "") + s;

@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -35,7 +34,7 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 			UIContext context) throws FinProductionException {
 		
 		for (Task t : context.getTaskList()) {
-			FinApplication.INSTANCE.deleteTask(t.getUniqId());			
+			context.getFinApplication().deleteTask(t.getUniqId());			
 		}
 		// after a delete all, invoke a show
 		ShowCommandHandler showCmdHandler = new ShowCommandHandler();
@@ -50,7 +49,6 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 
 	@Override
 	public CommandResult showHelp() throws FinProductionException {
-		// TODO Auto-generated method stub
 		return new CommandResult(this, "",
 				CommandResult.RenderType.STRING, "");
 	}

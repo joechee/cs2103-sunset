@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
@@ -23,7 +24,7 @@ public class CLI implements Fin.IUserInterface {
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
-	private static UIContext context = new UIContext();
+	private static UIContext context = new UIContext(FinApplication.INSTANCE);
 
 	private static Scanner sc = new Scanner(System.in);
 

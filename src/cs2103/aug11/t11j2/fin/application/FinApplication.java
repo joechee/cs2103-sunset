@@ -8,21 +8,24 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * 
+ * FinApplication class that handles the environment instance
+ * of Fin (essentially manages what task is in memory, serializing
+ * searching etc.)
+ *  
  * @version 0.1
  * @author Koh Zi Chun
- * @author Acer Wei Jing
- * @author Alex Liew
- * @author Joe Chee
  */
-public enum FinApplication {
-	INSTANCE;
+public class FinApplication implements Fin.IFinApplication {
+	public static FinApplication INSTANCE = new FinApplication();
+	
+	private FinApplication () {
+		
+	}
 
 	String taskFileName = "";
 
 	private List<Task> taskList = new ArrayList<Task>();
 	private Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
-	private UIContext context = new UIContext();
 
 	// Each hashTag points to a collection of Tasks
 	Map<String, List<Task>> hashTags = new HashMap<String, List<Task>>();
@@ -32,6 +35,7 @@ public enum FinApplication {
 	 * 
 	 * @param task
 	 */
+	@Override
 	public void add(Task task) {
 		taskList.add(task);
 		taskMap.put(task.getUniqId(), task);
@@ -58,6 +62,7 @@ public enum FinApplication {
 	 * 
 	 * @return List of Tasks sorted by pIndex
 	 */
+	@Override
 	public List<Task> getTasks() {
 		List<Task> tasks = new ArrayList<Task>(taskList);
 
@@ -72,6 +77,7 @@ public enum FinApplication {
 	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */
+	@Override
 	public List<Task> getTasksWithTag(String tag) {
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
@@ -88,6 +94,7 @@ public enum FinApplication {
 	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */	
+	@Override
 	public List<Task> getTasksWithoutTag(String tag) {
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
@@ -106,6 +113,7 @@ public enum FinApplication {
 	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */	
+	@Override
 	public List<Task> getTasksWithoutTags(List<String> tags) {
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
@@ -124,6 +132,7 @@ public enum FinApplication {
 	 * @param tag
 	 * @return List of Task with tags sorted by pIndex
 	 */
+	@Override
 	public List<Task> getTasksWithTags(List<String> tags) {
 		List<Task> filteredTasks = new ArrayList<Task>();
 		for (Task t : taskList) {
@@ -141,6 +150,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is deleted
 	 */
+	@Override
 	public boolean deleteTask(UUID taskUID) {
 		Task todelete = taskMap.get(taskUID);
 
@@ -160,6 +170,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is flagged
 	 */
+	@Override
 	public boolean flagTask(UUID taskUID) {
 		Task task = taskMap.get(taskUID);
 
@@ -177,6 +188,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is unflagged
 	 */
+	@Override
 	public boolean unflagTask(UUID taskUID) {
 		Task task = taskMap.get(taskUID);
 
@@ -195,6 +207,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is marked as finished
 	 */
+	@Override
 	public boolean finTask(UUID taskUID) {
 		Task task = taskMap.get(taskUID);
 
@@ -213,6 +226,7 @@ public enum FinApplication {
 	 * @param taskUID
 	 * @return true iff the task is unmarked as finished
 	 */
+	@Override
 	public boolean unfinTask(UUID taskUID) {
 		Task task = taskMap.get(taskUID);
 
@@ -242,7 +256,7 @@ public enum FinApplication {
 	 * @throws IOException
 	 * @see saveEnvironment
 	 */
-
+	@Override
 	public void loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
 		taskFileName = filename;
@@ -260,6 +274,7 @@ public enum FinApplication {
 	 * 
 	 * @return list of hashtags
 	 */
+	@Override
 	public List<String> getHashTags() {
 		List<String> tr = new ArrayList<String>();
 		for (String s : hashTags.keySet()) {
@@ -285,10 +300,4 @@ public enum FinApplication {
 			}
 		}
 	}
-
-	public UIContext getUIContext() {
-		return context;
-	}
-
-
 }

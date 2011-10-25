@@ -53,6 +53,8 @@ public class TaskStyledText extends StyledText {
 		parseAndStyleTaskText(this);
 	}
 
+	
+	private String beforeEdit = "";
 	/** 
 	 * Set control to editable 
 	 * 
@@ -62,6 +64,7 @@ public class TaskStyledText extends StyledText {
 		setInRenderMode(false);
 		this.setText(text);
 		this.setEditable(true);
+		beforeEdit = this.getText();
 	}
 	
 	private static void parseAndStyleTaskText(StyledText taskText) {
@@ -186,5 +189,13 @@ public class TaskStyledText extends StyledText {
 
 	void setInRenderMode(boolean inRenderMode) {
 		this.inRenderMode = inRenderMode;
+	}
+
+	/**
+	 * @return Returns whether the task has been modified after being in editMode
+	 */
+	public boolean hasChange() {
+		// TODO Auto-generated method stub
+		return !beforeEdit.equals(this.getText());
 	}
 }

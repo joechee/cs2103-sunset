@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -39,7 +38,7 @@ public class AddCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else {
 			Task newtask = new Task(arguments);
-			FinApplication.INSTANCE.add(newtask);
+			context.getFinApplication().add(newtask);
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.TASK, newtask);
 		}
@@ -54,7 +53,6 @@ public class AddCommandHandler extends ICommandHandler {
 
 	@Override
 	public String getHelp() {
-		// TODO Auto-generated method stub
 		return "add <task>\n\tAdds <task> to your task list";
 	}
 }

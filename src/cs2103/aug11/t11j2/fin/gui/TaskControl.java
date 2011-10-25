@@ -313,7 +313,7 @@ public class TaskControl extends Composite {
 					fincli = fincli.getParent();
 				}
 				
-				if (e.doit && !taskText.isInRenderMode()) {
+				if (e.doit && !taskText.isInRenderMode() && taskText.hasChange()) {
 					if (fincli instanceof FinCLIComposite) {
 						((FinCLIComposite)fincli).runInput("edit " + parent.taskPosition + " to " + taskText.getText());
 						((FinCLIComposite)fincli).removeHint();

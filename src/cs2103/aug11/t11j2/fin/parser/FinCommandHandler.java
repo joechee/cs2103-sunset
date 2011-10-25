@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -37,7 +36,7 @@ public class FinCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
-				FinApplication.INSTANCE.finTask(i.getUniqId());
+				context.getFinApplication().finTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.STRING, "Finished all tasks!");
@@ -55,7 +54,7 @@ public class FinCommandHandler extends ICommandHandler {
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.finTask(todelete.getUniqId());
+		context.getFinApplication().finTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, todelete);
@@ -63,7 +62,6 @@ public class FinCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getAbridgedHelp() {
-		// TODO Auto-generated method stub
 		return "fin <task number>\t\t\tMarks a task as completed";
 	}
 	

@@ -31,7 +31,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
-				FinApplication.INSTANCE.flagTask(i.getUniqId());
+				context.getFinApplication().flagTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.STRING, "Marked all displayed tasks as important!");

@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -35,7 +34,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
-				FinApplication.INSTANCE.unflagTask(i.getUniqId());
+				context.getFinApplication().unflagTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.STRING, "Removed important tag from all tasks!");
@@ -52,7 +51,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.unflagTask(todelete.getUniqId());
+		context.getFinApplication().unflagTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, todelete);

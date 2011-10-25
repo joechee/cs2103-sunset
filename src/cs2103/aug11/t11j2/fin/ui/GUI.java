@@ -8,7 +8,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -38,8 +37,7 @@ public class GUI implements IUserInterface {
 	// shell for SWT
 	Shell shell = null;
 	static FinCLIComposite cli;
-	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
-	private static UIContext context = new UIContext();
+	private static UIContext context = new UIContext(FinApplication.INSTANCE);
 
 	private static Composite createFooter(Composite shell) {
 		Composite footer = new Composite(shell, SWT.RIGHT_TO_LEFT);
@@ -92,7 +90,6 @@ public class GUI implements IUserInterface {
 				if (runCommandAndRender(event.input)) {
 					EXIT = true;
 				}
-
 			}
 
 			@Override
@@ -117,7 +114,6 @@ public class GUI implements IUserInterface {
 	    shell.setImage(finIcon);
 		shell.layout(true);
 
-		displayWelcomeMessage();
 		refreshContext();
 		displayTasks();
 		cli.forceFocus();
@@ -171,6 +167,7 @@ public class GUI implements IUserInterface {
 		
 		return renderCommandResult(feedback);
 	}
+	
 	private static CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
@@ -215,12 +212,28 @@ public class GUI implements IUserInterface {
 	}
 
 	/**
+	 * Attempts to evaluate a given math expression
+	 * 
+	 * @param math expression
+	 * @return null if math expression is not valid and string containing the result if it is
+	 */
+	private static String evaluateMathExpression(String expression) {
+	    try {
+		    ScriptEngineManager mgr = new ScriptEngineManager();
+		    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+			return engine.eval(expression).toString();
+		} catch (ScriptException e) {
+			return null;
+		}		
+	}
+	
+	/**
 	 * @return true if exitCommand is returned and false otherwise.
 	 */
 	private static boolean renderCommandResult(CommandResult cmdRes) {
 		switch (cmdRes.getRenderType()) {
 		case STRING:
-			renderString(cmdRes);
+			renderStringResult(cmdRes);
 			break;
 		case TASKLIST:
 			renderTaskListResult(cmdRes);
@@ -247,26 +260,21 @@ public class GUI implements IUserInterface {
 			break;
 		}
 
-		refresh();
+		flushOutput();
 		return false;
 	}
 	
-	private static String evaluateMathExpression(String expression) {
-	    try {
-		    ScriptEngineManager mgr = new ScriptEngineManager();
-		    ScriptEngine engine = mgr.getEngineByName("JavaScript");
-			return engine.eval(expression).toString();
-		} catch (ScriptException e) {
-			return null;
-		}		
-	}
-
-	private static void renderString(CommandResult cmdRes) {
+	/**
+	 * Renders a string based result (help, joke etc.)
+	 */
+	private static void renderStringResult(CommandResult cmdRes) {
 		echo((String) cmdRes.getReturnObject() + "\n");
-		refresh();
 		refreshContext();
 	}
 
+	/**
+	 * Renders a task based result (add, edit, delete etc.)
+	 */
 	private static void renderTaskResult(CommandResult cmdRes) {
 		String taskName = ((Task) cmdRes.getReturnObject()).getTaskName();
 		ICommandHandler commandHandler = cmdRes.getCommand();
@@ -288,52 +296,41 @@ public class GUI implements IUserInterface {
 			refreshContext();
 			printTaskList();
 
-			echo("Task: " + taskName + " editted!\n");			
+			echo("Task: " + taskName + " edited!\n");			
 		} else {
 			refreshContext();
 			printTaskList();
 		}
 	}
 
+	/**
+	 * Render a task list based result, i.e list of tasks (show)
+	 */
 	private static void renderTaskListResult(CommandResult cmdRes) {
 		updateContext(cmdRes);
 		printTaskList();
 	}
 
+	/**
+	 * print the current list of tasks in context
+	 */
 	private static void printTaskList() {
 		List<Task> taskList = context.getTaskList();
 
-		List<Task> finTask = new ArrayList<Task>();
 		List<Task> imptTask = new ArrayList<Task>();
 		List<Task> normalTask = new ArrayList<Task>();
 		List<Task> newContext = new ArrayList<Task>();
 
 		for (Task t : taskList) {
-			if (t.isFin()) {
-				finTask.add(t);
-			} else if (t.isImportant()) {
+			if (t.isImportant()) {
 				imptTask.add(t);
 			} else {
 				normalTask.add(t);
 			}
 		}
 
-		if (imptTask.size() > 0) {
-			for (Task t : imptTask) {
-				newContext.add(t);
-			}
-		}
-		if (normalTask.size() > 0) {
-			for (Task t : normalTask) {
-				newContext.add(t);
-			}
-		}
-		if (finTask.size() > 0) {
-			for (Task t : finTask) {
-				newContext.add(t);
-			}
-		}
-
+		for (Task t : imptTask) newContext.add(t);
+		for (Task t : normalTask) newContext.add(t);
 		context.setTaskList(newContext);
 
 		cli.clear();
@@ -347,32 +344,35 @@ public class GUI implements IUserInterface {
 			String filter = context.getFilter();
 			if (filter.length() > 0) {
 				echo(filter);
-				refresh();
+				flushOutput();
 			}
 			cli.addTaskList(newContext);
 		}
 	}
 
-	private static void displayWelcomeMessage() {
-		echo(WELCOME_MESSAGE);
-		refresh();
-	}
 
-	private static void refresh() {
+	private static StringBuilder b = new StringBuilder();
+
+	/**
+	 * adds a message to the output buffer
+	 * @param promptMessage
+	 */
+	private static void echo(String promptMessage) {
+		b.append(promptMessage);
+	}
+	
+	/**
+	 * flushes output buffer
+	 */
+	private static void flushOutput() {
 		if (b.length() > 0){ 
-			System.out.println(b.toString());
 			cli.echo(b.toString());
 			cli.refresh();
 			b = new StringBuilder();
 		}
 	}
 
-	private static StringBuilder b = new StringBuilder();
-
-	private static void echo(String promptMessage) {
-		b.append(promptMessage);
-	}
-
+	
 	@Override
 	public void mainLoop() {
 		initShell();

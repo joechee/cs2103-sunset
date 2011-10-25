@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -56,7 +55,7 @@ public class DeleteCommandHandler extends ICommandHandler {
 			}
 	
 			Task todelete = context.getTaskList().get(taskIndex - 1);
-			FinApplication.INSTANCE.deleteTask(todelete.getUniqId());
+			context.getFinApplication().deleteTask(todelete.getUniqId());
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.TASK, todelete);
 		}

@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -64,7 +63,7 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 			
-			FinApplication.INSTANCE.deleteTask(task.getUniqId());
+			context.getFinApplication().deleteTask(task.getUniqId());
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
 			CommandResult res = addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
 																.get(0), tokens[2], context);

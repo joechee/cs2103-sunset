@@ -20,6 +20,7 @@ import cs2103.aug11.t11j2.fin.application.FinConstants;
 public class DateParser {
 	private String parsedString;
 	private Date parsedDate;
+	private Date dateNow;
 
 	class DateStringBufferPair {
 		Date date;
@@ -48,7 +49,40 @@ public class DateParser {
 	List<PatternChecker> patternCheckers = new LinkedList<PatternChecker>();
 
 	public DateParser() {
+		this(new Date());
+	}
+	
+	/**
+	 * DateParser Constructor
+	 * Set the day of reference for parsing as given date "now"
+	 * 
+	 * @param now
+	 */
+	public DateParser(final Date now) {
+		this.dateNow = now;
 
+		// by/due tomorrow
+		patternCheckers.add(new PatternChecker(
+				Pattern.compile("(due\\sby|due|by)\\s*(today)", Pattern.CASE_INSENSITIVE),
+				new IPatternHandler() {
+					public DateStringBufferPair handleMatches(Matcher m) {
+						if (m.find()) {							
+							StringBuffer sb = new StringBuffer();
+							
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(now);
+							
+							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+							m.appendTail(sb);
+							
+							return new DateStringBufferPair(
+									calendar.getTime(), sb);								
+						}
+						return null;
+					}
+				}));
+
+		
 		// by/due tomorrow
 		patternCheckers.add(new PatternChecker(
 				Pattern.compile("(due\\sby|due|by)\\s*(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
@@ -58,6 +92,7 @@ public class DateParser {
 							StringBuffer sb = new StringBuffer();
 							
 							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(now);
 							calendar.add(Calendar.DAY_OF_YEAR, +1 );
 							
 							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
@@ -72,21 +107,24 @@ public class DateParser {
 
 		// on/by/this [day_of_week], e.g by Thursday
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due)?\\s*(on|by|this)\\s*(\\w*)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("(due)?\\s*(on|by|this|coming)\\s*(coming)?\\s*(\\w*)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
-							String s = m.group(3);
+							String s = m.group(4);
 							int day_of_week = parseDayOfWeek(s);
 							
 							if (day_of_week != -1) {
 								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(now);
 								int today = calendar.get(Calendar.DAY_OF_WEEK);
 								
-								if (day_of_week < today) {
-									continue;
+								if (day_of_week <= today) {
+									calendar.add(Calendar.DAY_OF_YEAR, 7 - (today - day_of_week));	
+								} else {
+									calendar.add(Calendar.DAY_OF_YEAR, day_of_week - today);
 								}
-								calendar.add(Calendar.DAY_OF_YEAR, day_of_week - today);
+								
 								
 								StringBuffer sb = new StringBuffer();
 								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
@@ -107,6 +145,7 @@ public class DateParser {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
 							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(now);
 							calendar.add(Calendar.DAY_OF_YEAR, +7 );
 
 							StringBuffer sb = new StringBuffer();
@@ -131,9 +170,22 @@ public class DateParser {
 							
 							if (day_of_week != -1) {
 								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(now);
 								int today = calendar.get(Calendar.DAY_OF_WEEK);
-								calendar.add(Calendar.DAY_OF_YEAR, 7 + (day_of_week - today));
-								DateFormat df = new SimpleDateFormat("dd MMM, EEE");
+								
+								if (today == 1) { // sunday is given special treatment.. due to human's intepretation of "next tuesday" for e.g
+									if (day_of_week == 1) { // next Sunday is necessarily in a week
+										calendar.add(Calendar.DAY_OF_YEAR, 7);
+									} else {
+										calendar.add(Calendar.DAY_OF_YEAR, (day_of_week - today));
+									}
+								} else {
+									if (day_of_week == 1) { // if next sunday, will be the sunday one week from now
+										calendar.add(Calendar.DAY_OF_YEAR, 7 + (8 - today));
+									} else {
+										calendar.add(Calendar.DAY_OF_YEAR, 7 + (day_of_week - today));
+									}
+								}
 								
 								StringBuffer sb = new StringBuffer();
 								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
@@ -160,6 +212,7 @@ public class DateParser {
 							
 							if (w > 0) {
 								Calendar calendar = Calendar.getInstance();
+								calendar.setTime(now);
 								calendar.add(Calendar.DAY_OF_YEAR, w);
 
 								StringBuffer sb = new StringBuffer();
@@ -175,7 +228,53 @@ public class DateParser {
 					}
 				}));
 
+
 		// for using SimpleDateFormat
+		// 30 Oct 2011, 30/10/2011, Oct 30 2011 
+		patternCheckers.add(
+				new PatternChecker(Pattern.compile("(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*[\\s|/]\\w*)"),
+				new IPatternHandler() {
+					public DateStringBufferPair handleMatches(Matcher m) {
+						while (m.find()) {
+							String t = m.group(2);
+							List<DateFormat> totest = new LinkedList<DateFormat>();
+							totest.add( new SimpleDateFormat("dd MMM yyyy") );
+							totest.add( new SimpleDateFormat("dd/MM/yyyy") );
+							totest.add( new SimpleDateFormat("MMM dd yyyy") );
+							
+							for (DateFormat df : totest) {
+								try {
+									Date date = df.parse(t);
+
+									StringBuffer sb = new StringBuffer();
+									m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+									m.appendTail(sb);
+
+									Calendar cal = Calendar.getInstance();
+									cal.setTime(date);
+									
+									int month = cal.get(Calendar.MONTH);
+									int day = cal.get(Calendar.DAY_OF_MONTH);
+									int year = cal.get(Calendar.YEAR);
+									
+									cal = Calendar.getInstance();
+									cal.set(Calendar.MONTH, month);
+									cal.set(Calendar.DAY_OF_MONTH, day);
+									cal.set(Calendar.YEAR, year);
+									
+									return new DateStringBufferPair( cal.getTime(), sb );
+								} catch (ParseException e) {
+									continue;
+								}
+							}
+						}
+						return null;
+					}
+				}));
+
+		
+		// for using SimpleDateFormat
+		// 30 Oct, 30/10, Oct 30
 		patternCheckers.add(
 				new PatternChecker(Pattern.compile("(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*)"),
 				new IPatternHandler() {
@@ -247,7 +346,7 @@ public class DateParser {
 			DateStringBufferPair dateSBPair = patternChecker.handler.handleMatches(m);
 			
 			if (dateSBPair != null) {
-				System.out.println("success!");
+				//System.out.println("success!");
 				Calendar c = Calendar.getInstance();
 				c.setTime(dateSBPair.date);
 				c.set(Calendar.HOUR_OF_DAY, 23);
@@ -256,7 +355,7 @@ public class DateParser {
 				dateSBPair.date = c.getTime();
 				setParsedString(dateSBPair.sb.toString());
 				setParsedDate(dateSBPair.date);
-				System.out.println(getParsedDate());
+				//System.out.println(getParsedDate());
 				return true;
 			}
 		}

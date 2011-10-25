@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -32,7 +31,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else if (arguments.equals("all")) {
 			for (Task i: context.getTaskList()) {
-				FinApplication.INSTANCE.unfinTask(i.getUniqId());
+				context.getFinApplication().unfinTask(i.getUniqId());
 			}
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.STRING, "Removed the finished tag from all displayed tasks!");
@@ -49,7 +48,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 		}
 		Task todelete = context.getTaskList().get(taskIndex - 1);
 
-		FinApplication.INSTANCE.unfinTask(todelete.getUniqId());
+		context.getFinApplication().unfinTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, todelete);
