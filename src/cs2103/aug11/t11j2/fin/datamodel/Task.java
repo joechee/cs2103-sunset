@@ -121,7 +121,8 @@ public class Task {
 
 	public String getEditableTaskName() {
 		Date dueDate = this.getDueDate();
-		String taskName = this.getTaskName();
+		String taskName = this.taskName;
+
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
 			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "due "

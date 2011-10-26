@@ -283,23 +283,8 @@ public class FinApplicationTour implements Fin.IFinApplication {
 		taskList.clear();
 	}
 	
-	/**
-	 * Loads the tasks that was previously saved by the <code>saveEnvironment</code> method from a file.
-	 * @param filename
-	 * @throws IOException
-	 * @see saveEnvironment
-	 */
 	@Override
 	public void loadEnvironment(String filename) throws IOException {
-		FinSerializer fs = new FinSerializer();
-		taskFileName = filename;
-
-		try {
-			fs.unserialize(filename, true);
-		} catch (FileNotFoundException fnfe) {
-			clearEnvironment();
-			fs.serialize(filename);
-		}
 	}
 	
 	/**

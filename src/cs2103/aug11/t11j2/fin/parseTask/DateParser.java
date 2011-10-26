@@ -176,6 +176,8 @@ public class DateParser {
 								if (today == 1) { // sunday is given special treatment.. due to human's intepretation of "next tuesday" for e.g
 									if (day_of_week == 1) { // next Sunday is necessarily in a week
 										calendar.add(Calendar.DAY_OF_YEAR, 7);
+									} else if (day_of_week == 2){ // if today is sunday, and we say next monday, we mean 8 days time
+										calendar.add(Calendar.DAY_OF_YEAR, 8);
 									} else {
 										calendar.add(Calendar.DAY_OF_YEAR, (day_of_week - today));
 									}
@@ -387,9 +389,19 @@ public class DateParser {
 	 */
 	public static String naturalDateFromNow(Date d) {
 		final Calendar now = Calendar.getInstance(), due = Calendar.getInstance();
-		final DateFormat df = new SimpleDateFormat("dd MMM");
+		DateFormat df; 
 
 		due.setTime(d);
+		int dueYear = due.get(Calendar.YEAR);
+		int nowYear = now.get(Calendar.YEAR);
+
+		if (dueYear != nowYear) {
+			// if year is not equal, we should include it in! 
+			df = new SimpleDateFormat("dd MMM yy");
+		} else {
+			df = new SimpleDateFormat("dd MMM");
+		}
+
 		
 		if (due.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
 			return df.format(due.getTime());
@@ -401,20 +413,23 @@ public class DateParser {
 			diff = diff + (due.get(Calendar.YEAR) - now.get(Calendar.YEAR))* 365
 					+ (findLeapYears(now.get(Calendar.YEAR),due.get(Calendar.YEAR)));
 		}
-
+		
+		int dueDayOfWeek = (due.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+		int nowDayOfWeek = (now.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+		
 
 		if (diff < 0) {
 			return df.format(due.getTime());
 		} else if (diff == 0) {
-			return "DUE TODAY!";
+			return "TODAY";
 		} else if (diff <= 1) {
 			return "tomorrow";
 		} else if (diff <= 5) {
 			return "in " + diff + " days";
-		} else if (diff <= 14) {
+		} else if (diff < 14 - (nowDayOfWeek - dueDayOfWeek)) {
 			DateFormat dayFormat = new SimpleDateFormat("EEEEEE");
 			return "next " + dayFormat.format(due.getTime());
-		} else {
+		} else {			
 			return df.format(due.getTime());
 		}
 	}

@@ -80,6 +80,13 @@ public class CommandParser {
 		return runCommand(command, userArgs, context);
 	}
 	
+	/**
+	 * tries to complete a string that a user types halfway
+	 * 
+	 * @param userArgs
+	 * @param context
+	 * @return a string representing the suggested completion (should include the original string as prefix)
+	 */
 	public String autoComplete(String userArgs, UIContext context) {
 		String command = getCommand(userArgs);
 
