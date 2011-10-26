@@ -123,7 +123,9 @@ public class CLI implements Fin.IUserInterface {
 			echo("Thank you for using Fin.\n");
 			echo("Goodbye!\n");
 			return true;
-		
+		case ERROR:
+			renderError(cmdRes);
+			break;
 		case UNRECOGNIZED_COMMAND:
 			if (looksLikeTask(cmdRes.getArgument())) {
 				runCommandAndRender("add " + cmdRes.getArgument());
@@ -133,6 +135,11 @@ public class CLI implements Fin.IUserInterface {
 			break;
 		}
 		return false;
+	}
+
+	private void renderError(CommandResult cmdRes) {
+		echo((String) cmdRes.getReturnObject() + "\n\n");
+		refreshContext();
 	}
 
 	private static boolean looksLikeTask(String argument) {

@@ -68,5 +68,6 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "tag <task number> <tag>\n\tTags a <task> with <tag>";
 	}
+	
 
 }

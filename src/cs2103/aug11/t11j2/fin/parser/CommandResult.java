@@ -117,8 +117,22 @@ public class CommandResult {
 		case TOUR:
 			this.renderType = renderType;
 			
+			break;	
+				
+		case ERROR:
+			// Error returns a string describing the error
+			// Ensures that returnObject is of type String
+			if (!(returnObject instanceof String)) {
+				throw (new FinProductionException(
+						"Command result type is invalid for String"));
+			}
+
+			this.renderType = renderType;
+			this.returnObject = returnObject;
+
 			break;
 		}
+
 	}
 
 	public final static CommandResult invalidTaskIndex = new CommandResult(
