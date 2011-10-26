@@ -31,17 +31,11 @@ public class TourCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getAbridgedHelp() {
-		return "Starts a tour of Fin.!";
+		return "tour\t\tStarts a tour of Fin.!";
 	}
 	
 	@Override
 	public String getHelp() {
-		return "Starts a tour of Fin.!";
-	}
-
-	@Override
-	public CommandResult showHelp() throws FinProductionException {
-		return new CommandResult(this, "",
-				CommandResult.RenderType.STRING, "");
+		return "tour\n\tStarts a tour of Fin.!";
 	}
 }
