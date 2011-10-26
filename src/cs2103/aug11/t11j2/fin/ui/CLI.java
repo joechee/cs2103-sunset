@@ -8,13 +8,7 @@ import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.CommandParser;
-import cs2103.aug11.t11j2.fin.parser.CommandResult;
-import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
-
+import cs2103.aug11.t11j2.fin.parser.*;
 /**
  * @author alexljz
  * 
@@ -180,9 +174,30 @@ public class CLI implements Fin.IUserInterface {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void renderTaskListResult(CommandResult cmdRes) {
-		updateContext(cmdRes);
-		printTaskList();
+		ICommandHandler commandHandler = cmdRes.getCommand();
+		if (commandHandler instanceof ShowCommandHandler) {
+			updateContext(cmdRes);
+			printTaskList();
+		} else if (commandHandler instanceof UndeleteCommandHandler) {
+			List<Task >taskList = (List<Task>) cmdRes.getReturnObject();
+			if (taskList.size() == 1) {
+				echo("Task: " + taskList.get(0).getTaskName() + " re-added!\n");
+			} else {
+				echo("Tasks: ");
+				for (int i = 0; i < taskList.size() - 1;i++) {
+					echo(taskList.get(i).getTaskName()+", ");
+				}
+				echo(taskList.get(taskList.size()-1).getTaskName());
+				echo(" re-added!\n");
+			}
+			
+			
+			refreshContext();
+			printTaskList();
+		}
+
 	}
 
 	private void printTaskList() {

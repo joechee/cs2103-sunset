@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class Fin {
 		public List<Task> getTasksWithoutTags(List<String> tags);
 		public List<Task> getTasksWithTags(List<String> tags);
 		public boolean deleteTask(UUID taskUID);
+		public boolean deleteTasks(Collection<UUID> toDeleteUUID);
 		public boolean flagTask(UUID taskUID);
 		public boolean unflagTask(UUID taskUID);
 		public boolean finTask(UUID taskUID);
@@ -47,6 +49,7 @@ public class Fin {
 		public void loadEnvironment(String filename) throws IOException;
 		public List<String> getHashTags();
 		public void clearEnvironment();
+		
 	}
 
 	public static void main(String[] args) {

@@ -33,6 +33,7 @@ public class CommandParser {
 			installCommand(new ExitCommandHandler());
 			installCommand(new UntagTaskWithTagsCommandHandler());
 			installCommand(new TagTaskWithTagsCommandHandler());
+			installCommand(new UndeleteCommandHandler());
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				System.out

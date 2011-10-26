@@ -1,7 +1,9 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
@@ -32,10 +34,11 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		
+		Collection<UUID> toDeleteUUID = new ArrayList<UUID>();
 		for (Task t : context.getTaskList()) {
-			context.getFinApplication().deleteTask(t.getUniqId());			
+			toDeleteUUID.add(t.getUniqId());		
 		}
+		context.getFinApplication().deleteTasks(toDeleteUUID);	
 		// after a delete all, invoke a show
 		ShowCommandHandler showCmdHandler = new ShowCommandHandler();
 		return showCmdHandler.executeCommands(showCmdHandler.getCommandStrings()

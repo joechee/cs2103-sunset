@@ -32,6 +32,9 @@ public class FinApplication implements Fin.IFinApplication {
 
 	// Each hashTag points to a collection of Tasks
 	Map<String, List<Task>> hashTags = new HashMap<String, List<Task>>();
+	
+	// 
+	private Stack<List<Task>> undeleteStack = new Stack<List<Task>>();
 
 	/**
 	 * Adds a task to the environment.
@@ -155,16 +158,45 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean deleteTask(UUID taskUID) {
+		Task deletedTask = removeTask(taskUID);
+		List<Task> deletedTaskLyst = new ArrayList<Task>();
+		deletedTaskLyst.add(deletedTask);
+		undeleteStack.push(deletedTaskLyst);
+		return true;
+	}
+	
+	/**
+	 * Internal code for deleting a given task (by UID) from the environment
+	 * 
+	 * @param taskUID
+	 * @return the task that was deleted
+	 * @throws IllegalArgumentException
+	 */	
+	private Task removeTask(UUID taskUID) {
 		Task todelete = taskMap.get(taskUID);
-
 		if (todelete != null) {
 			taskMap.remove(taskUID);
 			taskList.remove(todelete);
 			saveEnvironment();
-			return true;
 		} else {
-			return false;
+			throw new IllegalArgumentException("TaskUID does not exist!");
 		}
+		return todelete;		
+	}
+	
+	/**
+	 * Deletes all tasks and updates the undelete stack
+	 * @param taskUID
+	 * @return true if deletes were successful
+	 */
+	public boolean deleteTasks(Collection<UUID> taskUID) {
+		List<Task> deletedTaskLyst = new ArrayList<Task>();
+		for (UUID deleteID: taskUID) {
+			Task deletedTask = removeTask(deleteID);
+			deletedTaskLyst.add(deletedTask);
+		}
+		undeleteStack.push(deletedTaskLyst);
+		return true;
 	}
 
 	/**
@@ -303,5 +335,23 @@ public class FinApplication implements Fin.IFinApplication {
 				// TODO: handle saving
 			}
 		}
+	}
+	/**
+	 * Undoes the last delete action
+	 * 
+	 * @return null if undelete is successful, a list of tasks if undelete stack is empty.
+	 */
+	
+	public List<Task> undelete() {
+		if (undeleteStack.isEmpty()) {
+			return null;
+		} else {
+			List<Task> deletedTasks = undeleteStack.pop();
+			for (Task task: deletedTasks) {
+				add(task);
+			}
+			return deletedTasks;
+		}
+		
 	}
 }
