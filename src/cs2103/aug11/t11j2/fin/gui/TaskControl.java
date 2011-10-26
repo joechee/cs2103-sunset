@@ -37,6 +37,12 @@ import org.eclipse.swt.widgets.Listener;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 
+/**
+ * Control for each individual task. It will highlight the 
+ * tags, and create the controls for edit, delete, mark as impt, and fin
+ *  
+ * @author Koh Zi Chun
+ */
 public class TaskControl extends Composite {
 	Task task;
 	TaskStyledText taskText;

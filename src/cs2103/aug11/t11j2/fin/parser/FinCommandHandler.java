@@ -25,6 +25,8 @@ public class FinCommandHandler extends ICommandHandler {
 				add("finish");
 				add("done");
 				add("complete");
+				add("-");
+				add("x");
 			}
 		};
 	}
