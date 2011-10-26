@@ -40,6 +40,8 @@ public class GUI implements IUserInterface {
 	static FinCLIComposite cli;
 	
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
+	private FinTour finTour = null;
+	private boolean isInTour = false;
 
 	private static Composite createFooter(Composite shell) {
 		Composite footer = new Composite(shell, SWT.RIGHT_TO_LEFT);
@@ -70,7 +72,7 @@ public class GUI implements IUserInterface {
 		footer.layout(true);
 		return footer;
 	}
-
+	
 	void initShell() {
 		final Display display = new Display();
 		shell = new Shell(display);
@@ -89,9 +91,7 @@ public class GUI implements IUserInterface {
 		cli.addUserInputListener(new FinCLIInputListener() {
 			@Override
 			public void userInput(FinCLIInputEvent event) {
-				if (runCommandAndRender(event.input)) {
-					EXIT = true;
-				}
+				handerUserInput(event.input);
 			}
 
 			@Override
@@ -168,7 +168,18 @@ public class GUI implements IUserInterface {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		
-		return renderCommandResult(feedback);
+		if (this.isInTour && finTour != null) {
+			boolean toReturn = renderCommandResult(feedback);
+			boolean lastStep = finTour.onUserCommand(feedback);
+			
+			if (lastStep == true) {
+				endTour();
+			}
+			
+			return toReturn;
+		} else {
+			return renderCommandResult(feedback);
+		}
 	}
 
 	private CommandResult runCommand(String command) {
@@ -267,15 +278,20 @@ public class GUI implements IUserInterface {
 			startTour();
 		}
 
-		flushOutput();
 		return false;
 	}
 	
-	/**
-	 * Starts the tour of Fin.
-	 */
 	private void startTour() {
 		context.setFinApplication(FinApplicationTour.INSTANCE);
+		finTour = new FinTour(this, context);
+		isInTour = true;
+		
+		finTour.beginTour();
+	}
+	
+	private void endTour() {
+		context.setFinApplication(FinApplication.INSTANCE);
+		isInTour = false;
 	}
 
 	/**
@@ -360,34 +376,32 @@ public class GUI implements IUserInterface {
 			String filter = context.getFilter();
 			if (filter.length() > 0) {
 				echo(filter);
-				flushOutput();
 			}
 			cli.addTaskList(newContext);
 		}
 	}
 
-
-	// output buffer
-	private static StringBuilder outputBuffer = new StringBuilder();
+	private void handerUserInput(String userInput){ 
+		if (runCommandAndRender(userInput)) {
+			EXIT = true;
+		}
+	}
 	
 	/**
 	 * adds a message to the output buffer
 	 * @param promptMessage
 	 */
+	@Override
 	public void echo(String promptMessage) {
 		cli.echo(promptMessage);
 		cli.refresh();
 	}
 	
-	/**
-	 * flushes output buffer
-	 */
-	private void flushOutput() {
-		if (outputBuffer.length() > 0){ 
-			outputBuffer = new StringBuilder();
-		}
+	@Override
+	public void clearScreen() {
+		cli.clear();
 	}
-
+	
 	
 	@Override
 	public void mainLoop() {

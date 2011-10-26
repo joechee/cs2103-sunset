@@ -67,6 +67,14 @@ public class Task {
 				this.tags.add(sanitizeHashTag(s));
 			}
 		}
+		
+		if (this.hasTag(FinConstants.IMPORTANT_HASH_TAG)) {
+			this.important = true;
+		}
+		
+		if (this.hasTag(FinConstants.FIN_HASH_TAG)) {
+			this.finished = true;
+		}
 	}
 
 	public static String sanitizeHashTag(String s) {  

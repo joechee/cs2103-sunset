@@ -31,6 +31,7 @@ public class Fin {
 		void mainLoop();
 		boolean runCommandAndRender(String userArgs);
 		void echo(String promptMessage);
+		void clearScreen();
 	}
 	
 	public interface IFinApplication {

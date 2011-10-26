@@ -85,6 +85,11 @@ public class CommandResult {
 			this.returnObject = returnObject;
 
 			break;
+		
+		case TOUR:
+			this.renderType = renderType;
+			
+			break;
 		}
 	}
 

@@ -257,6 +257,11 @@ public class CLI implements Fin.IUserInterface {
 	public void echo(String promptMessage) {
 		System.out.print(promptMessage);
 	}
+	
+	@Override
+	public void clearScreen() {
+		
+	}
 
 	/**
 	 * Outputs a line with a box surrounding it. Only works for single line input though.

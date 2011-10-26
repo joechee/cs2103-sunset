@@ -17,7 +17,6 @@ public class TourCommandHandler extends ICommandHandler {
 			{
 				add("tour");
 				add("tutorial");
-				add("t");
 				add("tut");
 				add("guide");
 			}
@@ -26,17 +25,18 @@ public class TourCommandHandler extends ICommandHandler {
 
 	@Override
 	public CommandResult executeCommands(String command, String arguments, UIContext context) throws FinProductionException {
-		return CommandResult.invalidTaskIndex;
+		return new CommandResult(this, arguments,
+				CommandResult.RenderType.TOUR, "");
 	}
 	
 	@Override
 	public String getAbridgedHelp() {
-		return "";
+		return "Starts a tour of Fin.!";
 	}
 	
 	@Override
 	public String getHelp() {
-		return "";
+		return "Starts a tour of Fin.!";
 	}
 
 	@Override
