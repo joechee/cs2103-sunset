@@ -163,7 +163,8 @@ public class GUI implements IUserInterface {
 		runCommandAndRender("show");
 	}
 
-	private boolean runCommandAndRender(String userArgs) {
+	@Override
+	public boolean runCommandAndRender(String userArgs) {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		
@@ -377,17 +378,16 @@ public class GUI implements IUserInterface {
 	 * adds a message to the output buffer
 	 * @param promptMessage
 	 */
-	private static void echo(String promptMessage) {
-		outputBuffer.append(promptMessage);
+	public void echo(String promptMessage) {
+		cli.echo(promptMessage);
+		cli.refresh();
 	}
 	
 	/**
 	 * flushes output buffer
 	 */
-	private static void flushOutput() {
+	private void flushOutput() {
 		if (outputBuffer.length() > 0){ 
-			cli.echo(outputBuffer.toString());
-			cli.refresh();
 			outputBuffer = new StringBuilder();
 		}
 	}

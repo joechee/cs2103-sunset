@@ -17,6 +17,10 @@ public class UIContext {
 	UIContext(Fin.IFinApplication finApplication) {
 		this.finApplication = finApplication;
 	}
+	
+	UIContext() {
+		this(null);
+	}
 
 	public List<Task> getTaskList() {
 		return taskList;
@@ -24,6 +28,10 @@ public class UIContext {
 
 	public Fin.IFinApplication getFinApplication() {
 		return finApplication;
+	}
+	
+	void setFinApplication(Fin.IFinApplication finApplication) {
+		this.finApplication = finApplication;
 	}
 	
 	void setTaskList(List<Task> tasks) {

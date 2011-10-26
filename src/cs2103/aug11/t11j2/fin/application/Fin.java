@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
@@ -27,6 +28,8 @@ public class Fin {
 	
 	public interface IUserInterface {
 		void mainLoop();
+		boolean runCommandAndRender(String userArgs);
+		void echo(String promptMessage);
 	}
 	
 	public interface IFinApplication {
@@ -43,6 +46,7 @@ public class Fin {
 		public boolean unfinTask(UUID taskUID);
 		public void loadEnvironment(String filename) throws IOException;
 		public List<String> getHashTags();
+		public void clearEnvironment();
 	}
 
 	public static void main(String[] args) {

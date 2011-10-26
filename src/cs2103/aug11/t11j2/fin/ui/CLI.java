@@ -24,7 +24,7 @@ public class CLI implements Fin.IUserInterface {
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
-	private static UIContext context = new UIContext(FinApplication.INSTANCE);
+	private UIContext context = new UIContext(FinApplication.INSTANCE);
 
 	private static Scanner sc = new Scanner(System.in);
 
@@ -48,7 +48,7 @@ public class CLI implements Fin.IUserInterface {
 	 * 
 	 * @return true if context has changed and false otherwise
 	 */
-	private static boolean refreshContext() {
+	private boolean refreshContext() {
 		CommandResult feedback = null;
 		String arguments = context.getFilter();
 		feedback = runCommand("show " + arguments.trim());
@@ -56,18 +56,19 @@ public class CLI implements Fin.IUserInterface {
 		return updateContext(feedback);
 	}
 
-	private static void displayTasks() {
+	private void displayTasks() {
 		runCommandAndRender("show");
 	}
 	
-	private static boolean runCommandAndRender(String userArgs) {
+	@Override
+	public boolean runCommandAndRender(String userArgs) {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		
 		return renderCommandResult(feedback);
 	}
 
-	private static CommandResult runCommand(String command) {
+	private CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
 
@@ -78,7 +79,7 @@ public class CLI implements Fin.IUserInterface {
 	 * @return true if context changes and false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	private static boolean updateContext(CommandResult cmdResult) {
+	private boolean updateContext(CommandResult cmdResult) {
 		boolean different = false;
 
 		if (cmdResult.getRenderType() == CommandResult.RenderType.TASKLIST) {
@@ -113,7 +114,7 @@ public class CLI implements Fin.IUserInterface {
 	/**
 	 * @return true if exitCommand is returned and false otherwise.
 	 */
-	private static boolean renderCommandResult(CommandResult cmdRes) {
+	private boolean renderCommandResult(CommandResult cmdRes) {
 		switch (cmdRes.getRenderType()) {
 		case STRING:
 			renderString(cmdRes);
@@ -150,12 +151,12 @@ public class CLI implements Fin.IUserInterface {
 		return threeOrMoreWords && moreThanTenChar;
 	}
 
-	private static void renderString(CommandResult cmdRes) {
+	private void renderString(CommandResult cmdRes) {
 		echo((String) cmdRes.getReturnObject() + "\n\n");
 		refreshContext();
 	}
 
-	private static void renderTaskResult(CommandResult cmdRes) {
+	private void renderTaskResult(CommandResult cmdRes) {
 		String taskName = ((Task) cmdRes.getReturnObject()).getTaskName();
 		ICommandHandler commandHandler = cmdRes.getCommand();
 
@@ -179,12 +180,12 @@ public class CLI implements Fin.IUserInterface {
 		}
 	}
 
-	private static void renderTaskListResult(CommandResult cmdRes) {
+	private void renderTaskListResult(CommandResult cmdRes) {
 		updateContext(cmdRes);
 		printTaskList();
 	}
 
-	private static void printTaskList() {
+	private void printTaskList() {
 		int count = 1;
 		List<Task> taskList = context.getTaskList();
 
@@ -231,16 +232,17 @@ public class CLI implements Fin.IUserInterface {
 
 	}
 
-	private static void displayWelcomeMessage() {
+	private void displayWelcomeMessage() {
 		echo(WELCOME_MESSAGE);
 	}
 
-	private static void showPrompt() {
+	private void showPrompt() {
 		echo(context.getFilter());
 		echo(PROMPT_SYMBOL);
 	}
 
-	private static void echo(String promptMessage) {
+	@Override
+	public void echo(String promptMessage) {
 		System.out.print(promptMessage);
 	}
 
@@ -248,7 +250,7 @@ public class CLI implements Fin.IUserInterface {
 	 * Outputs a line with a box surrounding it. Only works for single line input though.
 	 * @param promptMessage
 	 */
-	private static void lineEchoWithBox(String promptMessage) {
+	private void lineEchoWithBox(String promptMessage) {
 		for (int i = 0; i < promptMessage.length()+4; i++) {
 			echo("#");
 		}
@@ -262,7 +264,7 @@ public class CLI implements Fin.IUserInterface {
 	}
 	
 
-	private static String getInput() {
+	private String getInput() {
 		String userArgs = sc.nextLine();
 		return userArgs;
 	}
