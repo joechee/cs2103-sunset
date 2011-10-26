@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
@@ -52,8 +53,8 @@ public class ShowCommandHandler extends ICommandHandler {
 		return tokenList;
 	}
 	
-	public static List<Task> filterTasksWithPatterns(List<Task>tasks, String filters){
-		List <String> patterns = tokenize(filters);
+	public static List<Task> filterTasksWithPatterns(List<Task>tasks, List<String> filters){
+		List <String> patterns = filters;
 		List <Task> tasksAfterFilter = new ArrayList<Task>();
 		int numOfTasks = tasks.size();
 		int numOfPatterns = patterns.size();
@@ -79,16 +80,20 @@ public class ShowCommandHandler extends ICommandHandler {
 		
 		List<Task> tasks = null;
 		final List<Task> unfinishedTasks = context.getFinApplication().getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
-		
 		if (arguments.trim().length() == 0) {
 			tasks = unfinishedTasks;
-		} else {
-			tasks = context.getFinApplication().getTasksWithTags(tokenize(arguments));
+			return new CommandResult(this, arguments,
+					CommandResult.RenderType.TASKLIST, tasks);
 		}
 		
+		
+		List<String> tokenizedArguments = tokenize(arguments);
+		removeTagChar(tokenizedArguments);
+		
+		tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
+		
 		List<Task> searchTasks = unfinishedTasks;
-		String filters = arguments.trim();
-		searchTasks = filterTasksWithPatterns(searchTasks, filters);
+		searchTasks = filterTasksWithPatterns(searchTasks, tokenizedArguments);
 		for (Task i: searchTasks) {
 			if (!tasks.contains(i)) {
 				tasks.add(i);
@@ -99,14 +104,22 @@ public class ShowCommandHandler extends ICommandHandler {
 
 	}
 	
+	private void removeTagChar(List<String> args) {
+		for (int i = 0; i < args.size();i++) {
+			if (args.isEmpty() && args.get(i).startsWith(" ")){
+				args.set(i, args.get(i).substring(1));
+			}
+		}
+	}
+
 	@Override
 	public String getAbridgedHelp() {
-		return "show <filters>\t\t\t\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
+		return "show <params>\t\t\t\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first.";
 	}
 	
 	@Override
 	public String getHelp() {
-		return "show <filters>\n\tShows the task list with <filters>. Examples of <filters> can be \"tasks due on Friday\"";
+		return "show <filters>\n\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first.";
 	}
 
 	@Override
