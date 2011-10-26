@@ -263,10 +263,6 @@ public class GUI implements IUserInterface {
 			}
 			break;
 		
-		case ERROR_INVALID_TASK_INDEX:
-			echo("Invalid Task Index!");
-			break;
-		
 		case TOUR:
 			startTour();
 		}

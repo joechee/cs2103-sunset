@@ -131,9 +131,6 @@ public class CLI implements Fin.IUserInterface {
 				echo("Command not recognized!\n\n");
 			}
 			break;
-		case ERROR_INVALID_TASK_INDEX:
-			echo("Invalid Task Index!\n\n");
-			break;
 		}
 		return false;
 	}

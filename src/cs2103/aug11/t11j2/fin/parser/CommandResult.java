@@ -7,7 +7,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 
 public class CommandResult {
 	public static enum RenderType {
-		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, ERROR_INVALID_TASK_INDEX, EXIT, ERROR
+		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, ERROR
 	};
 
 	private RenderType renderType;
@@ -101,7 +101,7 @@ public class CommandResult {
 	}
 
 	public final static CommandResult invalidTaskIndex = new CommandResult(
-			RenderType.ERROR_INVALID_TASK_INDEX);
+			CommandResult.RenderType.ERROR, "Invalid Task Index!");
 	public final static CommandResult exitCommandResult = new CommandResult(
 			RenderType.EXIT);
 
