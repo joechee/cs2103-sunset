@@ -59,6 +59,7 @@ public class Fin {
 
 	private static void parseArgs(String[] args)
 			throws IllegalArgumentException, IOException {
+		assert (args != null);
 		IUserInterface UI = DEFAULT_UI;
 		String filename = DEFAULT_FILENAME;
 		

@@ -17,12 +17,6 @@ public class Task {
 
 	// Constructors
 	
-	public Task() {
-		this.uniqId = UUID.randomUUID();
-		this.timeAdded = new Date();
-		this.finished = false;
-		this.important = false;
-	}
 	
 	public Task(String taskName) {
 		

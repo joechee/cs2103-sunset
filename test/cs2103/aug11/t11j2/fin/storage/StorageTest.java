@@ -38,13 +38,9 @@ public class StorageTest {
 		System.out.println("Test Serializer");
 		System.out.println("***");
 		Task task1 = new Task();
-		task1.setTaskName("hellO!");
 		Task task2 = new Task();
-		task2.setTaskName("omg! no way!");
 		Task task3 = new Task();
-		task3.setTaskName("hello world child1");
 		Task task4 = new Task();
-		task4.setTaskName("hello world child2");
 
 		FinApplication.INSTANCE.add(task1);
 		FinApplication.INSTANCE.add(task2);

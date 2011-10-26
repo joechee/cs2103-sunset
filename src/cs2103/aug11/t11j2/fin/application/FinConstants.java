@@ -23,13 +23,13 @@ public final class FinConstants {
 	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
 	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION);
 	public static final char HASH_TAG_CHAR = '#';
-	public static final char META_TAG_CHAR = '$';
 	public static final char ESCAPE_CHAR = '\\';
 
 	public static final String IMPORTANT_HASH_TAG = "impt";
 	public static final String FIN_HASH_TAG = "fin";
 
-	public static final String DUEDATE_PLACEHOLDER = "#-#DUEDATE#-#";
+	//Shouldn't start with HASH_TAG_CHAR/META_TAG_CHAR/ESCAPE_CHAR
+	public static final String DUEDATE_PLACEHOLDER = "!-!DUEDATE!-!";
 
 	public static final RGB BACKGROUND_COLOR = new RGB(10, 10, 10);
 	public static final RGB FOREGROUND_COLOR = new RGB(255, 255, 255);

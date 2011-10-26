@@ -90,7 +90,7 @@ public class ShowCommandHandler extends ICommandHandler {
 		List<String> tokenizedArguments = tokenize(arguments);
 		removeTagChar(tokenizedArguments);
 		
-		tasks = FinApplication.INSTANCE.getTasksWithTags(tokenize(arguments));
+		tasks = FinApplication.INSTANCE.getTasksWithTags(tokenizedArguments);
 		
 		List<Task> searchTasks = unfinishedTasks;
 		searchTasks = filterTasksWithPatterns(searchTasks, tokenizedArguments);
