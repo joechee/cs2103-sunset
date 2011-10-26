@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.*;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
+import cs2103.aug11.t11j2.fin.application.FinApplicationTour;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
@@ -37,7 +38,8 @@ public class GUI implements IUserInterface {
 	// shell for SWT
 	Shell shell = null;
 	static FinCLIComposite cli;
-	private static UIContext context = new UIContext(FinApplication.INSTANCE);
+	
+	private UIContext context = new UIContext(FinApplication.INSTANCE);
 
 	private static Composite createFooter(Composite shell) {
 		Composite footer = new Composite(shell, SWT.RIGHT_TO_LEFT);
@@ -149,7 +151,7 @@ public class GUI implements IUserInterface {
 	 * 
 	 * @return true if context has changed and false otherwise
 	 */
-	private static boolean refreshContext() {
+	private boolean refreshContext() {
 		CommandResult feedback = null;
 		String arguments = context.getFilter();
 		feedback = runCommand("show " + arguments.trim());
@@ -157,18 +159,18 @@ public class GUI implements IUserInterface {
 		return updateContext(feedback);
 	}
 
-	private static void displayTasks() {
+	private void displayTasks() {
 		runCommandAndRender("show");
 	}
 
-	private static boolean runCommandAndRender(String userArgs) {
+	private boolean runCommandAndRender(String userArgs) {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		
 		return renderCommandResult(feedback);
 	}
-	
-	private static CommandResult runCommand(String command) {
+
+	private CommandResult runCommand(String command) {
 		return CommandParser.INSTANCE.parse(command, context);
 	}
 
@@ -179,7 +181,7 @@ public class GUI implements IUserInterface {
 	 * @return true if context changes and false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	private static boolean updateContext(CommandResult cmdResult) {
+	private boolean updateContext(CommandResult cmdResult) {
 		boolean different = false;
 
 		if (cmdResult.getRenderType() == CommandResult.RenderType.TASKLIST) {
@@ -230,21 +232,25 @@ public class GUI implements IUserInterface {
 	/**
 	 * @return true if exitCommand is returned and false otherwise.
 	 */
-	private static boolean renderCommandResult(CommandResult cmdRes) {
+	private boolean renderCommandResult(CommandResult cmdRes) {
 		switch (cmdRes.getRenderType()) {
 		case STRING:
 			renderStringResult(cmdRes);
 			break;
+		
 		case TASKLIST:
 			renderTaskListResult(cmdRes);
 			break;
+		
 		case TASK:
 			renderTaskResult(cmdRes);
 			break;
+		
 		case EXIT:
 			echo("Thank you for using Fin.\n");
 			echo("Goodbye!\n");
 			return true;
+		
 		case UNRECOGNIZED_COMMAND:
 			String expr = evaluateMathExpression(cmdRes.getArgument());
 			if (expr != null) {
@@ -255,9 +261,13 @@ public class GUI implements IUserInterface {
 				echo("Command not recognized!\n");
 			}
 			break;
+		
 		case ERROR_INVALID_TASK_INDEX:
 			echo("Invalid Task Index!");
 			break;
+		
+		case TOUR:
+			startTour();
 		}
 
 		flushOutput();
@@ -265,9 +275,16 @@ public class GUI implements IUserInterface {
 	}
 	
 	/**
+	 * Starts the tour of Fin.
+	 */
+	private void startTour() {
+		context.setFinApplication(FinApplicationTour.INSTANCE);
+	}
+
+	/**
 	 * Renders a string based result (help, joke etc.)
 	 */
-	private static void renderStringResult(CommandResult cmdRes) {
+	private void renderStringResult(CommandResult cmdRes) {
 		echo((String) cmdRes.getReturnObject() + "\n");
 		refreshContext();
 	}
@@ -275,7 +292,7 @@ public class GUI implements IUserInterface {
 	/**
 	 * Renders a task based result (add, edit, delete etc.)
 	 */
-	private static void renderTaskResult(CommandResult cmdRes) {
+	private void renderTaskResult(CommandResult cmdRes) {
 		String taskName = ((Task) cmdRes.getReturnObject()).getTaskName();
 		ICommandHandler commandHandler = cmdRes.getCommand();
 
@@ -306,7 +323,7 @@ public class GUI implements IUserInterface {
 	/**
 	 * Render a task list based result, i.e list of tasks (show)
 	 */
-	private static void renderTaskListResult(CommandResult cmdRes) {
+	private void renderTaskListResult(CommandResult cmdRes) {
 		updateContext(cmdRes);
 		printTaskList();
 	}
@@ -314,13 +331,15 @@ public class GUI implements IUserInterface {
 	/**
 	 * print the current list of tasks in context
 	 */
-	private static void printTaskList() {
+	private void printTaskList() {
 		List<Task> taskList = context.getTaskList();
 
 		List<Task> imptTask = new ArrayList<Task>();
 		List<Task> normalTask = new ArrayList<Task>();
 		List<Task> newContext = new ArrayList<Task>();
 
+		// shows the important task above
+		// followed by normal task
 		for (Task t : taskList) {
 			if (t.isImportant()) {
 				imptTask.add(t);
@@ -351,24 +370,25 @@ public class GUI implements IUserInterface {
 	}
 
 
-	private static StringBuilder b = new StringBuilder();
-
+	// output buffer
+	private static StringBuilder outputBuffer = new StringBuilder();
+	
 	/**
 	 * adds a message to the output buffer
 	 * @param promptMessage
 	 */
 	private static void echo(String promptMessage) {
-		b.append(promptMessage);
+		outputBuffer.append(promptMessage);
 	}
 	
 	/**
 	 * flushes output buffer
 	 */
 	private static void flushOutput() {
-		if (b.length() > 0){ 
-			cli.echo(b.toString());
+		if (outputBuffer.length() > 0){ 
+			cli.echo(outputBuffer.toString());
 			cli.refresh();
-			b = new StringBuilder();
+			outputBuffer = new StringBuilder();
 		}
 	}
 
