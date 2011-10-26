@@ -11,12 +11,15 @@ import java.util.*;
  * FinApplication class that handles the environment instance
  * of Fin (essentially manages what task is in memory, serializing
  * searching etc.)
+ * 
+ * Only a single instance of the environment should be running 
+ * to prevent any race conditions
  *  
  * @version 0.1
  * @author Koh Zi Chun
  */
 public class FinApplication implements Fin.IFinApplication {
-	public static FinApplication INSTANCE = new FinApplication();
+	final public static FinApplication INSTANCE = new FinApplication();
 	
 	private FinApplication () {
 		
@@ -244,7 +247,8 @@ public class FinApplication implements Fin.IFinApplication {
 	 * @param none
 	 * @return void
 	 */
-	void clearEnvironment() {
+	@Override
+	public void clearEnvironment() {
 		taskMap.clear();
 		taskList.clear();
 		saveEnvironment();

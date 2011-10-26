@@ -18,6 +18,11 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
  *
  */
 public class FinApplicationTour implements Fin.IFinApplication {
+	final static public FinApplicationTour INSTANCE = new FinApplicationTour();
+	
+	private FinApplicationTour() {
+		
+	}
 	
 	@Override
 	public void add(Task task) {
@@ -95,6 +100,12 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	public List<String> getHashTags() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void clearEnvironment() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
