@@ -72,4 +72,8 @@ public class JokeCommandHandler extends ICommandHandler {
 		return new CommandResult(this, "",
 				CommandResult.RenderType.STRING, "");
 	}
+	
+	public HelpTablePair getNewHelp() {
+		return null;
+	}
 }

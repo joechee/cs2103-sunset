@@ -45,11 +45,11 @@ public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 		Task task = context.getTaskList().get(taskIndex - 1);
 		
@@ -70,6 +70,11 @@ public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 	@Override
 	public String getHelp() {
 		return "untag <task number> <tag>\n\tUntags a <task> with <tag>";
+	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("untag <task number> <tag>", "Untags the <task> with <tag>");
 	}
 
 

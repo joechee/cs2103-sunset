@@ -48,6 +48,11 @@ public class ExitCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "";
 	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return null;
+	}
 
 	@Override
 	public CommandResult showHelp() throws FinProductionException {

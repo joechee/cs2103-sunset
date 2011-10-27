@@ -190,10 +190,14 @@ public class CLI implements Fin.IUserInterface {
 				echo("Task: " + taskList.get(0).getTaskName() + " re-added!\n");
 			} else {
 				echo("Tasks: ");
-				for (int i = 0; i < taskList.size() - 1;i++) {
-					echo(taskList.get(i).getTaskName()+", ");
+				for (int i = 0; i < taskList.size();i++) {
+					if (i == 0) {
+						echo (taskList.get(i).getTaskName());
+					} else {
+						echo (", "+ taskList.get(i).getTaskName());
+					}
+
 				}
-				echo(taskList.get(taskList.size()-1).getTaskName());
 				echo(" re-added!\n");
 			}
 			

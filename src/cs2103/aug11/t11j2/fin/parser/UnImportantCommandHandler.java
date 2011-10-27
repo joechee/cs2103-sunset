@@ -43,11 +43,11 @@ public class UnImportantCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
@@ -67,6 +67,11 @@ public class UnImportantCommandHandler extends ICommandHandler {
 	@Override
 	public String getHelp() {
 		return "unimportant <task>\n\tUnmarks an important task";
+	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("unimportant", "Unmarks an important task");
 	}
 
 }

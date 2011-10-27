@@ -27,6 +27,8 @@ public abstract class ICommandHandler {
 	
 	abstract public String getHelp();
 	
+	abstract public HelpTablePair getNewHelp();
+	
 	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
 		return null;
 	}

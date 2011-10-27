@@ -42,11 +42,11 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 		Task task = context.getTaskList().get(taskIndex - 1);
 		
@@ -68,6 +68,12 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "tag <task number> <tag>\n\tTags a <task> with <tag>";
 	}
+	
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("tag <task number> <tag>", "Tags a <task> with <tag>");
+	}
+	
+	
 	
 
 }

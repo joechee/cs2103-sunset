@@ -43,6 +43,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public void add(Task task) {
+		assert(task!=null);
 		taskList.add(task);
 		taskMap.put(task.getUniqId(), task);
 
@@ -53,6 +54,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	private void addTaskToTag(String tag, Task task) {
+		assert(task != null);
 		List<Task> taskListOfTags;
 		if (hashTags.containsKey(tag)) {
 			taskListOfTags = hashTags.get(tag);
@@ -85,6 +87,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasksWithTag(String tag) {
+		assert(tag!=null);
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
 			Collections.sort(lt, new TaskSortByDueDate());
@@ -102,6 +105,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */	
 	@Override
 	public List<Task> getTasksWithoutTag(String tag) {
+		assert(tag!=null);
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
 		for (Task i: lt) {
@@ -121,6 +125,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */	
 	@Override
 	public List<Task> getTasksWithoutTags(List<String> tags) {
+		assert(tags!=null);
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
 		for (Task i: lt) {
@@ -140,6 +145,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasksWithTags(List<String> tags) {
+		assert(tags!=null);
 		List<Task> filteredTasks = new ArrayList<Task>();
 		for (Task t : taskList) {
 			if (t.hasTags(tags)) {
@@ -158,6 +164,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean deleteTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task deletedTask = removeTask(taskUID);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		deletedTaskLyst.add(deletedTask);
@@ -173,6 +180,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 * @throws IllegalArgumentException
 	 */	
 	private Task removeTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task todelete = taskMap.get(taskUID);
 		if (todelete != null) {
 			taskMap.remove(taskUID);
@@ -190,6 +198,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 * @return true if deletes were successful
 	 */
 	public boolean deleteTasks(Collection<UUID> taskUID) {
+		assert(taskUID != null);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		for (UUID deleteID: taskUID) {
 			Task deletedTask = removeTask(deleteID);
@@ -207,6 +216,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean flagTask(UUID taskUID) {
+		assert(taskUID != null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -225,6 +235,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean unflagTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -244,6 +255,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean finTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -263,6 +275,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean unfinTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -281,6 +294,8 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public void clearEnvironment() {
+		assert(taskMap!=null);
+		assert(taskList!=null);
 		taskMap.clear();
 		taskList.clear();
 		saveEnvironment();
@@ -295,6 +310,10 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean loadEnvironment(String filename) throws IOException {
+		assert(filename!=null);
+		if (filename.isEmpty()) {
+			filename = Fin.DEFAULT_FILENAME;
+		}
 		FinSerializer fs = new FinSerializer();
 		taskFileName = filename;
 

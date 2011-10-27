@@ -35,7 +35,7 @@ public class CommandResult {
 	public Object getReturnObject() {
 		return returnObject;
 	}
-
+	
 	private CommandResult(RenderType renderType) {
 		this(renderType,"");
 	}
@@ -45,6 +45,7 @@ public class CommandResult {
 		this.returnObject = false;
 		this.argument = argument;
 	}
+
 
 	public ICommandHandler getCommand() {
 		return command;
@@ -71,7 +72,7 @@ public class CommandResult {
 		this.command = command;
 		this.argument = argument;
 
-		// the constructure ensures that the object given conforms to a strict
+		// the cons structure ensures that the object given conforms to a strict
 		// structure for a given renderType. For example, the object for the
 		// rendertype of TASKLIST must be a list of tasks.
 		
@@ -144,6 +145,7 @@ public class CommandResult {
 		return new CommandResult(
 				RenderType.UNRECOGNIZED_COMMAND, command);
 	}
+	
 	
 	void setCommand(ICommandHandler command) {
 		this.command = command;

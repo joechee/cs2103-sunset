@@ -47,11 +47,11 @@ public class DeleteCommandHandler extends ICommandHandler {
 			try {
 				taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 			} catch (NumberFormatException nfe) {
-				return CommandResult.invalidTaskIndex;
+				return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 			}
 	
 			if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-				return CommandResult.invalidTaskIndex;
+				return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 			}
 	
 			Task todelete = context.getTaskList().get(taskIndex - 1);
@@ -71,6 +71,11 @@ public class DeleteCommandHandler extends ICommandHandler {
 	@Override
 	public String getHelp() {
 		return "delete <task number>\n\tDeletes a task from your tasklist";
+	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("delete <task number>", "Deletes <task> to your tasklist");
 	}
 	
 	

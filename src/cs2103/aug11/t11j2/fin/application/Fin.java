@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**
@@ -19,6 +19,10 @@ import cs2103.aug11.t11j2.fin.ui.*;
  * @author Joe Chee
  */
 
+
+
+
+
 public class Fin {
 	
 	/* Constants */
@@ -26,6 +30,7 @@ public class Fin {
 	public static final Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
+	//private final static Logger LOGGER = Logger.getLogger(null);
 	
 	public interface IUserInterface {
 		void mainLoop(boolean fileLoaded);
@@ -61,7 +66,7 @@ public class Fin {
 		} catch (IOException e) {
 			System.out.print(e.getMessage());
 			e.printStackTrace();
-		}
+		} 
 
 	}
 
@@ -87,9 +92,8 @@ public class Fin {
 
 	private static String checkFilename(String i)
 			throws IllegalArgumentException {
-		if (i == null) {
-			throw new IllegalArgumentException("Invalid Input!");
-		} else if (!i.endsWith(".yaml")) {
+		assert(i!=null);
+		if (!i.endsWith(".yaml")) {
 			return i + fileExtension;
 		}
 		return i;

@@ -55,4 +55,8 @@ public class AddCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "add <task>\n\tAdds <task> to your task list";
 	}
+	
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("add <task>", "Adds <task> to your task list");
+	}
 }

@@ -24,13 +24,7 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputListener;
-import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.CommandParser;
-import cs2103.aug11.t11j2.fin.parser.CommandResult;
-import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.*;
 
 public class GUI implements IUserInterface {
 	private static boolean EXIT = false;
@@ -274,6 +268,9 @@ public class GUI implements IUserInterface {
 				echo("Command not recognized!\n");
 			}
 			break;
+		case ERROR:
+			renderErrorResult(cmdRes);
+			break;
 		
 		case TOUR:
 			startTour();
@@ -299,6 +296,14 @@ public class GUI implements IUserInterface {
 	 * Renders a string based result (help, joke etc.)
 	 */
 	private void renderStringResult(CommandResult cmdRes) {
+		echo((String) cmdRes.getReturnObject() + "\n");
+		refreshContext();
+	}
+
+	/**
+	 * Renders a error based result. Error uses string)
+	 */
+	private void renderErrorResult(CommandResult cmdRes) {
 		echo((String) cmdRes.getReturnObject() + "\n");
 		refreshContext();
 	}
@@ -338,8 +343,34 @@ public class GUI implements IUserInterface {
 	 * Render a task list based result, i.e list of tasks (show)
 	 */
 	private void renderTaskListResult(CommandResult cmdRes) {
-		updateContext(cmdRes);
-		printTaskList();
+		if (cmdRes.getCommand() instanceof ShowCommandHandler) {
+			updateContext(cmdRes);
+			printTaskList();
+		} else if (cmdRes.getCommand() instanceof UndeleteCommandHandler){
+			String echoString = "";
+			@SuppressWarnings("unchecked")
+			List<Task >taskList = (List<Task>) cmdRes.getReturnObject();
+			if (taskList.size() == 1) {
+				echoString += "Task: " + taskList.get(0).getTaskName() + " re-added!\n";
+			} else {
+				echoString += "Tasks: ";
+				for (int i = 0; i < taskList.size();i++) {
+					if (i == 0) {
+						echoString += (taskList.get(i).getTaskName());
+					} else {
+						echoString += (", "+ taskList.get(i).getTaskName());
+					}
+
+				}
+				echoString += " re-added!\n";
+			}
+			
+			
+			refreshContext();
+			printTaskList();
+			echo(echoString);
+		}
+
 	}
 
 	/**
@@ -389,7 +420,10 @@ public class GUI implements IUserInterface {
 	}
 	
 	/**
-	 * adds a message to the output buffer
+	 * Adds a message to the output buffer and refreshes the window.
+	 * Refresh is slow so messages should be concatenated before echo
+	 * is called to optimize for speed.
+	 * 
 	 * @param promptMessage
 	 */
 	@Override

@@ -60,5 +60,9 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "";
 	}
+	
+	public HelpTablePair getNewHelp() {
+		return null;
+	}
 
 }

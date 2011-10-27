@@ -37,4 +37,9 @@ public class TourCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "tour\n\tStarts a tour of Fin.!";
 	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("tour", "Starts a tour of Fin.!");
+	}
 }

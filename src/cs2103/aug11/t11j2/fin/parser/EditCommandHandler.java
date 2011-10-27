@@ -43,11 +43,11 @@ public class EditCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(tokens[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 		
 		Task task = context.getTaskList().get(taskIndex - 1);
@@ -116,11 +116,17 @@ public class EditCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getHelp() {
-		return "edit <task number> <command>\n\tEdits a task base on the following command\n" +
+		return "edit <task number> <command>\n\tEdits a task based on the following command\n" +
 		"\t - edit <task> to <newtask>\tedits the task to new task\n" +
 		"\t - edit <task> due <duedate>\tchange/add due date for a task\n" +
 		"\t - edit <task> undue\t\tremove due date from a task";
 	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("edit <task number> to <new task>", "Edits a task based on the following command\n");
+	}
+	
 	
 	private static final String[] editCommands = {"to", "at", "rt", "due", "undue"};
 	@Override

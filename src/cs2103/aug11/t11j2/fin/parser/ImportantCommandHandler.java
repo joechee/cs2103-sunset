@@ -41,11 +41,11 @@ public class ImportantCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
@@ -76,5 +76,9 @@ public class ImportantCommandHandler extends ICommandHandler {
 		result=result.substring(0,result.length()-2);
 		return new CommandResult(this, "",
 				CommandResult.RenderType.STRING, result);
+	}
+	
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("important <task>", "Marks a task as important");
 	}
 }

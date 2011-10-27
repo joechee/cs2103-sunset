@@ -119,7 +119,7 @@ public class ShowCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getHelp() {
-		return "show <filters>\n\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first. To show tags only, type show #<tag> instead of show <tag>";
+		return "show <params>\n\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first. To show tags only, type show #<tag> instead of show <tag>";
 	}
 
 	@Override
@@ -157,5 +157,9 @@ public class ShowCommandHandler extends ICommandHandler {
 		}
 		
 		return null;
+	}
+	
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("show <params>", "Shows all tasks with <params> within the description. Results with the corresponding tag is returned first.");
 	}
 }

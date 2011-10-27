@@ -40,11 +40,11 @@ public class UnfinCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s")[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 		Task todelete = context.getTaskList().get(taskIndex - 1);
 
@@ -63,6 +63,10 @@ public class UnfinCommandHandler extends ICommandHandler {
 	public String getHelp() {
 		return "unfin <task number>\n\tUnmarks the completed task";
 	}
-
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("show <params>", "Shows all tasks with <params> within the description. Results with the corresponding tag is returned first.");
+	}
 
 }

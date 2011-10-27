@@ -124,6 +124,7 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	 */	
 	@Override
 	public List<Task> getTasksWithoutTags(List<String> tags) {
+		assert(tags!=null);
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
 		for (Task i: lt) {
@@ -143,6 +144,7 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasksWithTags(List<String> tags) {
+		assert(tags!=null);
 		List<Task> filteredTasks = new ArrayList<Task>();
 		for (Task t : taskList) {
 			if (t.hasTags(tags)) {
@@ -161,6 +163,7 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	 */
 	@Override
 	public boolean deleteTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task deletedTask = removeTask(taskUID);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		deletedTaskLyst.add(deletedTask);
@@ -176,6 +179,7 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	 * @throws IllegalArgumentException
 	 */	
 	private Task removeTask(UUID taskUID) {
+		assert(taskUID!=null);
 		Task todelete = taskMap.get(taskUID);
 		if (todelete != null) {
 			taskMap.remove(taskUID);
@@ -192,13 +196,19 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	 * @return true if deletes were successful
 	 */
 	public boolean deleteTasks(Collection<UUID> taskUID) {
+		assert(taskUID!=null);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		for (UUID deleteID: taskUID) {
 			Task deletedTask = removeTask(deleteID);
 			deletedTaskLyst.add(deletedTask);
 		}
-		undeleteStack.push(deletedTaskLyst);
-		return true;
+		if (!deletedTaskLyst.isEmpty()) {
+			undeleteStack.push(deletedTaskLyst);
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	/**

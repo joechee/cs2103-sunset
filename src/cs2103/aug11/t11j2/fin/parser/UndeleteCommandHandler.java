@@ -53,5 +53,11 @@ public class UndeleteCommandHandler extends ICommandHandler{
 		return "undelete \n\tUndoes your last delete action";
 	}
 	
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("undelete", "Undoes your last delete action");
+	}
+	
+	
+	
 
 }

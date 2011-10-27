@@ -48,11 +48,11 @@ public class FinCommandHandler extends ICommandHandler {
 		try {
 			taskIndex = Integer.parseInt(arguments.split("\\s+")[0]);
 		} catch (NumberFormatException nfe) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
-			return CommandResult.invalidTaskIndex;
+			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
@@ -70,6 +70,11 @@ public class FinCommandHandler extends ICommandHandler {
 	@Override
 	public String getHelp() {
 		return "fin <task number>\n\tMarks a task as completed";
+	}
+	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("fin <task number>", "Marks a task as completed (fin)\n");
 	}
 
 }

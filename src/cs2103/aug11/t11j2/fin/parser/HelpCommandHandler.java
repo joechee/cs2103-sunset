@@ -88,6 +88,11 @@ public class HelpCommandHandler extends ICommandHandler {
 		return "help\n\tBrings you to this page. Hope that helped!";
 	}
 	
+	@Override
+	public HelpTablePair getNewHelp() {
+		return new HelpTablePair("help", "Brings you to this page");
+	}
+	
 	
 	
 	
