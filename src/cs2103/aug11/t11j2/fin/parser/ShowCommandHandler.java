@@ -112,11 +112,7 @@ public class ShowCommandHandler extends ICommandHandler {
 		}
 	}
 
-	@Override
-	public String getAbridgedHelp() {
-		return "show <params>\t\t\t\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first.";
-	}
-	
+
 	@Override
 	public String getHelp() {
 		return "show <params>\n\tShows all tasks with <params> within the description. Results with the corresponding tag is returned first. To show tags only, type show #<tag> instead of show <tag>";
@@ -159,7 +155,7 @@ public class ShowCommandHandler extends ICommandHandler {
 		return null;
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("show <params>", "Shows all tasks with <params> within the description. Results with the corresponding tag is returned first.");
 	}
 }

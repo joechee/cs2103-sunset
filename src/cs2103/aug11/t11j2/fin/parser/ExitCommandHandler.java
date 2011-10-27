@@ -39,10 +39,7 @@ public class ExitCommandHandler extends ICommandHandler {
 		return CommandResult.exitCommandResult;
 	}
 
-	@Override
-	public String getAbridgedHelp() {
-		return "exit\t\t\t\t\tSaves your task list and terminates Fin.";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -50,7 +47,7 @@ public class ExitCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return null;
 	}
 

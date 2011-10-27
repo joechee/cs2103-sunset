@@ -109,10 +109,7 @@ public class EditCommandHandler extends ICommandHandler {
 	}
 	
 
-	@Override
-	public String getAbridgedHelp() {
-		return "edit <task number> to <new task> \tChanges a task to the new task";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -123,8 +120,8 @@ public class EditCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
-		return new HelpTablePair("edit <task number> to <new task>", "Edits a task based on the following command\n");
+	public HelpTablePair getHelpTablePair() {
+		return new HelpTablePair("edit <task number> to <new task>", "Edits a task based on the following command");
 	}
 	
 	

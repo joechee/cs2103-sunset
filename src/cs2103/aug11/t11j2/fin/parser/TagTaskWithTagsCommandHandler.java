@@ -59,17 +59,14 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.TASK, task);
 	}
 	
-	@Override
-	public String getAbridgedHelp() {
-		return "tag <task number> <tag>\t\t\tTags a <task> with <tag>";
-	}
+
 	
 	@Override
 	public String getHelp() {
 		return "tag <task number> <tag>\n\tTags a <task> with <tag>";
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("tag <task number> <tag>", "Tags a <task> with <tag>");
 	}
 	

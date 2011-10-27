@@ -20,7 +20,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
  */
 public class CommandResult {
 	public static enum RenderType {
-		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR
+		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR, HELPTABLE
 	};
 
 	private RenderType renderType;
@@ -132,7 +132,20 @@ public class CommandResult {
 			this.returnObject = returnObject;
 
 			break;
+		case HELPTABLE:
+			if (!(returnObject instanceof List<?>)) {
+				throw (new FinProductionException(
+						"Command result type is invalid for String"));
+			}
+
+			this.renderType = renderType;
+			this.returnObject = returnObject;
+
+			break;			
 		}
+		
+		
+			
 
 	}
 

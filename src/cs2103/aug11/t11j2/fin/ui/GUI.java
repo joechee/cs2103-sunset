@@ -36,6 +36,9 @@ public class GUI implements IUserInterface {
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
 	private FinTour finTour = null;
 	private boolean isInTour = false;
+	
+	// Help table constant
+	private static final int TABLE_BORDER_WIDTH = 3;
 
 	private static Composite createFooter(Composite shell) {
 		Composite footer = new Composite(shell, SWT.RIGHT_TO_LEFT);
@@ -274,11 +277,49 @@ public class GUI implements IUserInterface {
 		
 		case TOUR:
 			startTour();
+			break;
+		
+		case HELPTABLE:
+			renderHelpTable(cmdRes);
+		
 		}
 
 		return false;
 	}
 	
+
+	@SuppressWarnings("unchecked")
+	private void renderHelpTable(CommandResult cmdRes) {
+		List<HelpTablePair>helpTable = (List<HelpTablePair>) cmdRes.getReturnObject();
+		String echoString = "";
+		int optimalBreadth = findOptimalTableBreadth(helpTable);
+		
+		for (HelpTablePair p: helpTable) {
+			echoString+=padWhiteSpace(p.getUsage(), optimalBreadth);
+			echoString+=p.getDescription();
+			echoString+="\n";
+		}
+		echo(echoString);
+	}
+	
+	
+	private int findOptimalTableBreadth(List<HelpTablePair> helpTable) {
+		int optimal = 0;
+		for (HelpTablePair p: helpTable) {
+			if (optimal < p.getUsage().length()) {
+				optimal = p.getUsage().length();
+			}
+		}
+		return optimal + TABLE_BORDER_WIDTH;
+	}
+	
+	private String padWhiteSpace(String usage, int table_breadth) {
+		while (usage.length()<table_breadth) {
+			usage += " ";
+		}
+		return usage;
+	}
+
 	private void startTour() {
 		context.setFinApplication(FinApplicationTour.INSTANCE);
 		finTour = new FinTour(this, context);

@@ -1,14 +1,10 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.storage.Serializer;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class JokeCommandHandler extends ICommandHandler {
@@ -57,10 +53,7 @@ public class JokeCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.STRING, joke);
 	}
 	
-	@Override
-	public String getAbridgedHelp() {
-		return "";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -73,7 +66,7 @@ public class JokeCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.STRING, "");
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return null;
 	}
 }

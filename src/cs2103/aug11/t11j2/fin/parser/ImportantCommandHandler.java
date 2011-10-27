@@ -56,10 +56,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 	}
 
 
-	@Override
-	public String getAbridgedHelp() {
-		return "important\t\t\t\tMarks a task as important";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -78,7 +75,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.STRING, result);
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("important <task>", "Marks a task as important");
 	}
 }

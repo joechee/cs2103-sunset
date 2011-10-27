@@ -54,10 +54,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.TASK, todelete);
 	}
 
-	@Override
-	public String getAbridgedHelp() {
-		return "unfin <task number>\t\t\tUnmarks the completed task";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -65,7 +62,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("show <params>", "Shows all tasks with <params> within the description. Results with the corresponding tag is returned first.");
 	}
 

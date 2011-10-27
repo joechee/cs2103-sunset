@@ -59,10 +59,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 	
 
 
-	@Override
-	public String getAbridgedHelp() {
-		return "unimportant\t\t\t\tUnmarks an important task";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -70,7 +67,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("unimportant", "Unmarks an important task");
 	}
 

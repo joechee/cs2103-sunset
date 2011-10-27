@@ -62,10 +62,7 @@ public class FinCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.TASK, todelete);
 	}
 	
-	@Override
-	public String getAbridgedHelp() {
-		return "fin <task number>\t\t\tMarks a task as completed";
-	}
+
 	
 	@Override
 	public String getHelp() {
@@ -73,8 +70,8 @@ public class FinCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
-		return new HelpTablePair("fin <task number>", "Marks a task as completed (fin)\n");
+	public HelpTablePair getHelpTablePair() {
+		return new HelpTablePair("fin <task number>", "Marks a task as completed (fin)");
 	}
 
 }

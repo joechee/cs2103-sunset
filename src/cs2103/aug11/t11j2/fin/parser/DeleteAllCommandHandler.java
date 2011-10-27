@@ -45,10 +45,7 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 				.get(0), "", context);
 	}
 	
-	@Override
-	public String getAbridgedHelp() {
-		return "";
-	}
+
 
 	@Override
 	public CommandResult showHelp() throws FinProductionException {
@@ -61,7 +58,7 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 		return "";
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return null;
 	}
 

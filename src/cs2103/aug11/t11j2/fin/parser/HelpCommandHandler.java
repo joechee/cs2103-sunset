@@ -66,22 +66,18 @@ public class HelpCommandHandler extends ICommandHandler {
 	}
 
 	private CommandResult showDefaultHelp() throws FinProductionException {
-		String help = "Fin. is a ToDo manager that will allow you to keep track of your daily tasks the way you want it to be tracked.\n\n";
+		List<HelpTablePair> helpTable = new ArrayList<HelpTablePair>(); 
+		
 		for (ICommandHandler i: CommandParser.INSTANCE.getCommandHandlers()) {
-			if (!i.getAbridgedHelp().isEmpty()) {
-				help = help+i.getAbridgedHelp()+"\n";
+			if (i.getHelpTablePair() != null) {
+				helpTable.add(i.getHelpTablePair());
 			}
 		}
-		help = help + "\nFor more detailed help on a specific command, type \"help <command>\"";
-			
 		return new CommandResult(this, "",
-				CommandResult.RenderType.STRING, help);
+				CommandResult.RenderType.HELPTABLE, helpTable);
 	}
 	
-	@Override
-	public String getAbridgedHelp() {
-		return "help\t\t\t\t\tBrings you to this page";
-	}
+
 
 	@Override
 	public String getHelp() {
@@ -89,8 +85,8 @@ public class HelpCommandHandler extends ICommandHandler {
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
-		return new HelpTablePair("help", "Brings you to this page");
+	public HelpTablePair getHelpTablePair() {
+		return new HelpTablePair("help", "Brings you to this page. For more info, type \"help <command>\"");
 	}
 	
 	

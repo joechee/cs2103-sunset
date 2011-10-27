@@ -18,6 +18,7 @@ public class CLI implements Fin.IUserInterface {
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
+	private static final int TABLE_BORDER_WIDTH = 3;
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
 
 	private static Scanner sc = new Scanner(System.in);
@@ -133,8 +134,41 @@ public class CLI implements Fin.IUserInterface {
 				echo("Command not recognized!\n\n");
 			}
 			break;
+		case HELPTABLE:
+			renderHelpTable(cmdRes);
+			break;
 		}
 		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void renderHelpTable(CommandResult cmdRes) {
+		List<HelpTablePair>helpTable = (List<HelpTablePair>) cmdRes.getReturnObject();
+
+		int optimalBreadth = findOptimalTableBreadth(helpTable);
+		for (HelpTablePair p: helpTable) {
+			
+			echo(padWhiteSpace(p.getUsage(), optimalBreadth));
+			echo(p.getDescription());
+			echo("\n");
+		}
+	}
+
+	private int findOptimalTableBreadth(List<HelpTablePair> helpTable) {
+		int optimal = 0;
+		for (HelpTablePair p: helpTable) {
+			if (optimal < p.getUsage().length()) {
+				optimal = p.getUsage().length();
+			}
+		}
+		return optimal + TABLE_BORDER_WIDTH;
+	}
+
+	private String padWhiteSpace(String usage, int table_breadth) {
+		while (usage.length()<table_breadth) {
+			usage += " ";
+		}
+		return usage;
 	}
 
 	private void renderError(CommandResult cmdRes) {

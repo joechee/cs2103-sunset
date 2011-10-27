@@ -43,17 +43,14 @@ public class UndeleteCommandHandler extends ICommandHandler{
 		
 	}
 
-	@Override
-	public String getAbridgedHelp() {
-		return "undelete \t\t\tUndoes your last delete action";
-	}
+
 	
 	@Override
 	public String getHelp() {
 		return "undelete \n\tUndoes your last delete action";
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("undelete", "Undoes your last delete action");
 	}
 	

@@ -46,17 +46,14 @@ public class AddCommandHandler extends ICommandHandler {
 	
 
 
-	@Override
-	public String getAbridgedHelp() {
-		return "add <task>\t\t\t\tAdds <task> to your task list";
-	}
+
 
 	@Override
 	public String getHelp() {
 		return "add <task>\n\tAdds <task> to your task list";
 	}
 	
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("add <task>", "Adds <task> to your task list");
 	}
 }

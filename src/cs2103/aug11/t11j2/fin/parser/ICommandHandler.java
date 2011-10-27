@@ -23,11 +23,17 @@ public abstract class ICommandHandler {
 				CommandResult.RenderType.STRING, result);
 	}
 
-	abstract public String getAbridgedHelp();
+	
 	
 	abstract public String getHelp();
 	
-	abstract public HelpTablePair getNewHelp();
+	/**
+	 * Returns a pair that describes what the command does -- the usage and the description.
+	 * 
+	 * @return HelpTablePair
+	 */
+	
+	abstract public HelpTablePair getHelpTablePair();
 	
 	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
 		return null;

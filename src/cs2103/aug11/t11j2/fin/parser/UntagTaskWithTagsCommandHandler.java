@@ -63,17 +63,12 @@ public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 
 
 	@Override
-	public String getAbridgedHelp() {
-		return "untag <task number> <tag>\t\tUntags a <task> with <tag>";
-	}
-	
-	@Override
 	public String getHelp() {
 		return "untag <task number> <tag>\n\tUntags a <task> with <tag>";
 	}
 	
 	@Override
-	public HelpTablePair getNewHelp() {
+	public HelpTablePair getHelpTablePair() {
 		return new HelpTablePair("untag <task number> <tag>", "Untags the <task> with <tag>");
 	}
 
