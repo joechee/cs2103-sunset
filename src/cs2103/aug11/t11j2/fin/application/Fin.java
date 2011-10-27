@@ -28,7 +28,7 @@ public class Fin {
 	public static final String fileExtension = ".yaml";
 	
 	public interface IUserInterface {
-		void mainLoop();
+		void mainLoop(boolean fileLoaded);
 		boolean runCommandAndRender(String userArgs);
 		void echo(String promptMessage);
 		void clearScreen();
@@ -47,7 +47,7 @@ public class Fin {
 		public boolean unflagTask(UUID taskUID);
 		public boolean finTask(UUID taskUID);
 		public boolean unfinTask(UUID taskUID);
-		public void loadEnvironment(String filename) throws IOException;
+		public boolean loadEnvironment(String filename) throws IOException;
 		public List<String> getHashTags();
 		public void clearEnvironment();
 		
@@ -81,8 +81,8 @@ public class Fin {
 			}
 		}
 		
-		FinApplication.INSTANCE.loadEnvironment(checkFilename(filename));
-		UI.mainLoop();
+		boolean fileLoaded = FinApplication.INSTANCE.loadEnvironment(checkFilename(filename));
+		UI.mainLoop(fileLoaded);
 	}
 
 	private static String checkFilename(String i)

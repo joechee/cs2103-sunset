@@ -249,6 +249,18 @@ public class FinCLIComposite extends Composite {
 	private boolean inputHasFocus;
 	
 	/**
+	 * Set the text in the input box to another text
+	 * 
+	 * @param text
+	 */
+	public void setText(String text) {
+		if (this.isInHint) {
+			removeHint();
+		}
+		input.setText(text);
+	}
+	
+	/**
 	 * Set hint in the input box to describe what a GUI action does
 	 * 
 	 * @param hint

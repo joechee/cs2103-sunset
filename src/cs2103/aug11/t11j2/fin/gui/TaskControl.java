@@ -69,21 +69,16 @@ public class TaskControl extends Composite {
 	private Listener onDeleteClick;
 	
 
-	private static Canvas createQuickButton(Composite parent, InputStream image, InputStream imageHover) {
-	    ImageData delImageData = new ImageData(image);
-	    ImageData delImageOverData = new ImageData(imageHover);
-	    final Image delImage = new Image(parent.getDisplay(), delImageData);
-	    final Image delImageOver = new Image(parent.getDisplay(), delImageOverData);
-
+	private static Canvas createQuickButton(Composite parent, final Image image, final Image imageHover) {
 		final Canvas canvas = new Canvas(parent, SWT.None);
 		canvas.setData(false);
 		canvas.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				if ((Boolean) canvas.getData() == false) {
-					e.gc.drawImage(delImage,-2,-2);
+					e.gc.drawImage(image,-2,-2);
 				} else {
-					e.gc.drawImage(delImageOver,-2,-2);
+					e.gc.drawImage(imageHover,-2,-2);
 				}
 			}
 	    });
@@ -165,7 +160,9 @@ public class TaskControl extends Composite {
 	    });
 	}
 	
-	private static Composite initQuickActions(final TaskControl parent, Task task) {
+	private static Composite initQuickActions(final TaskControl parent, Task task, 
+			Image imptImg, Image imptoImg, Image delImg, Image deloImg) {
+		
 		final Composite tr = new Composite(parent, SWT.NONE);
 				
 	    GridLayout gridLayout = new GridLayout();
@@ -173,17 +170,14 @@ public class TaskControl extends Composite {
 	    tr.setLayout(gridLayout);
 	    
 	    
-	    Canvas deleteCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("del.png"), 
-	    		parent.getClass().getResourceAsStream("delo.png"));
+	    Canvas deleteCanvas = createQuickButton(tr, delImg, deloImg);
 	    
 	    // if current task is important, set the default impt button to the highlighted one
 	    Canvas imptCanvas;
 	    if (task.isImportant()) {
-	    	imptCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("impto.png"), 
-	    			parent.getClass().getResourceAsStream("impt.png"));	    	
+	    	imptCanvas = createQuickButton(tr, imptoImg, imptImg);	    	
 	    } else {
-	    	imptCanvas = createQuickButton(tr, parent.getClass().getResourceAsStream("impt.png"), 
-	    			parent.getClass().getResourceAsStream("impto.png"));
+	    	imptCanvas = createQuickButton(tr, imptImg, imptoImg);
 	    }
 	    
 	    
@@ -397,8 +391,8 @@ public class TaskControl extends Composite {
 		return taskText;
 	}
 	public boolean mouseOver = false;
-	public TaskControl(Composite parent, int style, Task task,
-			Integer taskPosition) {
+	public TaskControl(Composite parent, int style, Task task, Integer taskPosition, 
+			Image imptImg, Image imptoImg, Image delImg, Image deloImg) {
 
 		super(parent, style);
 		
@@ -408,7 +402,7 @@ public class TaskControl extends Composite {
 		this.dueBy = initDueBy(this, task);
 		this.deleteCheckbox = initFinButton(this, task.isFin());
 		this.taskPosition = taskPosition;
-		this.quickActions = initQuickActions(this, task);
+		this.quickActions = initQuickActions(this, task, imptImg, imptoImg, delImg, deloImg);
 		this.taskText = initTaskText(this, task);
 		
 		// dispose

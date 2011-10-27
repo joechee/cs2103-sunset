@@ -6,7 +6,6 @@ import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
-import cs2103.aug11.t11j2.fin.parser.JokeCommandHandler.Joke;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class TourCommandHandler extends ICommandHandler {

@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.gui;
 
+import java.io.InputStream;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -9,6 +11,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,9 +29,33 @@ import cs2103.aug11.t11j2.fin.datamodel.Task;
 
 public class TaskContainer extends Composite {
 	int taskCount = 0;
+
+	final private static ImageData imptImgData = new ImageData(
+			TaskContainer.class.getResourceAsStream("impt.png"));
+	
+	final private static ImageData imptoImgData = new ImageData(
+			TaskContainer.class.getResourceAsStream("impto.png"));
+	
+	final private static ImageData delImgData = new ImageData(
+			TaskContainer.class.getResourceAsStream("del.png"));
+	
+	final private static ImageData deloImgData = new ImageData(
+			TaskContainer.class.getResourceAsStream("delo.png"));
+	
+	private static Image imptImg = null;
+	private static Image imptoImg = null;
+	private static Image delImg = null;
+	private static Image deloImg = null;
 	
 	public TaskContainer(Composite parent, int style) {
 		super(parent, style);
+		
+		
+		// initialize and cache Image 
+		if (imptImg == null) imptImg = new Image(parent.getDisplay(), imptImgData);
+		if (imptoImg == null) imptoImg = new Image(parent.getDisplay(), imptoImgData);
+		if (delImg == null) delImg = new Image(parent.getDisplay(), delImgData);
+		if (deloImg == null) deloImg = new Image(parent.getDisplay(), deloImgData);
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -76,7 +104,7 @@ public class TaskContainer extends Composite {
 	TaskControl previousOver = null;
 	
 	public void addTask(Task t) {
-		final TaskControl taskControl = new TaskControl(this, SWT.NONE, t, ++taskCount);
+		final TaskControl taskControl = new TaskControl(this, SWT.NONE, t, ++taskCount, imptImg, imptoImg, delImg, deloImg);
 		
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
 				false);

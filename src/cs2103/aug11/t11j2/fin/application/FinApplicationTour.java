@@ -284,7 +284,8 @@ public class FinApplicationTour implements Fin.IFinApplication {
 	}
 	
 	@Override
-	public void loadEnvironment(String filename) throws IOException {
+	public boolean loadEnvironment(String filename) throws IOException {
+		return true;
 	}
 	
 	/**

@@ -12,38 +12,26 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class JokeCommandHandler extends ICommandHandler {
-	class Joke {
-		List<String> jokeList;
-		Serializer jokeSerial;
-
-		public Joke() throws IOException {
-			jokeList = new ArrayList<String>();
-			jokeSerial = new Serializer();
-
-			List<Object> serialList = jokeSerial.unserialize("Joke.yaml");
-			Iterator<Object> serialListIterator = serialList.iterator();
-			while (serialListIterator.hasNext()) {
-				jokeList.add((String) serialListIterator.next());
-			}
-
+	
+	@SuppressWarnings("serial")
+	private final List<String> jokeList = new ArrayList<String>(){
+		{
+			add("Nerds will never go hungry. They have pi.");
+			add("Build a man a fire, and he'll be warm for the night. Set a man on fire, and he'll be warm for the rest of his life.");
+			add("Abortion brings out the kid in you.");
+			add("If life gives you melons, you probably have dyslexia.");
+			add("Money can't buy happiness, but it can buy bubble wrap.");
+			add("Menstruation, menopause, mental breakdowns... All of a woman's problems begin with men.");
+			add("I wondered why the Frisbee was getting bigger, and then it hit me."); 
+			add("Treat each day as your last; one day you will be right."); 
+			add("Wear a watch and you'll always know what time it is. Wear two watches and you'll never be sure."); 
+			add("I watched a guy pickpocket a midget, and couldn't believe how anyone could stoop so low.");
+			add("Did you hear about the red ship and the blue ship that collided with each other? Both crews were marooned.");
+			add("The Energizer Bunny was arrested, and charged with battery.");
+			add("Did you hear about the restaurant on the moon? Great food but no atmosphere.");
 		}
-
-		public String generate() {
-			Random RNG = new Random();
-			return jokeList.get(RNG.nextInt(jokeList.size()));
-		}
-
-		public void addJoke(String joke) throws IOException {
-			jokeList.add(joke);
-			saveJokes();
-		}
-
-		public void saveJokes() throws IOException {
-			jokeSerial.serialize((new ArrayList<Object>(jokeList)).iterator(),
-					"Joke.yaml");
-		}
-	}
-
+	};
+	
 	@Override
 	@SuppressWarnings("serial")
 	public List<String> getCommandStrings() {
@@ -61,16 +49,10 @@ public class JokeCommandHandler extends ICommandHandler {
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		String joke = "";
-		try {
-			Joke testJoke = new Joke();
-			joke = testJoke.generate();
-		} catch (IOException e) {
-			if (FinConstants.IS_PRODUCTION) {
-				e.printStackTrace();
-			}
-			joke = "The Joke's on FIN";
-		}
+
+		Random RNG = new Random();
+		String joke = jokeList.get(RNG.nextInt(jokeList.size()));
+
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.STRING, joke);
 	}

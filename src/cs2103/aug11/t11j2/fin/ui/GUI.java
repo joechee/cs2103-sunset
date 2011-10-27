@@ -68,6 +68,7 @@ public class GUI implements IUserInterface {
 
 		l.setForeground(new Color(null, 255, 255, 255));
 		l.setBackgroundImage(newImage);
+		
 
 		footer.layout(true);
 		return footer;
@@ -404,7 +405,7 @@ public class GUI implements IUserInterface {
 	
 	
 	@Override
-	public void mainLoop() {
+	public void mainLoop(boolean fileLoaded) {
 		initShell();
 	}
 }

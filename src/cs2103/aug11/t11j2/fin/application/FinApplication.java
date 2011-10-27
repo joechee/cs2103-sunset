@@ -290,10 +290,11 @@ public class FinApplication implements Fin.IFinApplication {
 	 * Loads the tasks that was previously saved by the <code>saveEnvironment</code> method from a file.
 	 * @param filename
 	 * @throws IOException
+	 * @return true if environment is successfully loaded
 	 * @see saveEnvironment
 	 */
 	@Override
-	public void loadEnvironment(String filename) throws IOException {
+	public boolean loadEnvironment(String filename) throws IOException {
 		FinSerializer fs = new FinSerializer();
 		taskFileName = filename;
 
@@ -302,7 +303,10 @@ public class FinApplication implements Fin.IFinApplication {
 		} catch (FileNotFoundException fnfe) {
 			clearEnvironment();
 			fs.serialize(filename);
+			return false;
 		}
+		
+		return true;
 	}
 	
 	/**
