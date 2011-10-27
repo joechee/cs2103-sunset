@@ -24,6 +24,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
+import com.dropbox.client2.session.RequestTokenPair;
 import com.dropbox.client2.session.WebAuthSession;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
@@ -96,17 +97,24 @@ public class SyncCommandHandler extends ICommandHandler {
 		
 		try {			
 			WebAuthSession.WebAuthInfo authInfo = mDBApi.getSession().getAuthInfo();
+			RequestTokenPair requestTokenPair = authInfo.requestTokenPair;
 			
 			if (openDropboxAuth(authInfo.url, context.getDisplay())) {
-				AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
 				
+				String userUID = mDBApi.getSession().retrieveWebAccessToken(requestTokenPair);
+				System.out.println(mDBApi.accountInfo());
+	            
+				AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
+				mDBApi.getSession().setAccessTokenPair(tokens);
 				String fileContents = "Hello World!";
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContents.getBytes());
+				mDBApi.putFile("test",inputStream,fileContents.length(),null,null);
 				Entry newEntry = mDBApi.putFile("/testing.txt", inputStream,
 			           fileContents.length(), null, null);
+			    
 
 			} else {
-				// TODO: return some error
+				// TODO: use cli to open browser
 			}
 		} catch (DropboxException e) {
 			if (FinConstants.IS_PRODUCTION) {

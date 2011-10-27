@@ -63,6 +63,8 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 			
+			//TODO: pls fix it such that it edits directly. kthxbai
+			
 			context.getFinApplication().deleteTask(task.getUniqId());
 			AddCommandHandler addCmdHandler = new AddCommandHandler();
 			CommandResult res = addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()

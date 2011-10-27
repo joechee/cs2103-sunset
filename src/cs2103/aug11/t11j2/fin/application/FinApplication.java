@@ -323,6 +323,14 @@ public class FinApplication implements Fin.IFinApplication {
 			clearEnvironment();
 			fs.serialize(filename);
 			return false;
+		} catch (IOException e) {
+			try {
+				fs.unserialize(filename+".bak");
+				return false;
+			} catch (IOException f) {
+				return false;
+			}
+
 		}
 		
 		return true;
@@ -357,6 +365,14 @@ public class FinApplication implements Fin.IFinApplication {
 			} else {
 				// TODO: handle saving
 			}
+		}
+		
+		try {
+			fs.serialize(taskFileName+".bak");
+		} catch (IOException e) {
+			if (FinConstants.IS_PRODUCTION) {
+				e.printStackTrace();
+			} 
 		}
 	}
 	/**

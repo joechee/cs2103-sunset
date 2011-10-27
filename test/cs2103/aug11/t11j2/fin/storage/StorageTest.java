@@ -18,9 +18,14 @@ package cs2103.aug11.t11j2.fin.storage;
 
 import static org.junit.Assert.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinSerializer;
@@ -61,6 +66,13 @@ public class StorageTest {
 		System.out.println("***");
 
 		System.out.println("Test complete!");
+	}
+	
+	@Test
+	public void testUnserializer() throws IOException {
+		Map<String, Object> dict = new HashMap<String,Object>();
+		System.out.println(dict.get("0"));
+		
 	}
 
 

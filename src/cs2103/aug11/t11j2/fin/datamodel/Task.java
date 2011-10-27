@@ -35,19 +35,30 @@ public class Task {
 		this.timeDue = dueDate;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
-		this.finished = false;
-		this.important = false;		
+
 
 		parseTags();
 	}
 
 	public Task(Map<String, Object> dict) {
+		
+		if (dict.get("Name") == null) {
+			dict.put("Name","Corrupted task");
+		}
+		if (dict.get("UID") == null) {
+			dict.put("UID", UUID.randomUUID().toString());
+		}
+		
+		
+		try {
+			this.uniqId = UUID.fromString((String) dict.get("UID"));
+		} catch (IllegalArgumentException e) {
+			this.uniqId = UUID.randomUUID();
+		}
+		
 		this.taskName = (String) dict.get("Name");
-		this.uniqId = UUID.fromString((String) dict.get("UID"));
 		this.timeAdded = (Date) dict.get("DateAdded");
 		this.timeDue = (Date) dict.get("DueDate");
-		this.finished = (Boolean) dict.get("Finished");
-		this.important = (Boolean) dict.get("Important");
 
 		parseTags();
 	}
@@ -222,8 +233,7 @@ public class Task {
 		tr.put("Name", this.taskName);
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
-		tr.put("Finished", this.isFin());
-		tr.put("Important", this.isImportant());
+
 
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());

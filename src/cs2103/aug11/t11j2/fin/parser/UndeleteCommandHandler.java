@@ -36,8 +36,6 @@ public class UndeleteCommandHandler extends ICommandHandler{
 					CommandResult.RenderType.ERROR,"No task to undelete!");
 		}
 		
-		for (Task task: tasksRegenerated) {
-		}
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASKLIST, tasksRegenerated);
 		

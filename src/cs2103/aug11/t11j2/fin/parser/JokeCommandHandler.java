@@ -10,8 +10,9 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 public class JokeCommandHandler extends ICommandHandler {
 	
 	@SuppressWarnings("serial")
-	private final List<String> jokeList = new ArrayList<String>(){
+	private List<String> jokeList = new ArrayList<String>(){
 		{
+			
 			add("Nerds will never go hungry. They have pi.");
 			add("Build a man a fire, and he'll be warm for the night. Set a man on fire, and he'll be warm for the rest of his life.");
 			add("Abortion brings out the kid in you.");
@@ -25,6 +26,7 @@ public class JokeCommandHandler extends ICommandHandler {
 			add("Did you hear about the red ship and the blue ship that collided with each other? Both crews were marooned.");
 			add("The Energizer Bunny was arrested, and charged with battery.");
 			add("Did you hear about the restaurant on the moon? Great food but no atmosphere.");
+			
 		}
 	};
 	
@@ -53,6 +55,7 @@ public class JokeCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.STRING, joke);
 	}
 	
+
 
 	
 	@Override
