@@ -71,9 +71,11 @@ public class GUI implements IUserInterface {
 		return footer;
 	}
 	
-	void initShell() {
+	void initShell(boolean fileLoaded) {
 		final Display display = new Display();
 		shell = new Shell(display);
+		
+		context.setDisplay(display);
 
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -117,6 +119,10 @@ public class GUI implements IUserInterface {
 		refreshContext();
 		displayTasks();
 		cli.forceFocus();
+		
+		if (!fileLoaded) {
+			startTour();
+		}
 
 
  		while (!EXIT && !shell.isDisposed()) {
@@ -257,8 +263,13 @@ public class GUI implements IUserInterface {
 			break;
 		
 		case EXIT:
-			echo("Thank you for using Fin.\n");
-			echo("Goodbye!\n");
+			if (this.isInTour) {
+				endTour();
+				runCommandAndRender("show");				
+			} else {
+				echo("Thank you for using Fin.\n");
+				echo("Goodbye!\n");
+			}
 			return true;
 		
 		case UNRECOGNIZED_COMMAND:
@@ -276,7 +287,12 @@ public class GUI implements IUserInterface {
 			break;
 		
 		case TOUR:
-			startTour();
+			if (cmdRes.getCommand() instanceof TourCommandHandler) {
+				startTour();
+			} else if(cmdRes.getCommand() instanceof EndTourCommandHandler){
+				endTour();
+				runCommandAndRender("show");
+			}
 			break;
 		
 		case HELPTABLE:
@@ -481,6 +497,6 @@ public class GUI implements IUserInterface {
 	
 	@Override
 	public void mainLoop(boolean fileLoaded) {
-		initShell();
+		initShell(fileLoaded);
 	}
 }

@@ -3,6 +3,8 @@ package cs2103.aug11.t11j2.fin.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Display;
+
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 
@@ -13,6 +15,7 @@ public class UIContext {
 	
 	private Fin.IFinApplication finApplication = null;
 	
+	private Display display = null;
 	
 	UIContext(Fin.IFinApplication finApplication) {
 		this.finApplication = finApplication;
@@ -22,6 +25,14 @@ public class UIContext {
 		this(null);
 	}
 
+	void setDisplay(Display display) {
+		this.display = display;
+	}
+	
+	public Display getDisplay() {
+		return this.display;
+	}
+	
 	public List<Task> getTaskList() {
 		return taskList;
 	}

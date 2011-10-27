@@ -37,7 +37,6 @@ public class FinTour {
 		
 		// add some default tasks
 		Fin.IFinApplication finApplication = this.context.getFinApplication();
-		
 		finApplication.clearEnvironment();
 		finApplication.add(new Task("Do this by tomorrow"));
 		finApplication.add(new Task("Do that in 10 days"));
