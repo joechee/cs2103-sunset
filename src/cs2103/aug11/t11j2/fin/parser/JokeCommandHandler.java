@@ -69,6 +69,7 @@ public class JokeCommandHandler extends ICommandHandler {
 				CommandResult.RenderType.STRING, "");
 	}
 	
+	@Override
 	public HelpTablePair getHelpTablePair() {
 		return null;
 	}

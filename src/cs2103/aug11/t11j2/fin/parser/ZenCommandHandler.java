@@ -12,39 +12,51 @@ public class ZenCommandHandler extends ICommandHandler {
 	ZenCommandHandler() {
 		jokeList = new ArrayList<String>();
 		Random RNG = new Random();
-		String[] noun = {"air","water","earth","fire","sound","silence","emptiness", 
+		String[] noun = {"air","water","earth","sound","silence","emptiness", 
 				"happiness","sadness","meaning","character","love","hate","direction",
-				"point","Chuck Norris", "chair",
+				"point","Chuck Norris", "chair","pain","light","heavy","big","virtue",
 				"space","life","42","Sylvester Stallone","Bruce Lee", "Yo momma", "fat",
-				"null","void","bool","integer","float","double","linked-list","stack","queue",
-				"tree","hash","hash-table","forest","death","eternity","cache"};
+				"null","void","integer","linked-list","stack","queue",
+				"tree","hash-table","forest","death","eternity"};
 		for (int i = 0; i < 100; i++) {
 			
 			jokeList.add("Zen master says \""+ noun[RNG.nextInt(noun.length)] + " is " +
 					noun[RNG.nextInt(noun.length)] + "\".");
 		}
 	}
+	@SuppressWarnings("serial")
 	@Override
 	public List<String> getCommandStrings() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<String>() {
+			{
+				add("zen");
+				add("z");
+			}
+		};
 	}
 	@Override
 	CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		// TODO Auto-generated method stub
-		return null;
+		Random RNG = new Random();
+		String joke = jokeList.get(RNG.nextInt(jokeList.size()));
+
+		return new CommandResult(this, arguments,
+				CommandResult.RenderType.STRING, joke);
 	}
 	@Override
 	public String getHelp() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public HelpTablePair getHelpTablePair() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
+	@Override
+	public CommandResult showHelp() throws FinProductionException {
+		return new CommandResult(this, "",
+				CommandResult.RenderType.STRING, "");
+	}
+	
+	@Override
+	public HelpTablePair getHelpTablePair() {
+		return null;
+	}
 
 }
