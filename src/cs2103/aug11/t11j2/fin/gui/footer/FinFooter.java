@@ -1,78 +1,57 @@
 package cs2103.aug11.t11j2.fin.gui.footer;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.events.*;
 
+import cs2103.aug11.t11j2.fin.parser.*;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
+import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class FinFooter {
 	
-	static final String [] OUTPUT_TEXT = {"add", "del", "search", "help"};
-	static final String [] LABEL_TEXT = {"Add", "Delete", "Search", "Help"};
+	static final String [] OUTPUT_TEXT = {"add ", "search ", "help\n"};
+	static final String [] LABEL_TEXT = {"Add", "Search", "Help"};
+	static final String [] HINT_TEXT = {"add <task>", "search <patterns>", "show help"};
 	static final String WITHIN_ONE_DAY = "WITHIN 24 HOURS";
 	static final int STRING_NOT_FOUND = -1;
 	static final int DEFAULT_X = 20;
-	static final int DEFAULT_DY = -100;
-	static final int DEFAULT_WIDTH = 50;
-	static final int DEFAULT_HEIGHT = 30;
-	static final int DEFAULT_GAP = 10;
+	static final int DEFAULT_DY = -80;
+	static final int DEFAULT_WIDTH = 24;
+	static final int DEFAULT_HEIGHT = 24;
+	static final int DEFAULT_GAP = 20;
+	static final int HELP_INDEX = 2;
+	static final Color DEFAULT_HINT_COLOR = new Color(null, 100, 100, 100);
+	static final Color DEFAULT_TEXT_COLOR = new Color(null, 0, 0, 0);
 		
 	public List <Button> buttonList = new ArrayList<Button>();	
 	public List <Label> labelList = new ArrayList<Label>();
 	static Text input;
+	static boolean isHint;
+	
+	static Image buttonImg[];
+	static Image buttonOnImg[];
 	
 	/*
 	 * @param display, shell: the devices containing the footer.
 	 * @param Text: the device receiving message from the footer.
-	 * @param x, y: location of the footer.
-	 * @param width, height: size of the labels.
-	 * @param gap: the gap between the labels.
 	 */	
-	public FinFooter(Display display, Shell shell, Text text,
-			int x, int y, int width, int height, int gap){
-
-		input = text;
-		Color color = shell.getBackground();
-		Color fcolor = new Color(display, 0, 0, 0);
-		int n = LABEL_TEXT.length;
-		for (int i=0; i<n; i++){
-			this.buttonList.add(new Button(shell, SWT.PUSH));
-			InputStream inputStream;
-			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+".bmp");
-			Image img = new Image(display, inputStream);
-		
-			formatButton(this.buttonList.get(i), x, y, 
-						 width, height, color, fcolor, img);
-			x = x + width + gap;
-			addListener(i);
-			addMouseoverEffect(this.buttonList.get(i));
-		}
-		int countOutstanding = getOutstandingTask();
-		fcolor = new Color(display, 255, 0, 0);
-		addOutstandingNum(shell, x, y, width, height, color, fcolor, countOutstanding);
-		x = x + width + 10;
-		fcolor = new Color(display, 105, 0, 255);
-		addLabelOutstanding(shell,  x, y, width*4, height, 
-				color, fcolor, "Tasks "+WITHIN_ONE_DAY);
-		x = x + width +gap;
-	}
-
 	public FinFooter(Display display, Shell shell, Text text){
 		int x = DEFAULT_X;
 		int y = shell.getSize().y + DEFAULT_DY;
@@ -82,29 +61,32 @@ public class FinFooter {
 		input = text;
 		Color color = shell.getBackground();
 		Color fcolor = new Color(display, 0, 0, 0);
+		initImg();
 		int n = LABEL_TEXT.length;
 		for (int i=0; i<n; i++){
-			this.buttonList.add(new Button(shell, SWT.PUSH));
-			InputStream inputStream;
-			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+".bmp");
-			Image img = new Image(display, inputStream);
-		
+			this.buttonList.add(new Button(shell, SWT.PUSH));		
 			formatButton(this.buttonList.get(i), x, y, 
-						 width, height, color, fcolor, img);
+						 width, height, color, fcolor, buttonImg[i]);
 			x = x + width + gap;
 			addListener(i);
-			addMouseoverEffect(this.buttonList.get(i));
+			addMouseoverEffect(this.buttonList.get(i),i);
 		}
-		int countOutstanding = getOutstandingTask();
-		fcolor = new Color(display, 255, 0, 0);
-		addOutstandingNum(shell, x, y, width, height, color, fcolor, countOutstanding);
-		x = x + width + 10;
-		fcolor = new Color(display, 105, 0, 255);
-		addLabelOutstanding(shell,  x, y, width*4, height, 
-				color, fcolor, "Tasks "+WITHIN_ONE_DAY);
-		x = x + width +gap;
 	}
 	
+	void initImg(){
+		int n = LABEL_TEXT.length;
+		buttonImg = new Image [n];
+		buttonOnImg = new Image[n];
+		InputStream inputStream;
+		for (int i=0; i<n; i++){
+			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+".bmp");
+			buttonImg[i] = new Image(null, inputStream);
+			inputStream = this.getClass().getResourceAsStream(LABEL_TEXT[i]+"_on.bmp");
+			buttonOnImg[i] = new Image(null, inputStream);
+		}
+		
+	}
+
 	void formatButton(Button bt, int x, int y, int width, int height,
 			Color color, Color fcolor, Image img){
 		
@@ -118,57 +100,27 @@ public class FinFooter {
 	void formatLabel(Label label, int x, int y, int width, int height,
 			Color color, Color fcolor, String labelText){
 		
-		label.setLocation(x-5, y+5);
-		label.setSize(width+10, height+10);
+		label.setLocation(x, y);
+		label.setSize(width, height);
 		label.setBackground(color);
 		label.setForeground(fcolor);
 		label.setText(labelText);
 	}
 	
-	void addListener(int index){
-		
-		switch(index){
-		
-		case 0:	this.buttonList.get(index).addMouseListener(
-					new MouseAdapter(){
-						public void mouseDown(MouseEvent e){
-							input.setFocus();
-							input.setText("");
-							input.append("add ");
-						}						
-					});
-				break;
-		case 1: this.buttonList.get(index).addMouseListener(
+	void addListener(final int index){
+		this.buttonList.get(index).addMouseListener(
 				new MouseAdapter(){
 					public void mouseDown(MouseEvent e){
 						input.setFocus();
+						input.setForeground(DEFAULT_TEXT_COLOR);
 						input.setText("");
-						input.append("del ");
+						input.append(OUTPUT_TEXT[index]);
+						isHint = false;
 					}						
-				});
-				break;
-		case 2: this.buttonList.get(index).addMouseListener(
-				new MouseAdapter(){
-					public void mouseDown(MouseEvent e){
-						input.setFocus();
-						input.setText("");
-						input.append("search ");
-					}						
-				});
-				break;
-		case 3: this.buttonList.get(index).addMouseListener(
-				new MouseAdapter(){
-					public void mouseDown(MouseEvent e){
-						input.setFocus();
-						input.setText("");
-						input.append("help\n");
-					}						
-				});
-				break;		
-		}			
+				});				
 	}
 	
-	void addMouseoverEffect(Button bt){
+	void addMouseoverEffect(Button bt, final int index){
 		final Button targetBt = bt;
 		final Color preFcolor = bt.getBackground();
 		targetBt.addListener(SWT.MouseEnter,
@@ -181,6 +133,11 @@ public class FinFooter {
 						rt.height+=10;
 						rt.width+=10;
 						targetBt.setBounds(rt);
+						targetBt.setImage(buttonOnImg[index]);
+						input.setForeground(DEFAULT_HINT_COLOR);
+						input.setText("");
+						input.append(HINT_TEXT[index]);
+						isHint=true;
 						
 					}
 				});
@@ -194,6 +151,9 @@ public class FinFooter {
 						rt.height-=10;
 						rt.width-=10;
 						targetBt.setBounds(rt);
+						targetBt.setImage(buttonImg[index]);
+						if(isHint)input.setText("");
+						input.setForeground(DEFAULT_TEXT_COLOR);
 					}
 			
 		});
