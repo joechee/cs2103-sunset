@@ -49,9 +49,28 @@ public class FinFooter {
 	static Image buttonOnImg[];
 	
 	/*
-	 * @param display, shell: the devices containing the footer.
+	 * @param shell: the devices containing the footer.
 	 * @param Text: the device receiving message from the footer.
 	 */	
+	public FinFooter(Shell shell, Text text){
+		int x = DEFAULT_X;
+		int y = shell.getSize().y + DEFAULT_DY;
+		int width = DEFAULT_WIDTH;
+		int height = DEFAULT_HEIGHT;
+		int gap = DEFAULT_GAP;
+		input = text;
+		initImg();
+		int n = LABEL_TEXT.length;
+		for (int i=0; i<n; i++){
+			this.buttonList.add(new Button(shell, SWT.PUSH));		
+			formatButton(this.buttonList.get(i), x, y, 
+						 width, height, buttonImg[i]);
+			x = x + width + gap;
+			addListener(i);
+			addMouseoverEffect(this.buttonList.get(i),i);
+		}
+	}
+	
 	public FinFooter(Display display, Shell shell, Text text){
 		int x = DEFAULT_X;
 		int y = shell.getSize().y + DEFAULT_DY;
@@ -59,14 +78,12 @@ public class FinFooter {
 		int height = DEFAULT_HEIGHT;
 		int gap = DEFAULT_GAP;
 		input = text;
-		Color color = shell.getBackground();
-		Color fcolor = new Color(display, 0, 0, 0);
 		initImg();
 		int n = LABEL_TEXT.length;
 		for (int i=0; i<n; i++){
 			this.buttonList.add(new Button(shell, SWT.PUSH));		
 			formatButton(this.buttonList.get(i), x, y, 
-						 width, height, color, fcolor, buttonImg[i]);
+						 width, height, buttonImg[i]);
 			x = x + width + gap;
 			addListener(i);
 			addMouseoverEffect(this.buttonList.get(i),i);
@@ -87,13 +104,10 @@ public class FinFooter {
 		
 	}
 
-	void formatButton(Button bt, int x, int y, int width, int height,
-			Color color, Color fcolor, Image img){
+	void formatButton(Button bt, int x, int y, int width, int height,Image img){
 		
 		bt.setLocation(x, y);
 		bt.setSize(width, height);
-		bt.setBackground(color);
-		bt.setForeground(fcolor);
 		bt.setImage(img);
 	}
 	
