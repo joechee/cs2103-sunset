@@ -34,6 +34,7 @@ public class GUI implements IUserInterface {
 	static FinCLIComposite cli;
 	
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
+	private String lastFilter = "";
 	private FinTour finTour = null;
 	private boolean isInTour = false;
 	
@@ -223,6 +224,7 @@ public class GUI implements IUserInterface {
 		}
 
 		if (cmdResult.getCommand() instanceof ShowCommandHandler) {
+			lastFilter = context.getFilter();
 			context.setFilter(cmdResult.getArgument());
 		}
 
@@ -459,7 +461,9 @@ public class GUI implements IUserInterface {
 			if (context.getFilter().length() == 0) {
 				echo("There are no tasks\n");
 			} else {
-				echo("There are no tasks that matches your filter ("+context.getFilter()+")\n");
+				String filter = context.getFilter();
+				runCommandAndRender("show " + lastFilter);
+				echo("There are no tasks that matches your filter ("+filter+")\n");
 			}
 		} else {
 			String filter = context.getFilter();

@@ -17,6 +17,7 @@ public class CLI implements Fin.IUserInterface {
 
 	private static final String PROMPT_SYMBOL = "> ";
 	private static final boolean RUN = true;
+	private static String lastFilter = "";
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
 	private static final int TABLE_BORDER_WIDTH = 3;
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
@@ -100,6 +101,7 @@ public class CLI implements Fin.IUserInterface {
 		}
 
 		if (cmdResult.getCommand() instanceof ShowCommandHandler) {
+			lastFilter = context.getFilter();
 			context.setFilter(cmdResult.getArgument());
 		}
 
@@ -282,7 +284,9 @@ public class CLI implements Fin.IUserInterface {
 			if (context.getFilter().length() == 0) {
 				echo("There are no tasks\n");
 			} else {
-				echo("There are no tasks that matches your filter\n");
+				String filter = context.getFilter();
+				runCommandAndRender("show " + lastFilter);
+				echo("There are no tasks that matches your filter ("+filter+")\n");
 			}
 		}
 
