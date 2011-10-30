@@ -8,9 +8,9 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class ZenCommandHandler extends ICommandHandler {
-	List<String> jokeList;
+	List<String> zenList;
 	ZenCommandHandler() {
-		jokeList = new ArrayList<String>();
+		zenList = new ArrayList<String>();
 		Random RNG = new Random();
 		String[] noun = {"air","water","earth","sound","silence","emptiness", 
 				"happiness","sadness","meaning","character","love","hate","direction",
@@ -19,8 +19,7 @@ public class ZenCommandHandler extends ICommandHandler {
 				"null","void","integer","linked-list",
 				"tree","hash-table","forest","death","eternity", "zen", "person"};
 		for (int i = 0; i < 100; i++) {
-			
-			jokeList.add("Zen master says \""+ noun[RNG.nextInt(noun.length)] + " is " +
+			zenList.add("Zen master says \""+ noun[RNG.nextInt(noun.length)] + " is " +
 					noun[RNG.nextInt(noun.length)] + "\".");
 		}
 	}
@@ -38,7 +37,7 @@ public class ZenCommandHandler extends ICommandHandler {
 	CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		Random RNG = new Random();
-		String joke = jokeList.get(RNG.nextInt(jokeList.size()));
+		String joke = zenList.get(RNG.nextInt(zenList.size()));
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.STRING, joke);
