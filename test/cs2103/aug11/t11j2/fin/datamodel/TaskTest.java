@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
+import cs2103.aug11.t11j2.fin.application.Task;
 
 
 public class TaskTest {

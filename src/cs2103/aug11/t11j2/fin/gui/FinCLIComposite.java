@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.application.Task;
 
 public class FinCLIComposite extends Composite {
 	Composite display;

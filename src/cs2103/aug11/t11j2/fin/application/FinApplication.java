@@ -52,7 +52,7 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 		saveEnvironment();
 	}
-
+	
 	private void addTaskToTag(String tag, Task task) {
 		assert(task != null);
 		List<Task> taskListOfTags;
@@ -73,9 +73,7 @@ public class FinApplication implements Fin.IFinApplication {
 	@Override
 	public List<Task> getTasks() {
 		List<Task> tasks = new ArrayList<Task>(taskList);
-
 		Collections.sort(tasks, new TaskSortByDueDate());
-
 		return tasks;
 	}
 

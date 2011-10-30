@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Scrollable;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.application.Task;
 
 public class TaskContainer extends Composite {
 	int taskCount = 0;

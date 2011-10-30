@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.application.Task;
 
 /**
  * A StyledText component that renders a task appropriately

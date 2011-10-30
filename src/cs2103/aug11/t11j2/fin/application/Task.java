@@ -1,8 +1,7 @@
-package cs2103.aug11.t11j2.fin.datamodel;
+package cs2103.aug11.t11j2.fin.application;
 
 import java.util.*;
 
-import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
@@ -39,6 +38,7 @@ public class Task {
 
 		parseTags();
 	}
+	
 
 	public Task(Map<String, Object> dict) {
 		
@@ -167,7 +167,24 @@ public class Task {
 
 	private void setTaskName(String string) {
 		this.taskName = sanitizeInput(string);
-		
+	}
+	
+	public void editTask(String taskName) {
+		assert(taskName!=null);
+		DateParser dateParser = new DateParser();
+		Date dueDate = null;
+		boolean parsed = dateParser.parse(taskName);
+
+		if (parsed) {
+			taskName = dateParser.getParsedString();
+			dueDate = dateParser.getParsedDate();
+		}
+
+		this.taskName = taskName;
+		this.timeDue = dueDate;
+		this.uniqId = UUID.randomUUID();
+
+		parseTags();
 	}
 
 	public void removeTag(String tag) {

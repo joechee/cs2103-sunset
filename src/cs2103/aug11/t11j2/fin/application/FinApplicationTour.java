@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
 
-import cs2103.aug11.t11j2.fin.datamodel.Task;
-import cs2103.aug11.t11j2.fin.datamodel.TaskSortByDueDate;
 
 /**
  * Fin Application class to handle guided tour

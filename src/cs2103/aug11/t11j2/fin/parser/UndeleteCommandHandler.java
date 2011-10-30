@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 

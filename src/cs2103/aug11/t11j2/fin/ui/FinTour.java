@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
+import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
-import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;

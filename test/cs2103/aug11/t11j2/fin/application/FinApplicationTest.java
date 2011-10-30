@@ -3,7 +3,6 @@ package cs2103.aug11.t11j2.fin.application;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import cs2103.aug11.t11j2.fin.datamodel.Task;
 
 public class FinApplicationTest {
 	@Test

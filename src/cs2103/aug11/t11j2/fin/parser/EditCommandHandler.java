@@ -3,7 +3,7 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs2103.aug11.t11j2.fin.datamodel.Task;
+import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
@@ -64,14 +64,10 @@ public class EditCommandHandler extends ICommandHandler {
 			if (tokens.length == 2) return showHelp();
 			
 			//TODO: pls fix it such that it edits directly. kthxbai
+			task.editTask(tokens[2]);
 			
-			context.getFinApplication().deleteTask(task.getUniqId());
-			AddCommandHandler addCmdHandler = new AddCommandHandler();
-			CommandResult res = addCmdHandler.executeCommands(addCmdHandler.getCommandStrings()
-																.get(0), tokens[2], context);
-			
-			res.setCommand(this);
-			return res;
+			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
+					CommandResult.RenderType.TASK, task);
 			
 		} else if (tokens[1].equals("at")) {
 			// add tag to current task

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.ui.*;
 
 /**

@@ -1,11 +1,12 @@
-package cs2103.aug11.t11j2.fin.datamodel;
+package cs2103.aug11.t11j2.fin.application;
 
 import java.util.Comparator;
+
 
 /**
  * Comparator that sorts Tasks by PIndex
  */
-public class TaskSortByDueDate implements Comparator<Task> {
+class TaskSortByDueDate implements Comparator<Task> {
 
 	@Override
 	public int compare(Task o1, Task o2) {
