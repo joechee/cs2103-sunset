@@ -32,24 +32,22 @@ public final class FinConstants {
 	public static final String IMPORTANT_HASH_TAG = "impt";
 	public static final String FIN_HASH_TAG = "fin";
 
-	
-	
 	public static final String DROPBOX_APP_KEY = "pvsvct5qqlwpyc6";
 	public static final String DROPBOX_APP_SECRET = "qiczyrlubxnbtbh";
 	public static final Session.AccessType DROPBOX_ACCESS_TYPE = Session.AccessType.APP_FOLDER;
-	
-	
-	
-	//Shouldn't start with HASH_TAG_CHAR/META_TAG_CHAR/ESCAPE_CHAR
+
+	// Shouldn't start with HASH_TAG_CHAR/META_TAG_CHAR/ESCAPE_CHAR
 	public static final String DUEDATE_PLACEHOLDER = "!-!DUEDATE!-!";
 
+	public static final RGB DARKGRAY_COLOR = new RGB(35, 35, 35);
+	public static final RGB BLACK_COLOR = new RGB(0, 0, 0);
 	public static final RGB BACKGROUND_COLOR = new RGB(10, 10, 10);
 	public static final RGB FOREGROUND_COLOR = new RGB(255, 255, 255);
-	public static final RGB CLI_FOREGROUND_COLOR = new RGB(210,210,210);
+	public static final RGB CLI_FOREGROUND_COLOR = new RGB(210, 210, 210);
 	public static final RGB BORDER_COLOR = new RGB(55, 55, 55);
 	public static final RGB RED_COLOR = new RGB(255, 0, 0);
 	public static final RGB HASHTAG_COLOR = new RGB(50, 150, 200);
-	
+
 	public static final RGB CLIHINT_COLOR = new RGB(85, 85, 85);
 	public static final RGB CLIHINTMESSAGE_COLOR = new RGB(55, 55, 55);
 
@@ -64,7 +62,7 @@ public final class FinConstants {
 
 	public static final String HINT_FONT = "Calibri";
 	public static final int HINT_FONTSIZE = 11;
-	
+
 	public static final String FOOTER_FONT = "Segoe UI";
-		
+
 }

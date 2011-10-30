@@ -12,6 +12,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -36,6 +38,7 @@ import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputListener;
 import cs2103.aug11.t11j2.fin.gui.FinFooter;
+import cs2103.aug11.t11j2.fin.gui.TaskStyledText;
 import cs2103.aug11.t11j2.fin.parser.*;
 
 public class GUI implements IUserInterface {
@@ -78,6 +81,7 @@ public class GUI implements IUserInterface {
 		final Shell tip = new Shell(shell.getShell(), SWT.TOOL | SWT.ON_TOP | SWT.NO_FOCUS );
 		tip.setVisible(false);
 		tip.setLayout(new RowLayout());
+		tip.setBackground (new Color(null, FinConstants.CLI_FOREGROUND_COLOR));
 		
 		
 		// remove toolTip
@@ -108,9 +112,6 @@ public class GUI implements IUserInterface {
 						} else if(event.text.equals("show")) {
 							cli.setHint("show", "show all the tasks in Fin.");
 							
-							
-							tip.setBackground (new Color(null, FinConstants.BACKGROUND_COLOR));
-							
 							for (Control c : tip.getChildren()) {
 								c.dispose();
 							}
@@ -118,20 +119,22 @@ public class GUI implements IUserInterface {
 							List<String> hashTags = context.getFinApplication().getHashTags();
 							String filter = " " + context.getFilter() + " ";
 
-							for (String ht : hashTags) {
-								Button hashButton = new Button(tip, SWT.TOGGLE | SWT.FLAT);
+							for (final String ht : hashTags) {
+								final Button hashButton = new Button(tip, SWT.TOGGLE | SWT.FLAT);
 								hashButton.setText("#" + ht);
 								
 								if (filter.contains(" " + ht + " " ) || filter.contains(" #" + ht + " " )) {
 									hashButton.setSelection(true);
 								}
-								hashButton.setBackground (new Color(null, FinConstants.BACKGROUND_COLOR));
+								hashButton.setBackground (new Color(null, FinConstants.CLI_FOREGROUND_COLOR));
 								
+								// when user clicks the button
 								hashButton.addSelectionListener(new SelectionListener() {
 									@Override
 									public void widgetSelected(SelectionEvent e) {
 										StringBuilder sb = new StringBuilder();
 										boolean first = true;
+										// get list of controls that user have selected
 										for (Control c : tip.getChildren()) {
 											if (((Button)c).getSelection() == false) continue;
 											
@@ -146,16 +149,42 @@ public class GUI implements IUserInterface {
 									public void widgetDefaultSelected(SelectionEvent e) {
 									}
 								});
+								
+								hashButton.addPaintListener(new PaintListener() {
+									@Override
+									public void paintControl(PaintEvent e) {
+										
+										int width = hashButton.getSize().x;
+										int height = hashButton.getSize().y;
+										
+										if (hashButton.getSelection() == true) {
+											e.gc.setBackground(new Color(null, FinConstants.BLACK_COLOR));
+										} else {
+											e.gc.setBackground(new Color(null, FinConstants.DARKGRAY_COLOR));
+										}
+										e.gc.fillRoundRectangle(0, 0, width, height, 5, 5);
+
+//										e.gc.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
+//										e.gc.drawRoundRectangle(0, 0, width-1, height-1, 8, 8);
+
+										float[] rgb = TaskStyledText.generateColor("#"+ht);
+										e.gc.setForeground(new Color(null, (int)(rgb[0]*255), (int)(rgb[1]*255), (int)(rgb[2]*255)));
+										e.gc.drawText("#" + ht, 5, 5);
+									}		
+								});
+								hashButton.redraw();
 							}
-
-							tip.layout(true);
 							
-							Rectangle rect = b.getBounds();
-							Point pt = b.toDisplay(rect.x, rect.y);
-
-							Point size = tip.computeSize(300, SWT.DEFAULT);
-							tip.setBounds(pt.x - rect.x, pt.y + 30 - size.y, 300, size.y);
-							tip.setVisible(true);
+							if (hashTags.size() > 0) {
+								tip.layout(true);
+								
+								Rectangle rect = b.getBounds();
+								Point pt = b.toDisplay(rect.x, rect.y);
+	
+								Point size = tip.computeSize(300, SWT.DEFAULT);
+								tip.setBounds(pt.x - rect.x, pt.y + 5 - size.y, 300, size.y);
+								tip.setVisible(true);
+							}
 							
 						} else if (event.text.equals("help")) {
 							cli.setHint("help", "show help for Fin.");
@@ -168,8 +197,12 @@ public class GUI implements IUserInterface {
 					public void handleEvent(Event event) {
 						Button b = (Button)event.widget;
 						if (event.text.equals("show")) {
-							Point pt = b.toDisplay(event.x, event.y);
-							if (tip.getBounds().contains(pt)) {
+							Control over = tip.getDisplay().getCursorControl();
+							for (Control c : tip.getChildren()) {
+								if (c.equals(over)) return;
+							}
+							
+							if (tip.equals(over) || b.equals(over)) {
 								return;
 							} else {
 								tip.setVisible(false);

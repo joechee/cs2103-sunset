@@ -36,6 +36,8 @@ public class FinFooter {
 	static final int DEFAULT_DY = 5;
 	static final int DEFAULT_WIDTH = 20;
 	static final int DEFAULT_HEIGHT = 20;
+	static final int OVER_WIDTH = 30;
+	static final int OVER_HEIGHT = 30;
 	static final int DEFAULT_GAP = 20;
 	static final int HELP_INDEX = 2;
 	static final Color DEFAULT_HINT_COLOR = new Color(null, 100, 100, 100);
@@ -149,8 +151,8 @@ public class FinFooter {
 						Rectangle rt = targetBt.getBounds();
 						rt.x-=5;
 						rt.y-=5;
-						rt.height+=10;
-						rt.width+=10;
+						rt.height = OVER_HEIGHT;
+						rt.width = OVER_WIDTH;
 						targetBt.setBounds(rt);
 						targetBt.setImage(buttonOnImg[index]);
 
@@ -172,8 +174,8 @@ public class FinFooter {
 						Rectangle rt = targetBt.getBounds();
 						rt.x+=5;
 						rt.y+=5;
-						rt.height-=10;
-						rt.width-=10;
+						rt.height = DEFAULT_HEIGHT;
+						rt.width = DEFAULT_WIDTH;
 						targetBt.setBounds(rt);
 						targetBt.setImage(buttonImg[index]);
 

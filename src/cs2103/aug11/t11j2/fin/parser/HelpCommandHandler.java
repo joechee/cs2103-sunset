@@ -25,6 +25,7 @@ public class HelpCommandHandler extends ICommandHandler {
 				add("help");
 				add("h");
 				add("f1");
+				add("man");
 			}
 		};
 	}
