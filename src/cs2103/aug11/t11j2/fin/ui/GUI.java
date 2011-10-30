@@ -8,22 +8,34 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.application.FinApplicationTour;
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.datamodel.Task;
 import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputListener;
+import cs2103.aug11.t11j2.fin.gui.FinFooter;
 import cs2103.aug11.t11j2.fin.parser.*;
 
 public class GUI implements IUserInterface {
@@ -33,7 +45,7 @@ public class GUI implements IUserInterface {
 	Shell shell = null;
 	static FinCLIComposite cli;
 	
-	private UIContext context = new UIContext(FinApplication.INSTANCE);
+	final private UIContext context = new UIContext(FinApplication.INSTANCE);
 	private String lastFilter = "";
 	private FinTour finTour = null;
 	private boolean isInTour = false;
@@ -41,19 +53,18 @@ public class GUI implements IUserInterface {
 	// Help table constant
 	private static final int TABLE_BORDER_WIDTH = 3;
 
-	private static Composite createFooter(Composite shell) {
-		Composite footer = new Composite(shell, SWT.RIGHT_TO_LEFT);
+	private Composite createFooter(Composite shell) {
+		Composite footer = new Composite(shell, SWT.NONE);
 
 		GridData gridData = new GridData(GridData.FILL, GridData.CENTER, true,
 				false);
 		gridData.heightHint = 30;
 		footer.setLayoutData(gridData);
+		
+		GridLayout layout = new GridLayout(6, false);
+		layout.marginTop = 0;
+	    footer.setLayout(layout);
 
-		Label l = new Label(footer, SWT.LEFT_TO_RIGHT);
-		l.setText("Fin.");
-		l.setFont(new Font(shell.getDisplay(), "Segoe UI", 12, SWT.BOLD));
-
-		l.setBounds(5, 5, 30, 20);
 
 		// creates gradient for footer
 		Image newImage = new Image(shell.getDisplay(), 1, 30);
@@ -64,11 +75,139 @@ public class GUI implements IUserInterface {
 		gc.dispose();
 		footer.setBackgroundImage(newImage);
 
+		final Shell tip = new Shell(shell.getShell(), SWT.TOOL | SWT.ON_TOP | SWT.NO_FOCUS );
+		tip.setVisible(false);
+		tip.setLayout(new RowLayout());
+		
+		
+		// remove toolTip
+		Listener removeTipListener = new Listener() {
+			@Override
+			public void handleEvent(Event e) {
+				if (tip.isVisible() == false) return;
+				Object w = tip.getDisplay().getCursorControl();
+				for (Control c : tip.getChildren()) {
+					if (c.equals(w)) return;
+				}
+				
+				tip.setVisible(false);
+				if (cli.isInHint()) cli.removeHint();
+			}
+		};
+		
+		tip.addListener(SWT.MouseExit,removeTipListener);
+
+		FinFooter finFooter = new FinFooter(footer, cli, 
+				// mouse over
+				new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						Button b = (Button)event.widget;
+						if (event.text.equals("add")) {
+							cli.setHint("add <task>", "add a new task");
+						} else if(event.text.equals("show")) {
+							cli.setHint("show", "show all the tasks in Fin.");
+							
+							
+							tip.setBackground (new Color(null, FinConstants.BACKGROUND_COLOR));
+							
+							for (Control c : tip.getChildren()) {
+								c.dispose();
+							}
+							
+							List<String> hashTags = context.getFinApplication().getHashTags();
+							String filter = " " + context.getFilter() + " ";
+
+							for (String ht : hashTags) {
+								Button hashButton = new Button(tip, SWT.TOGGLE | SWT.FLAT);
+								hashButton.setText("#" + ht);
+								
+								if (filter.contains(" " + ht + " " ) || filter.contains(" #" + ht + " " )) {
+									hashButton.setSelection(true);
+								}
+								hashButton.setBackground (new Color(null, FinConstants.BACKGROUND_COLOR));
+								
+								hashButton.addSelectionListener(new SelectionListener() {
+									@Override
+									public void widgetSelected(SelectionEvent e) {
+										StringBuilder sb = new StringBuilder();
+										boolean first = true;
+										for (Control c : tip.getChildren()) {
+											if (((Button)c).getSelection() == false) continue;
+											
+											if (!first) sb.append(" ");
+											first = false;
+											sb.append(((Button)c).getText());
+										}
+										cli.runInput("show " + sb);
+									}
+									
+									@Override
+									public void widgetDefaultSelected(SelectionEvent e) {
+									}
+								});
+							}
+
+							tip.layout(true);
+							
+							Rectangle rect = b.getBounds();
+							Point pt = b.toDisplay(rect.x, rect.y);
+
+							Point size = tip.computeSize(300, SWT.DEFAULT);
+							tip.setBounds(pt.x - rect.x, pt.y + 30 - size.y, 300, size.y);
+							tip.setVisible(true);
+							
+						} else if (event.text.equals("help")) {
+							cli.setHint("help", "show help for Fin.");
+						}
+					}
+				},
+				// mouse out
+				new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						Button b = (Button)event.widget;
+						if (event.text.equals("show")) {
+							Point pt = b.toDisplay(event.x, event.y);
+							if (tip.getBounds().contains(pt)) {
+								return;
+							} else {
+								tip.setVisible(false);
+								cli.removeHint();
+							}
+						} else if (cli.isInHint()) {
+							cli.removeHint();
+						}
+					}
+				}, 
+				// mouse click
+				new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						if (event.text.equals("add")) {
+							cli.setText("add ");
+							cli.forceFocus();
+						} else if(event.text.equals("show")) {
+							cli.runInput("show");							
+						} else if (event.text.equals("help")) {
+							cli.runInput("help");
+						}
+					}
+				});
+
+		
+		Label l = new Label(footer, SWT.NONE);
+		l.setText("Fin.");
+		l.setFont(new Font(shell.getDisplay(), FinConstants.FOOTER_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.BOLD));
+
+		l.setBounds(5, 5, 30, 20);
+	    l.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, true, 1, 1));
+
 		l.setForeground(new Color(null, 255, 255, 255));
 		l.setBackgroundImage(newImage);
-		
-
+				
 		footer.layout(true);
+
 		return footer;
 	}
 	
@@ -105,6 +244,7 @@ public class GUI implements IUserInterface {
 		});
 		
 		createFooter(shell);
+
 
 		
 

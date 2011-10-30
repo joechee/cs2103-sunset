@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 
 import com.dropbox.client2.session.Session;
@@ -62,4 +64,7 @@ public final class FinConstants {
 
 	public static final String HINT_FONT = "Calibri";
 	public static final int HINT_FONTSIZE = 11;
+	
+	public static final String FOOTER_FONT = "Segoe UI";
+		
 }

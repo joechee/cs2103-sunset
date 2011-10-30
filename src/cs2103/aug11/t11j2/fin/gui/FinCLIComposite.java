@@ -166,7 +166,7 @@ public class FinCLIComposite extends Composite {
 					input.setText("");
 				}
 				
-				if (!input.getText().equals(previousString)) {
+				if (!input.getText().equals(previousString) && e.keyCode != 8 && e.keyCode != SWT.DEL) {
 					previousString = input.getText();
 					onAutoComplete = false;
 					onChange(previousString);
@@ -249,6 +249,13 @@ public class FinCLIComposite extends Composite {
 	private boolean inputHasFocus;
 	
 	/**
+	 * @return whether the control is currently showing a hint
+	 */
+	public boolean isInHint() {
+		return this.isInHint;
+	}
+	
+	/**
 	 * Set the text in the input box to another text
 	 * 
 	 * @param text
@@ -317,7 +324,7 @@ public class FinCLIComposite extends Composite {
 		input.setForeground(new Color(null, FinConstants.FOREGROUND_COLOR));
 		
 		if (this.inputHasFocus) {
-			input.forceFocus();
+			this.forceFocus();
 		}
 	}
 	
@@ -325,7 +332,11 @@ public class FinCLIComposite extends Composite {
 	 * force focus on the FinCli input
 	 */
 	public boolean forceFocus() {
-		return input.forceFocus();
+		boolean focused = input.forceFocus();
+		if (focused) {
+			input.setSelection(input.getText().length());
+		}
+		return focused;
 	}
 	
 	/**
@@ -372,6 +383,7 @@ public class FinCLIComposite extends Composite {
 		
 		input.setText(autoComplete);
 		input.setSelection(start, autoComplete.length());
+		this.previousString = autoComplete;
 		if (start < autoComplete.length()) {
 			onAutoComplete = true;
 		}

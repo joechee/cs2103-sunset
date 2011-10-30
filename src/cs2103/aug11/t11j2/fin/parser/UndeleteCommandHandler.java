@@ -23,6 +23,7 @@ public class UndeleteCommandHandler extends ICommandHandler{
 				add("unrem");
 				add("unremove");
 				add("ud");
+				add("undo");
 			}
 		};
 	}
