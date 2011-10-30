@@ -115,7 +115,7 @@ public class TaskStyledText extends StyledText {
 	 * @return float[3] representing the rgb values
 	 */
 	public static float[] generateColor(String string) {
-		if (string.equals("impt")) return new float[]{1.0f, 0.0f, 0.0f};
+		if (string.equals("#impt") || string.equals("#fin")) return new float[]{1.0f, 0.0f, 0.0f};
 		
 		CRC32 crc = new CRC32();
 		byte[] b = new byte[string.length()];
