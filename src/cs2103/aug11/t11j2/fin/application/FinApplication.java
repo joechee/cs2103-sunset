@@ -1,6 +1,6 @@
 package cs2103.aug11.t11j2.fin.application;
 
-import cs2103.aug11.t11j2.fin.datamodel.*;
+
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 import java.io.FileNotFoundException;
@@ -389,6 +389,64 @@ public class FinApplication implements Fin.IFinApplication {
 			}
 			return deletedTasks;
 		}
+		
+	}
+	/**
+	 * Edits the task with the new string as the taskname. Parses the string.
+	 * 
+	 * @return void
+	 * 
+	 */
+
+	@Override
+	public void editTask(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.edit(string);
+		for (String tag : task.getTags()) {
+			addTaskToTag(tag, task);
+		}
+		saveEnvironment();
+	}
+
+	@Override
+	public void addTag(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.addTag(string);
+		for (String tag : task.getTags()) {
+			addTaskToTag(tag, task);
+		}
+		saveEnvironment();
+		
+	}
+
+	@Override
+	public void removeTag(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.removeTag(string);
+		for (String tag : task.getTags()) {
+			addTaskToTag(tag, task);
+		}
+		saveEnvironment();
+		
+	}
+
+	@Override
+	public void removeDueDate(Task task) {
+		assert(task!=null);
+		task.removeDueDate();
+		saveEnvironment();
+		
+	}
+
+	@Override
+	public void setDueDate(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.setDueDate(string);
+		saveEnvironment();
 		
 	}
 }

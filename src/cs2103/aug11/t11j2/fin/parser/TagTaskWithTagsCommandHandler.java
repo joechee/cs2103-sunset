@@ -52,8 +52,7 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
-			task.addTag(tokens[i]);
-		
+			context.getFinApplication().addTag(task,tokens[i]);
 		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, task);

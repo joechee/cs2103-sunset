@@ -64,7 +64,7 @@ public class EditCommandHandler extends ICommandHandler {
 			if (tokens.length == 2) return showHelp();
 			
 			//TODO: pls fix it such that it edits directly. kthxbai
-			task.editTask(tokens[2]);
+			context.getFinApplication().editTask(task,tokens[2]);
 			
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.TASK, task);
@@ -74,7 +74,7 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 
-			task.addTag(tokens[2]);
+			context.getFinApplication().addTag(task,tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.TASK, task);
 			
@@ -83,7 +83,7 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 
-			task.removeTag(tokens[2]);
+			context.getFinApplication().removeTag(task,tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.TASK, task);
 			
@@ -92,13 +92,12 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 
-			task.setDueDate(tokens[1] + " " + tokens[2]);
+			context.getFinApplication().setDueDate(task,tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.TASK, task);			
 		} else if (tokens[1].equals("undue")) {
 			// remove due date
-			
-			task.removeDueDate();
+			context.getFinApplication().removeDueDate(task);
 			return new CommandResult(this, tokens[0] + " " + tokens[1],
 					CommandResult.RenderType.TASK, task);			
 		} else {

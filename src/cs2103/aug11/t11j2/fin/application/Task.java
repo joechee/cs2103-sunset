@@ -154,7 +154,7 @@ public class Task {
 		}
 	}
 
-	public boolean addTag(String tag) {
+	boolean addTag(String tag) {
 		if (hasTag(tag)) {
 			return false;
 		}
@@ -169,7 +169,7 @@ public class Task {
 		this.taskName = sanitizeInput(string);
 	}
 	
-	public void editTask(String taskName) {
+	void edit(String taskName) {
 		assert(taskName!=null);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
@@ -182,12 +182,11 @@ public class Task {
 
 		this.taskName = taskName;
 		this.timeDue = dueDate;
-		this.uniqId = UUID.randomUUID();
 
 		parseTags();
 	}
 
-	public void removeTag(String tag) {
+	void removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
 			this.taskName = this.taskName.replaceAll("(?i)"
 					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
@@ -203,7 +202,7 @@ public class Task {
 		return newTags;
 	}
 
-	public void setDueDate(Date dueDate) {
+	void setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
 		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
 			this.taskName = this.taskName.concat(" "
@@ -211,7 +210,7 @@ public class Task {
 		}
 	}
 
-	public void setDueDate(String string) {
+	void setDueDate(String string) {
 		DateParser dp = new DateParser();
 		boolean parsed = dp.parse(string);
 
@@ -220,7 +219,7 @@ public class Task {
 		}
 	}
 
-	public void removeDueDate() {
+	void removeDueDate() {
 		this.timeDue = null;
 		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
 			this.taskName = this.taskName.replace(
@@ -259,22 +258,22 @@ public class Task {
 		return tr;
 	}
 
-	public boolean fin() {
+	boolean fin() {
 		this.finished = true;
 		return this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
-	public void unfin() {
+	void unfin() {
 		this.finished = false;
 		this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
-	public void flag() {
+	void flag() {
 		this.important = true;
 		this.addTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
 
-	public void unflag() {
+	void unflag() {
 		this.important = false;
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}

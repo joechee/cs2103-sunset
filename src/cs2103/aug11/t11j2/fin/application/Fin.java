@@ -54,6 +54,11 @@ public class Fin {
 		public boolean loadEnvironment(String filename) throws IOException;
 		public List<String> getHashTags();
 		public void clearEnvironment();
+		public void editTask(Task task, String string);
+		public void addTag(Task task, String string);
+		public void removeTag(Task task, String string);
+		public void removeDueDate(Task task);
+		public void setDueDate(Task task, String string);
 		
 	}
 

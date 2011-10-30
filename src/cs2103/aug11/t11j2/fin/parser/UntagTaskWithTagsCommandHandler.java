@@ -55,7 +55,7 @@ public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 		
 		int numOfTags = tokens.length;
 		for (int i=1; i<numOfTags; i++)
-			task.removeTag(tokens[i]);
+			context.getFinApplication().removeTag(task,tokens[i]);
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, task);

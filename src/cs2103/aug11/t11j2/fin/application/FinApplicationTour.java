@@ -327,4 +327,42 @@ public class FinApplicationTour implements Fin.IFinApplication {
 		}
 		
 	}
+
+	@Override
+	public void editTask(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.edit(string);
+	}
+
+	@Override
+	public void addTag(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.addTag(string);
+		
+	}
+
+	@Override
+	public void removeTag(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.removeTag(string);
+		
+	}
+
+	@Override
+	public void removeDueDate(Task task) {
+		assert(task!=null);
+		task.removeDueDate();
+		
+	}
+
+	@Override
+	public void setDueDate(Task task, String string) {
+		assert(task!=null);
+		assert(string!=null);
+		task.setDueDate(string);
+		
+	}
 }
