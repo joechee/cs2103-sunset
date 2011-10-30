@@ -63,7 +63,7 @@ public class UnfinCommandHandler extends ICommandHandler {
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("show <params>", "Shows all tasks with <params> within the description. Results with the corresponding tag is returned first.");
+		return new HelpTablePair("unfin <task number>", "Unmarks the completed task");
 	}
 
 }
