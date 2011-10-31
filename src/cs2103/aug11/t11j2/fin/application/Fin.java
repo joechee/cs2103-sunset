@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-import cs2103.aug11.t11j2.fin.ui.*;
+import cs2103.aug11.t11j2.fin.ui.CLI;
+import cs2103.aug11.t11j2.fin.ui.GUI;
 
 /**
  * Fin is the bootstrapper which handles input from the command line \\

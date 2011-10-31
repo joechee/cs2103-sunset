@@ -22,7 +22,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;

@@ -1,11 +1,16 @@
 package cs2103.aug11.t11j2.fin.application;
 
 
-import cs2103.aug11.t11j2.fin.ui.UIContext;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.UUID;
 
 /**
  * FinApplication class that handles the environment instance

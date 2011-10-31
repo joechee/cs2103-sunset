@@ -70,7 +70,7 @@ public class DateParser {
 							StringBuffer sb = new StringBuffer();
 							
 							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(now);
+							calendar.setTime(dateNow);
 							
 							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
 							m.appendTail(sb);
@@ -92,7 +92,7 @@ public class DateParser {
 							StringBuffer sb = new StringBuffer();
 							
 							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(now);
+							calendar.setTime(dateNow);
 							calendar.add(Calendar.DAY_OF_YEAR, +1 );
 							
 							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
@@ -116,7 +116,7 @@ public class DateParser {
 							
 							if (day_of_week != -1) {
 								Calendar calendar = Calendar.getInstance();
-								calendar.setTime(now);
+								calendar.setTime(dateNow);
 								int today = calendar.get(Calendar.DAY_OF_WEEK);
 								
 								if (day_of_week <= today) {
@@ -145,7 +145,7 @@ public class DateParser {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
 							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(now);
+							calendar.setTime(dateNow);
 							calendar.add(Calendar.DAY_OF_YEAR, +7 );
 
 							StringBuffer sb = new StringBuffer();
@@ -170,7 +170,7 @@ public class DateParser {
 							
 							if (day_of_week != -1) {
 								Calendar calendar = Calendar.getInstance();
-								calendar.setTime(now);
+								calendar.setTime(dateNow);
 								int today = calendar.get(Calendar.DAY_OF_WEEK);
 								
 								if (today == 1) { // sunday is given special treatment.. due to human's intepretation of "next tuesday" for e.g
@@ -214,7 +214,7 @@ public class DateParser {
 							
 							if (w > 0) {
 								Calendar calendar = Calendar.getInstance();
-								calendar.setTime(now);
+								calendar.setTime(dateNow);
 								calendar.add(Calendar.DAY_OF_YEAR, w);
 
 								StringBuffer sb = new StringBuffer();

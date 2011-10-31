@@ -1,7 +1,5 @@
 package cs2103.aug11.t11j2.fin.application;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 
 import com.dropbox.client2.session.Session;
