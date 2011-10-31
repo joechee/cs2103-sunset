@@ -8,10 +8,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,14 +19,20 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
+import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinApplicationTour;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
@@ -39,7 +41,17 @@ import cs2103.aug11.t11j2.fin.gui.FinCLIInputEvent;
 import cs2103.aug11.t11j2.fin.gui.FinCLIInputListener;
 import cs2103.aug11.t11j2.fin.gui.FinFooter;
 import cs2103.aug11.t11j2.fin.gui.TaskStyledText;
-import cs2103.aug11.t11j2.fin.parser.*;
+import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.CommandParser;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
+import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.EndTourCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.HelpTablePair;
+import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.TourCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 
 public class GUI implements IUserInterface {
 	private static boolean EXIT = false;
@@ -101,7 +113,7 @@ public class GUI implements IUserInterface {
 		
 		tip.addListener(SWT.MouseExit,removeTipListener);
 
-		FinFooter finFooter = new FinFooter(footer, cli, 
+		new FinFooter(footer, cli, 
 				// mouse over
 				new Listener() {
 					@Override

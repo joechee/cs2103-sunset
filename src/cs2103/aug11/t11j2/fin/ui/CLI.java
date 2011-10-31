@@ -8,7 +8,14 @@ import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
-import cs2103.aug11.t11j2.fin.parser.*;
+import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.CommandParser;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
+import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.HelpTablePair;
+import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 /**
  * @author alexljz
  * 
