@@ -78,6 +78,8 @@ public class ShowCommandHandler extends ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		
+		//TODO: Fix SHOW COMMAND HANDLER
+		
 		List<Task> tasks = null;
 		final List<Task> unfinishedTasks = context.getFinApplication().getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
 		if (arguments.trim().length() == 0) {

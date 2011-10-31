@@ -53,7 +53,7 @@ public class FinApplication implements Fin.IFinApplication {
 		saveEnvironment();
 	}
 	
-	private void addTaskToTag(String tag, Task task) {
+	private boolean addTaskToTag(String tag, Task task) {
 		assert(task != null);
 		List<Task> taskListOfTags;
 		if (hashTags.containsKey(tag)) {
@@ -62,7 +62,30 @@ public class FinApplication implements Fin.IFinApplication {
 			taskListOfTags = new ArrayList<Task>();
 			hashTags.put(tag, taskListOfTags);
 		}
-		taskListOfTags.add(task);
+		if (taskListOfTags.contains(task)) {
+			return false;
+		} else {
+			taskListOfTags.add(task);
+			return true;
+		}
+		
+	}
+	
+	private void removeTaskFromTag(String tag, Task task) {
+		assert(task != null);
+		assert(tag != null);
+		
+		List<Task> taskListOfTags;
+		if (hashTags.containsKey(tag)) {
+			taskListOfTags = hashTags.get(tag);
+		} else {
+			taskListOfTags = new ArrayList<Task>();
+			hashTags.put(tag, taskListOfTags);
+		}
+		taskListOfTags.remove(task);
+		if (taskListOfTags.isEmpty()) {
+			hashTags.remove(tag);
+		}
 	}
 
 	/**
@@ -183,6 +206,9 @@ public class FinApplication implements Fin.IFinApplication {
 		if (todelete != null) {
 			taskMap.remove(taskUID);
 			taskList.remove(todelete);
+			for (String tag : todelete.getTags()) {
+				removeTaskFromTag(tag, todelete);
+			}
 			saveEnvironment();
 		} else {
 			throw new IllegalArgumentException("TaskUID does not exist!");
@@ -402,6 +428,9 @@ public class FinApplication implements Fin.IFinApplication {
 	public void editTask(Task task, String string) {
 		assert(task!=null);
 		assert(string!=null);
+		for (String tag : task.getTags()) {
+			removeTaskFromTag(tag, task);
+		}
 		task.edit(string);
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
@@ -410,11 +439,10 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	@Override
-	public void addTag(Task task, String string) {
+	public void addTag(Task task, String tag) {
 		assert(task!=null);
-		assert(string!=null);
-		task.addTag(string);
-		for (String tag : task.getTags()) {
+		assert(tag!=null);
+		if (task.addTag(tag)) {
 			addTaskToTag(tag, task);
 		}
 		saveEnvironment();

@@ -173,6 +173,7 @@ public class Task {
 		assert(taskName!=null);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
+		tags.clear();
 		boolean parsed = dateParser.parse(taskName);
 
 		if (parsed) {
