@@ -1,6 +1,9 @@
 package cs2103.aug11.t11j2.fin.ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
@@ -52,7 +55,7 @@ public class FinTour {
 			public void initStep() {
 				UI.clearScreen();
 				UI.runCommandAndRender("show");
-				UI.echo("Welcome to the Fin. guided tour!");
+				UI.echo("Welcome to the Fin. guided tour! (you may exit anytime by typing end)");
 				UI.echo("Let's get started!");
 				UI.echo("Try typing the following: add " + args);
 				isUserGenerated = true;
@@ -71,7 +74,7 @@ public class FinTour {
 				}
 				if (isUserGenerated) {
 					isUserGenerated = false;
-					UI.echo("Come on! Add a task already!");
+					UI.echo("Come on! Add the task already!");
 					UI.echo("Type the following: add " + args);
 					isUserGenerated = true;
 				}
@@ -79,12 +82,17 @@ public class FinTour {
 			}
 		});
 	
+
 		/*
 		 * Step 2: Relative dates
 		 */
+		final DateFormat df = new SimpleDateFormat("d MMM yyyy");
+		final Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		tourSteps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "Read \"Living in the Airport\" by 1 Nov 2011";
+						
+			String args = "Read \"Living in the Airport\" by " + df.format(calendar.getTime());
 			@Override
 			public void initStep() {
 				UI.echo("Simple, no? ");
@@ -116,9 +124,11 @@ public class FinTour {
 		/*
 		 * Step 3
 		 */
+		final DateFormat df2 = new SimpleDateFormat("d MMM");
+		calendar.add(Calendar.DAY_OF_YEAR, 8);
 		tourSteps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "#fetch Harry from #airport on 9 Nov #impt";
+			String args = "#fetch Harry from #airport on "+ df2.format(calendar.getTime()) +" #impt";
 			@Override
 			public void initStep() {
 				UI.echo("See what we did there?");
