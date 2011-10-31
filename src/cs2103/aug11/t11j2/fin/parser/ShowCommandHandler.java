@@ -81,6 +81,8 @@ public class ShowCommandHandler extends ICommandHandler {
 		//TODO: Fix SHOW COMMAND HANDLER
 		
 		List<Task> tasks = null;
+		
+		//Gets unfinished tasks
 		final List<Task> unfinishedTasks = context.getFinApplication().getTasksWithoutTags(Arrays.asList(FinConstants.FIN_HASH_TAG)); 
 		if (arguments.trim().length() == 0) {
 			tasks = unfinishedTasks;
@@ -88,19 +90,18 @@ public class ShowCommandHandler extends ICommandHandler {
 					CommandResult.RenderType.TASKLIST, tasks);
 		}
 		
-		
 		List<String> tokenizedArguments = tokenize(arguments);
 		removeTagChar(tokenizedArguments);
-		
-		tasks = FinApplication.INSTANCE.getTasksWithTags(tokenizedArguments);
+		tasks = context.getFinApplication().getTasksWithTags(tokenizedArguments);
 		
 		List<Task> searchTasks = unfinishedTasks;
-		searchTasks = filterTasksWithPatterns(searchTasks, tokenizedArguments);
+		searchTasks = filterTasksWithPatterns(searchTasks, tokenize(arguments));
 		for (Task i: searchTasks) {
 			if (!tasks.contains(i)) {
 				tasks.add(i);
 			}
 		}
+		
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASKLIST, tasks);
 
@@ -108,7 +109,7 @@ public class ShowCommandHandler extends ICommandHandler {
 	
 	private void removeTagChar(List<String> args) {
 		for (int i = 0; i < args.size();i++) {
-			if (args.isEmpty() && args.get(i).startsWith(" ")){
+			if (!args.isEmpty() && args.get(i).startsWith(Character.toString(FinConstants.HASH_TAG_CHAR))){
 				args.set(i, args.get(i).substring(1));
 			}
 		}
