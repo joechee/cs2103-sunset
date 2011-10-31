@@ -29,12 +29,12 @@ public class EndTourCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getHelp() {
-		return "tour\n\tEnds the current tour of Fin.!";
+		return "endtour\n\tEnds the current tour of Fin.!";
 	}
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("tour", "Ends the current tour of Fin.!");
+		return new HelpTablePair("endtour", "Ends the current tour of Fin.!");
 	}
 
 }
