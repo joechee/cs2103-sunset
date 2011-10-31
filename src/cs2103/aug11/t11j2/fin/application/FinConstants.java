@@ -30,8 +30,8 @@ public final class FinConstants {
 	public static final String IMPORTANT_HASH_TAG = "impt";
 	public static final String FIN_HASH_TAG = "fin";
 
-	public static final String DROPBOX_APP_KEY = "pvsvct5qqlwpyc6";
-	public static final String DROPBOX_APP_SECRET = "qiczyrlubxnbtbh";
+	public static final String DROPBOX_APP_KEY = "cehlpiwo5oj19y2";
+	public static final String DROPBOX_APP_SECRET = "8e8iniel7pzy1yc";
 	public static final Session.AccessType DROPBOX_ACCESS_TYPE = Session.AccessType.APP_FOLDER;
 
 	// Shouldn't start with HASH_TAG_CHAR/META_TAG_CHAR/ESCAPE_CHAR

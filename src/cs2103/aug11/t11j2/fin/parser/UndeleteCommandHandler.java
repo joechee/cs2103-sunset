@@ -31,7 +31,7 @@ public class UndeleteCommandHandler extends ICommandHandler{
 	@Override
 	CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
-		List<Task> tasksRegenerated = FinApplication.INSTANCE.undelete();
+		List<Task> tasksRegenerated = context.getFinApplication().undelete();
 		if (tasksRegenerated == null) {
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.ERROR,"No task to undelete!");

@@ -49,7 +49,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 		}
 
 		Task todelete = context.getTaskList().get(taskIndex - 1);
-		FinApplication.INSTANCE.flagTask(todelete.getUniqId());
+		context.getFinApplication().flagTask(todelete.getUniqId());
 
 		return new CommandResult(this, arguments,
 				CommandResult.RenderType.TASK, todelete);

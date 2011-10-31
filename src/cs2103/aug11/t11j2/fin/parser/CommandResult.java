@@ -20,7 +20,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
  */
 public class CommandResult {
 	public static enum RenderType {
-		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR, HELPTABLE
+		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR, HELPTABLE, TEST
 	};
 
 	private RenderType renderType;
@@ -117,9 +117,12 @@ public class CommandResult {
 		
 		case TOUR:
 			this.renderType = renderType;
-			
 			break;	
-				
+
+		case TEST:
+			this.renderType = renderType;
+			break;	
+
 		case ERROR:
 			// Error returns a string describing the error
 			// Ensures that returnObject is of type String

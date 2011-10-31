@@ -62,7 +62,7 @@ public class GUI implements IUserInterface {
 	
 	final private UIContext context = new UIContext(FinApplication.INSTANCE);
 	private String lastFilter = "";
-	private FinTour finTour = null;
+	private IFinAutomation finTour = null;
 	private boolean isInTour = false;
 	
 	// Help table constant
@@ -482,6 +482,10 @@ public class GUI implements IUserInterface {
 				runCommandAndRender("show");
 			}
 			break;
+
+		case TEST:
+			startAutomatedTest();
+			break;
 		
 		case HELPTABLE:
 			renderHelpTable(cmdRes);
@@ -491,21 +495,71 @@ public class GUI implements IUserInterface {
 		return false;
 	}
 	
+	private void startAutomatedTest() {
+		assert(shell != null);
+
+		FinApplicationTour.INSTANCE.clearEnvironment();
+		context.setFinApplication(FinApplicationTour.INSTANCE);
+		finTour = new FinTester(this, context);
+
+		isInTour = true;
+		
+		final int time=0;
+		Runnable timer = new Runnable() {
+			public void run() {
+				boolean notEnded = finTour.nextStep();
+				if (notEnded == false) {
+					shell.getDisplay().timerExec(time, this);
+				} else {
+					stopAutomatedTest();
+				}
+			}
+		};
+		shell.getDisplay().timerExec(time, timer);
+		finTour.beginStep();		
+	}
+	
+	private void stopAutomatedTest() {
+		context.setFinApplication(FinApplication.INSTANCE);
+		isInTour = false;
+		
+		this.runCommandAndRender("show");
+		
+		if (finTour instanceof FinTester) {
+			int errors = ((FinTester)finTour).getNumberOfErrors();
+			if (errors == 0) {
+				echo("Test has completed and all test cases passed!");
+			} else {
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append("Test has completed with the following errors: \n");
+				for (String s : ((FinTester)finTour).getErrors()) {
+					sb.append(" - ");
+					sb.append(s);
+					sb.append("\n");
+				}
+				
+				echo(sb.toString());
+			}
+		}
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	private void renderHelpTable(CommandResult cmdRes) {
 		List<HelpTablePair>helpTable = (List<HelpTablePair>) cmdRes.getReturnObject();
-		String echoString = "";
+
+		StringBuilder echoString = new StringBuilder();
 		int optimalBreadth = findOptimalTableBreadth(helpTable);
 		
 		for (HelpTablePair p: helpTable) {
-			echoString+=padWhiteSpace(p.getUsage(), optimalBreadth);
-			echoString+=p.getDescription();
-			echoString+="\n";
+			echoString.append(padWhiteSpace(p.getUsage(), optimalBreadth));
+			echoString.append(p.getDescription());
+			echoString.append("\n");
 		}
-		echo(echoString);
+		
+		echo(echoString.toString());
 	}
-	
 	
 	private int findOptimalTableBreadth(List<HelpTablePair> helpTable) {
 		int optimal = 0;
@@ -517,11 +571,18 @@ public class GUI implements IUserInterface {
 		return optimal + TABLE_BORDER_WIDTH;
 	}
 	
-	private String padWhiteSpace(String usage, int table_breadth) {
-		while (usage.length()<table_breadth) {
-			usage += " ";
+	/**
+	 * Pads white space to the end of a string until it reaches the length
+	 * @param usage
+	 * @param length
+	 * @return string of length length with spaces appended to it
+	 */
+	private String padWhiteSpace(String usage, int length) {
+		StringBuilder sb = new StringBuilder(usage);
+		while (sb.length()<length) {
+			sb.append(" ");
 		}
-		return usage;
+		return sb.toString();
 	}
 
 	private void startTour() {
@@ -529,7 +590,7 @@ public class GUI implements IUserInterface {
 		finTour = new FinTour(this, context);
 		isInTour = true;
 		
-		finTour.beginTour();
+		finTour.beginStep();
 	}
 	
 	private void endTour() {
@@ -683,8 +744,7 @@ public class GUI implements IUserInterface {
 	public void clearScreen() {
 		cli.clear();
 	}
-	
-	
+		
 	@Override
 	public void mainLoop(boolean fileLoaded) {
 		initShell(fileLoaded);

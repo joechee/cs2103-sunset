@@ -36,8 +36,10 @@ public class CommandParser {
 			installCommand(new UndeleteCommandHandler());
 			installCommand(new TourCommandHandler());
 			installCommand(new EndTourCommandHandler());
-			installCommand(new SyncCommandHandler());
 			installCommand(new ZenCommandHandler());
+
+			installCommand(new TestCommandHandler());
+
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_PRODUCTION) {
 				System.out

@@ -2,9 +2,7 @@ package cs2103.aug11.t11j2.fin.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.Task;
@@ -17,28 +15,12 @@ import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 
 
-public class FinTour {
-	
-	interface Step {
-		// this will initialize the step by augmenting the environment
-		void initStep();
+public class FinTour extends IFinAutomation {
 		
-		// upon any user command, this will decide whether to proceed to the next step
-		// if it returns true, it means it's the final step
-		boolean onUserAction(CommandResult cmdRes) ;
-	}
-	
-	private int currentStep = 0;
-	private List<Step> tourSteps = new ArrayList<Step>();
-	
-	private UIContext context = null;
-	private IUserInterface UI = null;
-	
 	FinTour(final IUserInterface UI, UIContext context) {
-		this.currentStep = 0;
-		this.context = context;
-		this.UI = UI;
 		
+		super(UI, context);
+				
 		// add some default tasks
 		Fin.IFinApplication finApplication = this.context.getFinApplication();
 		finApplication.clearEnvironment();
@@ -428,31 +410,5 @@ public class FinTour {
 
 
 	}
-
-	private boolean nextStep() {
-		this.currentStep++;
-		
-		if (this.currentStep >= tourSteps.size()) {
-			return true;
-		} else {
-			Step currentStep = tourSteps.get(this.currentStep);
-			currentStep.initStep();
-						
-			return (this.currentStep + 1 == tourSteps.size());
-		}
-	}
 	
-	public void beginTour() {
-		this.currentStep = -1;
-		nextStep();
-	}
-	
-	public boolean onUserCommand(CommandResult cmdRes) {
-		if (this.currentStep > tourSteps.size()) {
-			return false;
-		}
-		
-		Step currentStep = tourSteps.get(this.currentStep);
-		return currentStep.onUserAction(cmdRes);
-	}
 }

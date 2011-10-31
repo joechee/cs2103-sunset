@@ -59,7 +59,7 @@ public class Fin {
 		public void removeTag(Task task, String string);
 		public void removeDueDate(Task task);
 		public void setDueDate(Task task, String string);
-		
+		public List<Task> undelete() ;		
 	}
 
 	public static void main(String[] args) {

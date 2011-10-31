@@ -26,7 +26,7 @@ import java.util.UUID;
 public class FinApplication implements Fin.IFinApplication {
 	final public static FinApplication INSTANCE = new FinApplication();
 	
-	private FinApplication () {
+	FinApplication () {
 		
 	}
 
@@ -384,7 +384,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 * @param none
 	 * @see loadEnvironment 
 	 */
-	private void saveEnvironment() {
+	protected void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
 		try {
 			fs.serialize(taskFileName);
@@ -409,7 +409,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 * 
 	 * @return null if undelete is successful, a list of tasks if undelete stack is empty.
 	 */
-	
+	@Override
 	public List<Task> undelete() {
 		if (undeleteStack.isEmpty()) {
 			return null;
