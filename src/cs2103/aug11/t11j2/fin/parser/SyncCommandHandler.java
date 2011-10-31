@@ -110,7 +110,7 @@ public class SyncCommandHandler extends ICommandHandler {
 				// TODO: use cli to open browser
 			}
 		} catch (DropboxException e) {
-			if (FinConstants.IS_PRODUCTION) {
+			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
 			}
 		}

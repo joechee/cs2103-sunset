@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
-import cs2103.aug11.t11j2.fin.application.FinApplicationTour;
+import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.gui.FinCLIComposite;
@@ -498,8 +498,8 @@ public class GUI implements IUserInterface {
 	private void startAutomatedTest() {
 		assert(shell != null);
 
-		FinApplicationTour.INSTANCE.clearEnvironment();
-		context.setFinApplication(FinApplicationTour.INSTANCE);
+		FinApplicationSandbox.INSTANCE.clearEnvironment();
+		context.setFinApplication(FinApplicationSandbox.INSTANCE);
 		finTour = new FinTester(this, context);
 
 		isInTour = true;
@@ -586,7 +586,7 @@ public class GUI implements IUserInterface {
 	}
 
 	private void startTour() {
-		context.setFinApplication(FinApplicationTour.INSTANCE);
+		context.setFinApplication(FinApplicationSandbox.INSTANCE);
 		finTour = new FinTour(this, context);
 		isInTour = true;
 		

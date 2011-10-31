@@ -19,11 +19,13 @@ public final class FinConstants {
 	}
 
 	public enum EDEVELOPMENT_MODE {
-		PRODUCTION, DEPLOYMENT
+		DEVELOPMENT, PRODUCTION
 	};
 
-	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.PRODUCTION;
+	public static final EDEVELOPMENT_MODE DEVELOPMENT_MODE = EDEVELOPMENT_MODE.DEVELOPMENT;
+	public static final boolean IS_DEVELOPMENT = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.DEVELOPMENT);
 	public static final boolean IS_PRODUCTION = (DEVELOPMENT_MODE == EDEVELOPMENT_MODE.PRODUCTION);
+	
 	public static final char HASH_TAG_CHAR = '#';
 	public static final char ESCAPE_CHAR = '\\';
 

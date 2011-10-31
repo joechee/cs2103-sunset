@@ -13,17 +13,17 @@ import java.util.UUID;
 
 
 /**
- * Fin Application class to handle guided tour
- * does not do serialization and creates a sandbox environment 
- * for the tour
+ * A sandbox environment for FinApplication
+ * does not do serialization and is basically a 
+ * dummy environment for the tour and automated test
  * 
  * @author Koh Zi Chun
  *
  */
-public class FinApplicationTour extends FinApplication {
-	final public static FinApplicationTour INSTANCE = new FinApplicationTour();
+public class FinApplicationSandbox extends FinApplication {
+	final public static FinApplicationSandbox INSTANCE = new FinApplicationSandbox();
 	
-	FinApplicationTour() {
+	FinApplicationSandbox() {
 		
 	}
 

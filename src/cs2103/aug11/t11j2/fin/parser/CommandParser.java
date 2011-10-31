@@ -38,10 +38,13 @@ public class CommandParser {
 			installCommand(new EndTourCommandHandler());
 			installCommand(new ZenCommandHandler());
 
-			installCommand(new TestCommandHandler());
+			// install the automated test suite if we are in development mode
+			if (FinConstants.IS_DEVELOPMENT) {
+				installCommand(new TestCommandHandler());
+			}
 
 		} catch (FinProductionException e) {
-			if (FinConstants.IS_PRODUCTION) {
+			if (FinConstants.IS_DEVELOPMENT) {
 				System.out
 						.println("Unexpected error! You better go square it away");
 				e.printStackTrace();
@@ -134,7 +137,7 @@ public class CommandParser {
 			// Execute the CommandHandler with the arguments
 			res = commandHandler.executeCommands(command, cmdArgs, context);
 		} catch (FinProductionException e) {
-			if (FinConstants.IS_PRODUCTION) {
+			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
 			}
 		}

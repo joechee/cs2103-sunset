@@ -389,7 +389,7 @@ public class FinApplication implements Fin.IFinApplication {
 		try {
 			fs.serialize(taskFileName);
 		} catch (IOException e) {
-			if (FinConstants.IS_PRODUCTION) {
+			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
 			} else {
 				// TODO: handle saving
@@ -399,7 +399,7 @@ public class FinApplication implements Fin.IFinApplication {
 		try {
 			fs.serialize(taskFileName+".bak");
 		} catch (IOException e) {
-			if (FinConstants.IS_PRODUCTION) {
+			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
 			} 
 		}
