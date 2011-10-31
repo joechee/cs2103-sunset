@@ -452,7 +452,8 @@ public class GUI implements IUserInterface {
 		case EXIT:
 			if (this.isInTour) {
 				endTour();
-				runCommandAndRender("show");				
+				runCommandAndRender("show");
+				break;
 			} else {
 				echo("Thank you for using Fin.\n");
 				echo("Goodbye!\n");

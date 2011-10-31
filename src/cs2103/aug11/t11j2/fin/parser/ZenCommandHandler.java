@@ -16,7 +16,7 @@ public class ZenCommandHandler extends ICommandHandler {
 				"happiness","sadness","meaning","character","love","hate","direction",
 				"point","Chuck Norris", "chair","pain","light","heavy","big","virtue",
 				"space","life","42","Sylvester Stallone","Bruce Lee", "Yo momma", "fat",
-				"null","void","integer","linked-list",
+				"null","void","integer","linked-list","darkness",
 				"tree","hash-table","forest","death","eternity", "zen", "person"};
 		for (int i = 0; i < 100; i++) {
 			zenList.add("Zen master says \""+ noun[RNG.nextInt(noun.length)] + " is " +
