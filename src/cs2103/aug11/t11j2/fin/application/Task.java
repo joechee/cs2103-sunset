@@ -10,7 +10,10 @@ import java.util.UUID;
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
-
+	/**
+	 * taskName should NEVER be called directly as it should always be accessed by getTaskName in it's external
+	 * unsanitized form
+	 */
 	private String taskName;
 	private List<String> tags = new ArrayList<String>();
 	private Date timeDue;
@@ -23,8 +26,9 @@ public class Task {
 	
 	
 	public Task(String taskName) {
+		System.out.println(taskName);
 		
-		taskName = sanitizeInput(taskName);
+		taskName = sanitizeString(taskName);
 		
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
@@ -141,16 +145,13 @@ public class Task {
 
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
+			return getTaskName().replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
 					+ DateParser.naturalDateFromNow(dueDate));
 		} else {
-			return taskName;
+			return getTaskName();
 		}		
 	}
-	/**
-	 * Should never be public. This returns the unsanitized TaskName. Use toString instead
-	 * @return taskName
-	 */
+
 	
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
@@ -163,6 +164,8 @@ public class Task {
 			return taskName;
 		}
 	}
+	
+
 
 	boolean addTag(String tag) {
 		if (hasTag(tag)) {
@@ -176,13 +179,13 @@ public class Task {
 	}
 
 	private void setTaskName(String string) {
-		this.taskName = sanitizeInput(string);
+		this.taskName = sanitizeString(string);
 	}
 	
 	void edit(String taskName) {
 		
 		assert(taskName!=null);
-		taskName = sanitizeInput(taskName);
+		taskName = sanitizeString(taskName);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		tags.clear();
@@ -316,7 +319,7 @@ public class Task {
 		return this.important;
 	}
 	
-	private String sanitizeInput(String s) {
+	private String sanitizeString(String s) {
 		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR), 
 				Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR);
 		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER, FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
@@ -332,6 +335,6 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return unsanitizeString(getTaskName());
+		return getTaskName();
 	}
 }
