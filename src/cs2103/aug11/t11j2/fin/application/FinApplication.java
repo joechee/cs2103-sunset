@@ -55,7 +55,7 @@ public class FinApplication implements Fin.IFinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
-		saveEnvironment();
+		this.saveEnvironment();
 	}
 	
 	private boolean addTaskToTag(String tag, Task task) {
@@ -214,7 +214,7 @@ public class FinApplication implements Fin.IFinApplication {
 			for (String tag : todelete.getTags()) {
 				removeTaskFromTag(tag, todelete);
 			}
-			saveEnvironment();
+			this.saveEnvironment();
 		} else {
 			throw new IllegalArgumentException("TaskUID does not exist!");
 		}
@@ -250,7 +250,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			task.flag();
-			saveEnvironment();
+			this.saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -269,7 +269,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			task.unflag();
-			saveEnvironment();
+			this.saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -289,7 +289,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			boolean finTask = task.fin();
-			saveEnvironment();
+			this.saveEnvironment();
 			return finTask;
 		} else {
 			return false;
@@ -309,7 +309,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			task.unfin();
-			saveEnvironment();
+			this.saveEnvironment();
 			return true;
 		} else {
 			return false;
@@ -327,7 +327,7 @@ public class FinApplication implements Fin.IFinApplication {
 		assert(taskList!=null);
 		taskMap.clear();
 		taskList.clear();
-		saveEnvironment();
+		this.saveEnvironment();
 	}
 	
 	/**
@@ -440,7 +440,7 @@ public class FinApplication implements Fin.IFinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
-		saveEnvironment();
+		this.saveEnvironment();
 	}
 
 	@Override
@@ -450,7 +450,7 @@ public class FinApplication implements Fin.IFinApplication {
 		if (task.addTag(tag)) {
 			addTaskToTag(tag, task);
 		}
-		saveEnvironment();
+		this.saveEnvironment();
 		
 	}
 
@@ -462,7 +462,7 @@ public class FinApplication implements Fin.IFinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
-		saveEnvironment();
+		this.saveEnvironment();
 		
 	}
 
@@ -470,7 +470,7 @@ public class FinApplication implements Fin.IFinApplication {
 	public void removeDueDate(Task task) {
 		assert(task!=null);
 		task.removeDueDate();
-		saveEnvironment();
+		this.saveEnvironment();
 		
 	}
 
@@ -479,7 +479,7 @@ public class FinApplication implements Fin.IFinApplication {
 		assert(task!=null);
 		assert(string!=null);
 		task.setDueDate(string);
-		saveEnvironment();
+		this.saveEnvironment();
 		
 	}
 }
