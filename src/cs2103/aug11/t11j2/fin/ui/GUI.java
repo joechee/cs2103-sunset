@@ -751,7 +751,7 @@ public class GUI implements IUserInterface {
 	}
 		
 	@Override
-	public void mainLoop(boolean fileLoaded) {
+	public void initUI(boolean fileLoaded) {
 		initShell(fileLoaded);
 	}
 }

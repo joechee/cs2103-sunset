@@ -33,9 +33,31 @@ public class Fin {
 	//private final static Logger LOGGER = Logger.getLogger(null);
 	
 	public interface IUserInterface {
-		void mainLoop(boolean fileLoaded);
+		/**
+		 * Initializes the UI. Control is passed from 
+		 * bootstrapper to UI and the work of the bootstrapper is done.
+		 * 
+		 * @param fileLoaded whether the bootstrapper found a pre-existing 
+		 * yamp savefile and manages to load it successfully. Useful for
+		 * starting a tour for first time User
+		 * 
+		 */
+		void initUI(boolean fileLoaded);
+		/**
+		 * Executes and command and renders it on the UI
+		 * 
+		 * @param userArgs the command to run
+		 * @return true if the application wants to exit
+		 */
 		boolean runCommandAndRender(String userArgs);
+		/**
+		 * Echos a message to the UI
+		 * @param promptMessage
+		 */
 		void echo(String promptMessage);
+		/**
+		 * Clears the output of the UI. May not be applicable to some UI
+		 */
 		void clearScreen();
 	}
 	
@@ -92,7 +114,7 @@ public class Fin {
 		}
 		
 		boolean fileLoaded = FinApplication.INSTANCE.loadEnvironment(checkFilename(filename));
-		UI.mainLoop(fileLoaded);
+		UI.initUI(fileLoaded);
 	}
 
 	private static String checkFilename(String i)

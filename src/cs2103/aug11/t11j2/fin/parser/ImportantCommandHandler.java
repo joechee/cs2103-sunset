@@ -11,7 +11,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 public class ImportantCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
-	public List<String> getCommandStrings() {
+	List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
 				add("important");

@@ -15,7 +15,7 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
-	public List<String> getCommandStrings() {
+	List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
 				add("addtag");
@@ -31,7 +31,7 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 	}
 
 	@Override
-	public CommandResult executeCommands(String command, String arguments,
+	CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		if (arguments.isEmpty()) {
 			return showHelp();

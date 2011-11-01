@@ -19,7 +19,7 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
-	public List<String> getCommandStrings() {
+	List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
 				add("delall");

@@ -18,7 +18,7 @@ public class EditCommandHandler extends ICommandHandler {
 
 	@Override
 	@SuppressWarnings("serial")
-	public List<String> getCommandStrings() {
+	List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
 				add("e");

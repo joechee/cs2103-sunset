@@ -23,7 +23,7 @@ public class CLI implements Fin.IUserInterface {
 
 	private static Scanner sc = new Scanner(System.in);
 
-	public void mainLoop(boolean fileLoaded) {
+	public void initUI(boolean fileLoaded) {
 		displayWelcomeMessage();
 		refreshContext();
 		displayTasks();

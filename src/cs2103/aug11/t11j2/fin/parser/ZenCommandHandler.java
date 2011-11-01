@@ -25,7 +25,7 @@ public class ZenCommandHandler extends ICommandHandler {
 	}
 	@SuppressWarnings("serial")
 	@Override
-	public List<String> getCommandStrings() {
+	List<String> getCommandStrings() {
 		return new ArrayList<String>() {
 			{
 				add("zen");
