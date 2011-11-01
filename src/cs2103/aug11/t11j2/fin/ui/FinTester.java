@@ -40,7 +40,7 @@ public class FinTester extends IFinAutomation {
 				}
 
 				@Override
-				public boolean onUserAction(CommandResult cmdRes) { 
+				public boolean onUserAction(CommandResult cmdRes) {
 					if (!(cmdRes.getCommand() instanceof AddCommandHandler)) {
 						addError("Running the command " + s + " does not result in a AddCommandHandler command being returned");
 					} else if(cmdRes.getRenderType() != CommandResult.RenderType.TASK) {

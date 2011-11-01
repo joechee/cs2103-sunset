@@ -404,7 +404,7 @@ public class FinTour extends IFinAutomation {
 
 			@Override
 			public boolean onUserAction(CommandResult cmdRes) {
-				return true;
+				return false;
 			}
 		});
 

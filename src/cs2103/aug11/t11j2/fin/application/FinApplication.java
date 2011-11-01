@@ -325,8 +325,12 @@ public class FinApplication implements Fin.IFinApplication {
 	public void clearEnvironment() {
 		assert(taskMap!=null);
 		assert(taskList!=null);
-		taskMap.clear();
-		taskList.clear();
+		
+		this.taskMap.clear();
+		this.taskList.clear();
+		this.hashTags.clear();
+		this.undeleteStack.clear();
+		
 		this.saveEnvironment();
 	}
 	

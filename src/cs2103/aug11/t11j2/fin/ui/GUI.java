@@ -357,19 +357,19 @@ public class GUI implements IUserInterface {
 	public boolean runCommandAndRender(String userArgs) {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
+		boolean toReturn;
 		
 		if (this.isInTour && finTour != null) {
-			boolean toReturn = renderCommandResult(feedback);
+			toReturn = renderCommandResult(feedback);
 			boolean lastStep = finTour.onUserCommand(feedback);
 			
 			if (lastStep == true) {
 				endTour();
-			}
-			
-			return toReturn;
+			}			
 		} else {
-			return renderCommandResult(feedback);
+			toReturn = renderCommandResult(feedback);
 		}
+		return toReturn;
 	}
 
 	private CommandResult runCommand(String command) {
@@ -451,7 +451,6 @@ public class GUI implements IUserInterface {
 		case EXIT:
 			if (this.isInTour) {
 				endTour();
-				runCommandAndRender("show");
 				break;
 			} else {
 				echo("Thank you for using Fin.\n");
@@ -478,7 +477,6 @@ public class GUI implements IUserInterface {
 				startTour();
 			} else if(cmdRes.getCommand() instanceof EndTourCommandHandler){
 				endTour();
-				runCommandAndRender("show");
 			}
 			break;
 
@@ -520,7 +518,7 @@ public class GUI implements IUserInterface {
 			}
 		};
 		shell.getDisplay().timerExec(time, timer);
-		finTour.beginStep();		
+		finTour.beginStep();
 	}
 	
 	private void stopAutomatedTest() {
@@ -593,15 +591,17 @@ public class GUI implements IUserInterface {
 		context.setFinApplication(FinApplicationSandbox.INSTANCE);
 		finTour = new FinTour(this, context);
 		isInTour = true;
-		CommandParser.INSTANCE.startTourMode();
+		//CommandParser.INSTANCE.startTourMode();
 		finTour.beginStep();
 		
 	}
 	
 	private void endTour() {
 		context.setFinApplication(FinApplication.INSTANCE);
-		CommandParser.INSTANCE.endTourMode();
+		//CommandParser.INSTANCE.endTourMode();
 		isInTour = false;
+		
+		runCommandAndRender("show");
 	}
 
 	/**

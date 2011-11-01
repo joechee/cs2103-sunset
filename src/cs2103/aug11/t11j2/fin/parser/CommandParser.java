@@ -37,6 +37,7 @@ public class CommandParser {
 			installCommand(new UndeleteCommandHandler());
 			installCommand(new TourCommandHandler());
 			installCommand(new ZenCommandHandler());
+			installCommand(new EndTourCommandHandler());
 
 			// install the automated test suite if we are in development mode
 			if (FinConstants.IS_DEVELOPMENT) {

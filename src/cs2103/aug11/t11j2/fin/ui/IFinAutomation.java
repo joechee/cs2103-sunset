@@ -42,7 +42,7 @@ public abstract class IFinAutomation {
 			Step currentStep = steps.get(this.currentStep);
 			currentStep.initStep();
 						
-			return (this.currentStep + 1 == steps.size());
+			return false;
 		}
 	}
 
@@ -53,7 +53,7 @@ public abstract class IFinAutomation {
 
 	public boolean onUserCommand(CommandResult cmdRes) {
 		if (this.currentStep > steps.size()) {
-			return false;
+			return true;
 		}
 				
 		Step currentStep = steps.get(this.currentStep);
