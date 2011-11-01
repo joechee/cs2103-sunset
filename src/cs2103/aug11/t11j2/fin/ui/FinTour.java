@@ -30,7 +30,7 @@ public class FinTour extends IFinAutomation {
 		 * Step 1: Shows tour message
 		 * add some task
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "Complete tour of Fin.";
 			@Override
@@ -71,7 +71,7 @@ public class FinTour extends IFinAutomation {
 		final DateFormat df = new SimpleDateFormat("d MMM yyyy");
 		final Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 						
 			String args = "Read \"Living in the Airport\" by " + df.format(calendar.getTime());
@@ -108,7 +108,7 @@ public class FinTour extends IFinAutomation {
 		 */
 		final DateFormat df2 = new SimpleDateFormat("d MMM");
 		calendar.add(Calendar.DAY_OF_YEAR, 8);
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "#fetch Harry from #airport on "+ df2.format(calendar.getTime()) +" #impt";
 			@Override
@@ -143,7 +143,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 4
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "photo trial at the #airport";
 			
@@ -179,7 +179,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 5
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "airport";
 			
@@ -214,7 +214,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 6
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "1";
 			@Override
@@ -250,7 +250,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 7
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "fin";
 			
@@ -286,7 +286,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 8
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "";
 			
@@ -319,7 +319,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 9
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "1";
 			
@@ -354,7 +354,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 10
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			boolean isUserGenerated = false;
 			String args = "4 to photo trail at the #airport";
 			
@@ -392,7 +392,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Final Step: Help
 		 */
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			@Override
 			public void initStep() {
 				UI.echo("Whew. That was close.");

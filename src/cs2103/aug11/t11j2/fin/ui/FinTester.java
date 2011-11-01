@@ -6,17 +6,9 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
-import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.CommandResult;
-import cs2103.aug11.t11j2.fin.parser.DeleteAllCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.ui.IFinAutomation.Step;
+import cs2103.aug11.t11j2.fin.parser.*;
 
 public class FinTester extends IFinAutomation {
 	private int errors = 0;
@@ -41,7 +33,7 @@ public class FinTester extends IFinAutomation {
 		
 		for (final String s : tasksToAdd) {
 			// add the task
-			tourSteps.add(new Step() {
+			steps.add(new Step() {
 				@Override
 				public void initStep() {
 					UI.runCommandAndRender(s);
@@ -59,7 +51,7 @@ public class FinTester extends IFinAutomation {
 			});
 
 			// run show after adding each task
-			tourSteps.add(new Step() {
+			steps.add(new Step() {
 				@Override
 				public void initStep() {
 					UI.runCommandAndRender("show");
@@ -86,7 +78,7 @@ public class FinTester extends IFinAutomation {
 		}
 		
 
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			// delete 1, which will be the random but impt task
 			@Override
 			public void initStep() {
@@ -104,7 +96,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show after deleting the task
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			@Override
 			public void initStep() {
 				UI.runCommandAndRender("show");
@@ -130,7 +122,7 @@ public class FinTester extends IFinAutomation {
 		});
 		
 		// run show #cs4232
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show #cs4232";
 			@Override
 			public void initStep() {
@@ -157,7 +149,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show presentation #cs2103
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show presentation #cs2103";
 			@Override
 			public void initStep() {
@@ -184,7 +176,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show #cs4232 #presentation
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show #cs4232 #presentation";
 			@Override
 			public void initStep() {
@@ -211,7 +203,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show cs4232
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show cs4232";
 			@Override
 			public void initStep() {
@@ -238,7 +230,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run impt
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "impt 2";
 			@Override
 			public void initStep() {
@@ -262,7 +254,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show cs4232 present
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show cs4232 random";
 			@Override
 			public void initStep() {
@@ -289,7 +281,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run impt all
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "impt all";
 			@Override
 			public void initStep() {
@@ -308,7 +300,7 @@ public class FinTester extends IFinAutomation {
 		});
 		
 		// run show all again
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show";
 			@Override
 			public void initStep() {
@@ -344,7 +336,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run deletes
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "delete 4";
 			@Override
 			public void initStep() {
@@ -361,7 +353,7 @@ public class FinTester extends IFinAutomation {
 				return false;
 			}
 		});
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "delete 4";
 			@Override
 			public void initStep() {
@@ -380,7 +372,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run delete all
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "delete all";
 			@Override
 			public void initStep() {
@@ -408,7 +400,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run undelete
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "undelete";
 			@Override
 			public void initStep() {
@@ -435,7 +427,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run undelete again
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "undelete";
 			@Override
 			public void initStep() {
@@ -463,7 +455,7 @@ public class FinTester extends IFinAutomation {
 
 		
 		// run fin
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "fin 1";
 			@Override
 			public void initStep() {
@@ -488,7 +480,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run fin
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "fin 2";
 			@Override
 			public void initStep() {
@@ -513,7 +505,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run fin
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "fin 4";
 			@Override
 			public void initStep() {
@@ -538,7 +530,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show fin
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show fin";
 			@Override
 			public void initStep() {
@@ -565,7 +557,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show #impt #fin
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show #impt #fin";
 			@Override
 			public void initStep() {
@@ -592,7 +584,7 @@ public class FinTester extends IFinAutomation {
 		});
 
 		// run show all again
-		tourSteps.add(new Step() {
+		steps.add(new Step() {
 			final String command = "show";
 			@Override
 			public void initStep() {
@@ -618,7 +610,33 @@ public class FinTester extends IFinAutomation {
 			}
 		});
 		
-		tourSteps.add(new Step() {
+		
+		steps.add(new Step() {
+			final String command = "add "+ FinConstants.DUEDATE_PLACEHOLDER;
+			@Override
+			public void initStep() {
+				
+				UI.runCommandAndRender(command);
+			}
+
+			@Override
+			public boolean onUserAction(CommandResult cmdRes) {
+				if (!(cmdRes.getCommand() instanceof AddCommandHandler)) {
+					addError("Running the command "+command+" does not result in a AddCommandHandler command being returned");
+				} else if(cmdRes.getRenderType() != CommandResult.RenderType.TASK) {
+					addError("Running the command "+command+" does not result in a TASK RenderType being returned");
+				} else {
+					@SuppressWarnings("unchecked")
+					Task task = (Task) cmdRes.getReturnObject();
+					if (!task.toString().equals(FinConstants.DUEDATE_PLACEHOLDER)) {
+						addError("Characters in Task are not escaped properly!");
+					}
+				}
+				return false;
+			}
+		});
+		
+		steps.add(new Step() {
 			@Override
 			public void initStep() {
 				UI.echo("Test has concluded");

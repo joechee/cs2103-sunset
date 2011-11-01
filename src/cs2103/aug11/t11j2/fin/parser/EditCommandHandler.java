@@ -63,7 +63,6 @@ public class EditCommandHandler extends ICommandHandler {
 			
 			if (tokens.length == 2) return showHelp();
 			
-			//TODO: pls fix it such that it edits directly. kthxbai
 			context.getFinApplication().editTask(task,tokens[2]);
 			
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
@@ -127,7 +126,6 @@ public class EditCommandHandler extends ICommandHandler {
 	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
 		int taskIndex;
 		String[] tokens = arguments.split("\\s+",3);
-//		System.out.println(arguments);
 		
 		if (tokens.length >= 3) {
 			return null;

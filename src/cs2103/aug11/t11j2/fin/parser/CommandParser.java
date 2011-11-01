@@ -16,8 +16,9 @@ public class CommandParser {
 
 	private Map<String, ICommandHandler> commandHandlers = new HashMap<String, ICommandHandler>();
 	private List<ICommandHandler> commandHandlerLyst = new ArrayList<ICommandHandler>();
+	private boolean tourMode = false;
 
-	private CommandParser() {
+	protected CommandParser() {
 		try {
 			installCommand(new HelpCommandHandler());
 			installCommand(new ShowCommandHandler());
@@ -35,7 +36,6 @@ public class CommandParser {
 			installCommand(new TagTaskWithTagsCommandHandler());
 			installCommand(new UndeleteCommandHandler());
 			installCommand(new TourCommandHandler());
-			installCommand(new EndTourCommandHandler());
 			installCommand(new ZenCommandHandler());
 
 			// install the automated test suite if we are in development mode
@@ -58,7 +58,7 @@ public class CommandParser {
 	 * @throws FinProductionException
 	 * @see #parse(String, UIContext)
 	 */
-	void installCommand(ICommandHandler commandHandler)
+	private void installCommand(ICommandHandler commandHandler)
 			throws FinProductionException {
 		if (commandHandler.getCommandStrings().isEmpty()) {
 			throw (new FinProductionException ("CommandHandler that can't be accessed has been installed"));
@@ -72,6 +72,73 @@ public class CommandParser {
 			}
 		}
 		commandHandlerLyst.add(commandHandler);
+	}
+	
+	/**
+	 * Uninstalls the command in the system so that it can't be called.
+	 * @param commandHandler
+	 * @throws FinProductionException
+	 * @see #parse(String, UIContext)
+	 */
+	
+	private void uninstallCommand(ICommandHandler commandHandler) throws FinProductionException {
+		if (commandHandler.getCommandStrings().isEmpty()) {
+			throw (new FinProductionException ("CommandHandler that can't be accessed has been suppressed"));
+		}
+		for (String command : commandHandler.getCommandStrings()) {
+			if (commandHandlers.containsKey(command)) {
+				commandHandlers.remove(command);
+			} else {
+				throw (new FinProductionException("Command was never installed in the first place!"));
+			}
+		}
+		
+		// remove commandHandler from list of command handlers
+		for (ICommandHandler i: commandHandlerLyst) {
+			if (i.getClass() == commandHandler.getClass() ) {
+				commandHandlerLyst.remove(i);
+				break;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Turns CommandParser into TourMode
+	 * @throws FinProductionException 
+	 */
+	
+	public void startTourMode() {
+		assert !tourMode;
+		try {
+			uninstallCommand(new TourCommandHandler());
+			installCommand(new EndTourCommandHandler());
+			tourMode = true;
+		} catch (FinProductionException e) {
+			if (FinConstants.IS_DEVELOPMENT) {
+				System.out
+						.println("Unexpected error! You better go square it away");
+				e.printStackTrace();
+			}
+		}
+		
+
+	}
+	
+	public void endTourMode() {
+		assert tourMode;
+		try {
+			uninstallCommand(new EndTourCommandHandler());
+			installCommand(new TourCommandHandler());
+			tourMode = false;
+		} catch (FinProductionException e) {
+			if (FinConstants.IS_DEVELOPMENT) {
+				System.out
+						.println("Unexpected error! You better go square it away");
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**

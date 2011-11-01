@@ -3,6 +3,7 @@ package cs2103.aug11.t11j2.fin.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -56,7 +57,7 @@ public class AddCommandHandler extends ICommandHandler {
 		
 		// get the last typed filter
 		for (int i=arguments.length()-1;i>=0;--i) {
-			if (Character.isLetterOrDigit(arguments.charAt(i)) || arguments.charAt(i) == '#') {
+			if (Character.isLetterOrDigit(arguments.charAt(i)) || arguments.charAt(i) == FinConstants.HASH_TAG_CHAR) {
 				sb.append(Character.toLowerCase(arguments.charAt(i)));
 			} else {
 				break;
@@ -64,7 +65,7 @@ public class AddCommandHandler extends ICommandHandler {
 		}
 		
 		// if last typed filter is nothing ignore or first char is not #
-		if (sb.length() == 0 || sb.charAt(sb.length()-1) != '#') {
+		if (sb.length() == 0 || sb.charAt(sb.length()-1) != FinConstants.HASH_TAG_CHAR) {
 			return null;
 		}
 		

@@ -42,13 +42,7 @@ public class StorageTest {
 	public void testSerializer() throws IOException {
 		System.out.println("Test Serializer");
 		System.out.println("***");
-		Task task1 = new Task();
-		Task task2 = new Task();
-		Task task3 = new Task();
-		Task task4 = new Task();
 
-		FinApplication.INSTANCE.add(task1);
-		FinApplication.INSTANCE.add(task2);
 
 		System.out.println("Serializing test...");
 

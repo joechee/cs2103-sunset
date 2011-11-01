@@ -32,17 +32,17 @@ public abstract class IFinAutomation {
 
 	
 	protected int currentStep = 0;
-	protected List<Step> tourSteps = new ArrayList<Step>();
+	protected List<Step> steps = new ArrayList<Step>();
 	
 	public boolean nextStep() {
 		this.currentStep++;
-		if (this.currentStep >= tourSteps.size()) {
+		if (this.currentStep >= steps.size()) {
 			return true;
 		} else {
-			Step currentStep = tourSteps.get(this.currentStep);
+			Step currentStep = steps.get(this.currentStep);
 			currentStep.initStep();
 						
-			return (this.currentStep + 1 == tourSteps.size());
+			return (this.currentStep + 1 == steps.size());
 		}
 	}
 
@@ -52,11 +52,11 @@ public abstract class IFinAutomation {
 	}
 
 	public boolean onUserCommand(CommandResult cmdRes) {
-		if (this.currentStep > tourSteps.size()) {
+		if (this.currentStep > steps.size()) {
 			return false;
 		}
 				
-		Step currentStep = tourSteps.get(this.currentStep);
+		Step currentStep = steps.get(this.currentStep);
 		return currentStep.onUserAction(cmdRes);
 	}
 

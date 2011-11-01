@@ -595,12 +595,14 @@ public class GUI implements IUserInterface {
 		context.setFinApplication(FinApplicationSandbox.INSTANCE);
 		finTour = new FinTour(this, context);
 		isInTour = true;
-		
+		CommandParser.INSTANCE.startTourMode();
 		finTour.beginStep();
+		
 	}
 	
 	private void endTour() {
 		context.setFinApplication(FinApplication.INSTANCE);
+		CommandParser.INSTANCE.endTourMode();
 		isInTour = false;
 	}
 

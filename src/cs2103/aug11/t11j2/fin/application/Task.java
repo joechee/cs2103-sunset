@@ -147,6 +147,11 @@ public class Task {
 			return taskName;
 		}		
 	}
+	/**
+	 * Should never be public. This returns the unsanitized TaskName. Use toString instead
+	 * @return taskName
+	 */
+	
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
 		String taskName = unsanitizeString(this.taskName);
@@ -175,7 +180,9 @@ public class Task {
 	}
 	
 	void edit(String taskName) {
+		
 		assert(taskName!=null);
+		taskName = sanitizeInput(taskName);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		tags.clear();
