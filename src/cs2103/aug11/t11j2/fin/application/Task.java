@@ -26,8 +26,6 @@ public class Task {
 	
 	
 	public Task(String taskName) {
-		System.out.println(taskName);
-		
 		taskName = sanitizeString(taskName);
 		
 		DateParser dateParser = new DateParser();
