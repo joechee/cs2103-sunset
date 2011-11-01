@@ -45,7 +45,7 @@ public class FinSerializer {
 		return unserialize(filename, true);
 	}
 
-	// TODO: decouble finapplication
+	// TODO: decouple finapplication
 	public boolean unserialize(String filename, boolean clearEnvironment)
 			throws IOException {
 		Serializer sr = new Serializer();

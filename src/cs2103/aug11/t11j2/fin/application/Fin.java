@@ -5,7 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import cs2103.aug11.t11j2.fin.ui.CLI;
 import cs2103.aug11.t11j2.fin.ui.GUI;
 
@@ -30,7 +33,7 @@ public class Fin {
 	public static final Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
-	//private final static Logger LOGGER = Logger.getLogger(null);
+	private static Logger logger;
 	
 	public interface IUserInterface {
 		/**
@@ -75,18 +78,19 @@ public class Fin {
 		public boolean finTask(UUID taskUID);
 		public boolean unfinTask(UUID taskUID);
 		public boolean loadEnvironment(String filename) throws IOException;
+		public void clearEnvironment();	
 		public List<String> getHashTags();
-		public void clearEnvironment();
 		public void editTask(Task task, String string);
 		public void addTag(Task task, String string);
 		public void removeTag(Task task, String string);
 		public void removeDueDate(Task task);
 		public void setDueDate(Task task, String string);
-		public List<Task> undelete() ;		
+		public List<Task> undelete() ;
 	}
 
 	public static void main(String[] args) {
 		try {
+			initializeLogger();
 			parseArgs(args);
 		} catch (IllegalArgumentException e) {
 			System.out.print(e.getMessage());
@@ -94,7 +98,15 @@ public class Fin {
 			System.out.print(e.getMessage());
 			e.printStackTrace();
 		} 
+		logger.info("System exited cleanly");
 
+	}
+
+	private static void initializeLogger() {
+		logger = Logger.getLogger("cs2103.aug11.t11j2.fin.application");
+
+		BasicConfigurator.configure();
+		logger.info("Entering application.");
 	}
 
 	private static void parseArgs(String[] args)
@@ -108,8 +120,10 @@ public class Fin {
 		
 			if ((args[i].equals("-ui")) && (i + 1 < args.length)) {
 				UI = parseUI(args[i + 1]);
+				logger.log(Level.DEBUG, "UI selected");
 			} else if ((args[i].equals("-file")) && (i + 1 < args.length)) {
 				filename = args[i + 1];
+				logger.log(Level.DEBUG, "Filename input");
 			}
 		}
 		
@@ -120,8 +134,11 @@ public class Fin {
 	private static String checkFilename(String i)
 			throws IllegalArgumentException {
 		assert(i!=null);
-		if (!i.endsWith(".yaml")) {
+		if (!i.endsWith(fileExtension)) {
+			logger.log(Level.DEBUG, "Appended file extension to arguments");
 			return i + fileExtension;
+			
+		
 		}
 		return i;
 	}

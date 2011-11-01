@@ -317,7 +317,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * Clears the current Fin environment (of all tasks etc.)
+	 * Clears the current Fin environment (of all tasks and the undelete stack etc.)
 	 * @param none
 	 * @return void
 	 */
@@ -331,6 +331,7 @@ public class FinApplication implements Fin.IFinApplication {
 		this.hashTags.clear();
 		this.undeleteStack.clear();
 		
+		undeleteStack.clear();
 		this.saveEnvironment();
 	}
 	
