@@ -185,18 +185,6 @@ public class FinFooter {
 		});
 	}
 	
-	int getOutstandingTask(){
-		List<Task>tasks = FinApplication.INSTANCE.getTasks();
-		int numOfTasks = tasks.size();
-		int countOutstanding = 0;
-		for (int i=0; i<numOfTasks; i++){
-			String str = tasks.get(i).toString().toUpperCase();
-			if (str.indexOf(WITHIN_ONE_DAY)>STRING_NOT_FOUND)
-				countOutstanding++;
-		}
-		return countOutstanding;
-	}
-	
 	void addOutstandingNum(Shell shell, int x, int y, 
 			int width, int height, Color color, Color fcolor, int num){
 		String labelText = num+" ";

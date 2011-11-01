@@ -44,6 +44,7 @@ import cs2103.aug11.t11j2.fin.gui.TaskStyledText;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandParser;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
+import cs2103.aug11.t11j2.fin.parser.DeleteAllCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.EndTourCommandHandler;
@@ -489,9 +490,14 @@ public class GUI implements IUserInterface {
 		
 		case HELPTABLE:
 			renderHelpTable(cmdRes);
-		
+			break;
+			
+		case NULL:
+			if (cmdRes.getCommand() instanceof DeleteAllCommandHandler) {
+				runCommandAndRender("show");
+			}
 		}
-
+		
 		return false;
 	}
 	

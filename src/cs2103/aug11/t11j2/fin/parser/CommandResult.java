@@ -20,7 +20,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
  */
 public class CommandResult {
 	public static enum RenderType {
-		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR, HELPTABLE, TEST
+		TASKLIST, TASK, STRING, UNRECOGNIZED_COMMAND, EXIT, TOUR, ERROR, HELPTABLE, TEST, NULL
 	};
 
 	private RenderType renderType;
@@ -144,7 +144,18 @@ public class CommandResult {
 			this.renderType = renderType;
 			this.returnObject = returnObject;
 
-			break;			
+			break;		
+			
+		case NULL:
+			if (!(returnObject == null)) {
+				throw (new FinProductionException(
+						"Command result type is not null"));
+			}
+
+			this.renderType = renderType;
+			this.returnObject = returnObject;
+
+			break;	
 		}
 		
 		

@@ -41,8 +41,7 @@ public class DeleteAllCommandHandler extends ICommandHandler {
 		context.getFinApplication().deleteTasks(toDeleteUUID);	
 		// after a delete all, invoke a show
 		ShowCommandHandler showCmdHandler = new ShowCommandHandler();
-		return showCmdHandler.executeCommands(showCmdHandler.getCommandStrings()
-				.get(0), "", context);
+		return new CommandResult(this, arguments, CommandResult.RenderType.NULL, null);
 	}
 	
 

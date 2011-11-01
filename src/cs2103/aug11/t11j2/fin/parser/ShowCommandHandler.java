@@ -78,7 +78,7 @@ public class ShowCommandHandler extends ICommandHandler {
 	public CommandResult executeCommands(String command, String arguments,
 			UIContext context) throws FinProductionException {
 		
-		//TODO: Fix SHOW COMMAND HANDLER
+		//TODO: Clean up showCommandHandler
 		
 		List<Task> tasks = null;
 		
