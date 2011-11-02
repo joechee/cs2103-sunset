@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -17,42 +19,58 @@ public class CommandParser {
 	private Map<String, ICommandHandler> commandHandlers = new HashMap<String, ICommandHandler>();
 	private List<ICommandHandler> commandHandlerLyst = new ArrayList<ICommandHandler>();
 	private boolean tourMode = false;
+	private Logger logger;
 
 	protected CommandParser() {
-		try {
-			installCommand(new HelpCommandHandler());
-			installCommand(new ShowCommandHandler());
-			installCommand(new AddCommandHandler());
-			installCommand(new FinCommandHandler());
-			installCommand(new UnfinCommandHandler());
-			installCommand(new ImportantCommandHandler());
-			installCommand(new UnImportantCommandHandler());
-			installCommand(new DeleteCommandHandler());
-			installCommand(new DeleteAllCommandHandler());
-			installCommand(new JokeCommandHandler());
-			installCommand(new EditCommandHandler());
-			installCommand(new ExitCommandHandler());
-			installCommand(new UntagTaskWithTagsCommandHandler());
-			installCommand(new TagTaskWithTagsCommandHandler());
-			installCommand(new UndeleteCommandHandler());
-			installCommand(new TourCommandHandler());
-			installCommand(new ZenCommandHandler());
-			installCommand(new EndTourCommandHandler());
+		logger = Logger.getLogger(this.getClass());
+		ArrayList<ICommandHandler> commandHandlers = new ArrayList<ICommandHandler>();
+		
+		commandHandlers.add(new HelpCommandHandler());
+		commandHandlers.add(new ShowCommandHandler());
+		commandHandlers.add(new AddCommandHandler());
+		commandHandlers.add(new FinCommandHandler());
+		commandHandlers.add(new UnfinCommandHandler());
+		commandHandlers.add(new ImportantCommandHandler());
+		commandHandlers.add(new UnImportantCommandHandler());
+		commandHandlers.add(new DeleteCommandHandler());
+		commandHandlers.add(new DeleteAllCommandHandler());
+		commandHandlers.add(new JokeCommandHandler());
+		commandHandlers.add(new EditCommandHandler());
+		commandHandlers.add(new ExitCommandHandler());
+		commandHandlers.add(new UntagTaskWithTagsCommandHandler());
+		commandHandlers.add(new TagTaskWithTagsCommandHandler());
+		commandHandlers.add(new UndeleteCommandHandler());
+		commandHandlers.add(new TourCommandHandler());
+		commandHandlers.add(new ZenCommandHandler());
+		// install the automated test suite if we are in development mode
+		if (FinConstants.IS_DEVELOPMENT) {
+			commandHandlers.add(new TestCommandHandler());
+		}
+		
+		for (ICommandHandler i: commandHandlers) {
+			try {
+				installCommand(i);
+			} catch (FinProductionException e) {
+				if (FinConstants.IS_DEVELOPMENT) {
+					logError(e);
 
-			// install the automated test suite if we are in development mode
-			if (FinConstants.IS_DEVELOPMENT) {
-				installCommand(new TestCommandHandler());
-			}
-
-		} catch (FinProductionException e) {
-			if (FinConstants.IS_DEVELOPMENT) {
-				System.out
-						.println("Unexpected error! You better go square it away");
-				e.printStackTrace();
+				}
 			}
 		}
+
+		logger.info("CommandParser Object created successfully.");
 	}
 	
+	private void logError(FinProductionException e) {
+		String errmsg = "Unexpected error! You better go square it away\n";
+		errmsg += e + "\n";
+		String stackTrace = "Stack Trace:";
+		for (StackTraceElement j: e.getStackTrace()) {
+			stackTrace += "\n" + j.toString();
+		}
+		logger.debug(errmsg + stackTrace);
+	}
+
 	/**
 	 * Installs the command into the system so that it can be called by the <code>parse</code> method.
 	 * @param commandHandler
@@ -117,9 +135,7 @@ public class CommandParser {
 			tourMode = true;
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
-				System.out
-						.println("Unexpected error! You better go square it away");
-				e.printStackTrace();
+				logError(e);
 			}
 		}
 		
@@ -134,9 +150,7 @@ public class CommandParser {
 			tourMode = false;
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
-				System.out
-						.println("Unexpected error! You better go square it away");
-				e.printStackTrace();
+				logError(e);
 			}
 		}
 
@@ -206,7 +220,7 @@ public class CommandParser {
 			res = commandHandler.executeCommands(command, cmdArgs, context);
 		} catch (FinProductionException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
-				e.printStackTrace();
+				logError(e);
 			}
 		}
 

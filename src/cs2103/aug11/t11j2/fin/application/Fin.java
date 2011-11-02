@@ -30,10 +30,19 @@ public class Fin {
 	
 	/* Constants */
 
-	public static final Fin.IUserInterface DEFAULT_UI = new GUI();
+	public static Fin.IUserInterface DEFAULT_UI = null;
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
+	private static final String className = "cs2103.aug11.t11j2.fin.application";
+	
 	private static Logger logger;
+	
+	private static void initializeConstants() {
+		DEFAULT_UI = new GUI();
+	}
+
+	
+	
 	
 	public interface IUserInterface {
 		/**
@@ -91,6 +100,7 @@ public class Fin {
 	public static void main(String[] args) {
 		try {
 			initializeLogger();
+			initializeConstants();
 			parseArgs(args);
 		} catch (IllegalArgumentException e) {
 			System.out.print(e.getMessage());
@@ -102,8 +112,9 @@ public class Fin {
 
 	}
 
+
 	private static void initializeLogger() {
-		logger = Logger.getLogger("cs2103.aug11.t11j2.fin.application");
+		logger = Logger.getLogger(className);
 
 		BasicConfigurator.configure();
 		logger.info("Entering application.");
@@ -120,10 +131,10 @@ public class Fin {
 		
 			if ((args[i].equals("-ui")) && (i + 1 < args.length)) {
 				UI = parseUI(args[i + 1]);
-				logger.log(Level.DEBUG, "UI selected");
+				logger.debug("UI selected");
 			} else if ((args[i].equals("-file")) && (i + 1 < args.length)) {
 				filename = args[i + 1];
-				logger.log(Level.DEBUG, "Filename input");
+				logger.debug("Filename taken from user input");
 			}
 		}
 		
@@ -137,8 +148,6 @@ public class Fin {
 		if (!i.endsWith(fileExtension)) {
 			logger.log(Level.DEBUG, "Appended file extension to arguments");
 			return i + fileExtension;
-			
-		
 		}
 		return i;
 	}

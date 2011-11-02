@@ -7,6 +7,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -62,11 +64,21 @@ public class GUI implements IUserInterface {
 	static FinCLIComposite cli;
 	
 	final private UIContext context = new UIContext(FinApplication.INSTANCE);
+	private Logger logger = null;
 	private IFinAutomation finTour = null;
 	private boolean isInTour = false;
 	
 	// Help table constant
 	private static final int TABLE_BORDER_WIDTH = 3;
+	
+	private void initializeLogger() {
+		logger = Logger.getLogger(this.getClass());
+	}
+	
+	public GUI() {
+		initializeLogger();
+		logger.info("GUI object created");
+	}
 
 	private Composite createFooter(Composite shell) {
 		Composite footer = new Composite(shell, SWT.NONE);

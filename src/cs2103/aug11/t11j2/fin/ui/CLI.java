@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
@@ -20,6 +22,13 @@ public class CLI implements Fin.IUserInterface {
 	private static final String WELCOME_MESSAGE = "Welcome to Fin. Task Manager!\n";
 	private static final int TABLE_BORDER_WIDTH = 3;
 	private UIContext context = new UIContext(FinApplication.INSTANCE);
+	private Logger logger;
+	
+	public CLI() {
+		logger = Logger.getLogger(this.getClass());
+		logger.info("CLI Object created");
+	}
+	
 
 	private static Scanner sc = new Scanner(System.in);
 
