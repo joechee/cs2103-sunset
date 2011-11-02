@@ -370,14 +370,16 @@ public class GUI implements IUserInterface {
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		boolean toReturn;
-		
+
 		if (this.isInTour && finTour != null) {
 			toReturn = renderCommandResult(feedback);
-			boolean lastStep = finTour.onUserCommand(feedback);
-			
-			if (lastStep == true) {
-				endTour();
-			}			
+			if (this.isInTour) {
+				boolean lastStep = finTour.onUserCommand(feedback);
+				
+				if (lastStep == true) {
+					endTour();
+				}				
+			}
 		} else {
 			toReturn = renderCommandResult(feedback);
 		}
@@ -440,7 +442,9 @@ public class GUI implements IUserInterface {
 			return engine.eval(expression).toString();
 		} catch (ScriptException e) {
 			return null;
-		}		
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
