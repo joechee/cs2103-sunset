@@ -21,11 +21,6 @@ import cs2103.aug11.t11j2.fin.ui.GUI;
  * Arguments can be swapped around.
  * @author Joe Chee
  */
-
-
-
-
-
 public class Fin {
 	
 	/* Constants */
@@ -74,27 +69,148 @@ public class Fin {
 	}
 	
 	public interface IFinApplication {
+		/**
+		 * Adds a task to the environment.
+		 * 
+		 * @param task object to add
+		 */
 		public void add(Task task);
+		/**
+		 * Get the list of tasks with a particular #tag
+		 * 
+		 * @param tag
+		 * @return List of Task with tag. tag should not have a # prefixed to it
+		 */
 		public List<Task> getTasksWithTag(String tag);
+		/**
+		 * @return List of Tasks
+		 */
 		public List<Task> getTasks();
+		/**
+		 * Get the list of tasks without a particular #tag
+		 * 
+		 * @param tag
+		 * @return List of Task with tag. tag should not have a # prefixed to it
+		 */	
 		public List<Task> getTasksWithoutTag(String tag);
-		public List<Task> getTasksWithoutTags(List<String> tags);
+		/**
+		 * Get the list of tasks with a list of #tags
+		 * 
+		 * @param tag
+		 * @return List of Task with tags. tags should not have a # prefixed to it
+		 */
 		public List<Task> getTasksWithTags(List<String> tags);
+		/**
+		 * Get the list of tasks that don't have a list of #tags
+		 * 
+		 * @param tag
+		 * @return List of Task without a list of tags. tags should not have a # prefixed to it
+		 */	
+		public List<Task> getTasksWithoutTags(List<String> tags);
+		/**
+		 * Deletes a given task (by UID) from the environment
+		 * 
+		 * @param taskUID
+		 * @return true iff the task is deleted
+		 */
 		public boolean deleteTask(UUID taskUID);
+		/**
+		 * Deletes all tasks and updates the undelete stack
+		 * @param taskUID
+		 * @return true if deletes were successful
+		 */
 		public boolean deleteTasks(Collection<UUID> toDeleteUUID);
+		/**
+		 * Mark a task as important / flag
+		 * 
+		 * @param taskUID
+		 * @return true iff the task is flagged
+		 */
 		public boolean flagTask(UUID taskUID);
+		/**
+		 * Unmark a task as important / flag
+		 * 
+		 * @param taskUID
+		 * @return true iff the task is unflagged
+		 */
 		public boolean unflagTask(UUID taskUID);
+		/**
+		 * Mark a task as completed
+		 * 
+		 * @param taskUID
+		 * @return true iff the task is marked as finished
+		 */
 		public boolean finTask(UUID taskUID);
+		/**
+		 * Unmark a task as completed
+		 * 
+		 * @param taskUID
+		 * @return true iff the task is unmarked as finished
+		 */
 		public boolean unfinTask(UUID taskUID);
+		/**
+		 * Loads the tasks that was previously saved by the <code>saveEnvironment</code> method from a file.
+		 * @param filename
+		 * @throws IOException
+		 * @return true if environment is successfully loaded
+		 * @see saveEnvironment
+		 */
 		public boolean loadEnvironment(String filename) throws IOException;
+		/**
+		 * Clears the current Fin environment (of all tasks and the undelete stack etc.)
+		 * @param none
+		 * @return void
+		 */
 		public void clearEnvironment();	
+		/**
+		 * Get the list of hashtags in the Fin Environment 
+		 * 
+		 * @return list of hashtags
+		 */
 		public List<String> getHashTags();
+		/**
+		 * Edits the task with the new string as the taskname. Parses the string.
+		 * 
+		 * @return void
+		 */
 		public void editTask(Task task, String string);
+		/**
+		 * Add a tag to the Task object.
+		 * 
+		 * @param Task to tag
+		 * @param String representing the tag
+		 * @return void
+		 */
 		public void addTag(Task task, String string);
+		/**
+		 * Remove a tag from the Task object.
+		 * 
+		 * @param Task to untag
+		 * @param String representing the tag
+		 * @return void
+		 */
 		public void removeTag(Task task, String string);
+		/**
+		 * Remove a duedate from the Task object.
+		 * 
+		 * @param Task to remove the duedate from
+		 * @return void
+		 */
 		public void removeDueDate(Task task);
+		/**
+		 * Sets the current task's dueDate
+		 * 
+		 * @param Task to set
+		 * @param String representing the new due date (in natural language)
+		 * @return void
+		 */
 		public void setDueDate(Task task, String string);
-		public List<Task> undelete() ;
+		/**
+		 * Undoes the last delete action
+		 * 
+		 * @return null if undelete is successful, a list of tasks if undelete stack is empty.
+		 */
+		public List<Task> undelete();
 	}
 
 	public static void main(String[] args) {

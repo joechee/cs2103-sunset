@@ -22,20 +22,14 @@ import java.util.UUID;
  */
 public class FinApplicationSandbox extends FinApplication {
 	final public static FinApplicationSandbox INSTANCE = new FinApplicationSandbox();
-	
-	FinApplicationSandbox() {
-		
-	}
+	FinApplicationSandbox() { }
 
-	
 	@Override
 	public boolean loadEnvironment(String filename) throws IOException {
 		return true;
 	}
-
 	@Override
 	protected void saveEnvironment() {
 		return;
 	}
-
 }

@@ -143,7 +143,7 @@ public class Task {
 
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return getTaskName().replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
+			return unsanitizeString(taskName).replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
 					+ DateParser.naturalDateFromNow(dueDate));
 		} else {
 			return getTaskName();

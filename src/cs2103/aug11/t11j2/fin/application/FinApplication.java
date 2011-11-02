@@ -44,11 +44,6 @@ public class FinApplication implements Fin.IFinApplication {
 	// 
 	private Stack<List<Task>> undeleteStack = new Stack<List<Task>>();
 
-	/**
-	 * Adds a task to the environment.
-	 * 
-	 * @param task
-	 */
 	@Override
 	public void add(Task task) {
 		assert(task!=null);
@@ -98,8 +93,6 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * Get the list of tasks
-	 * 
 	 * @return List of Tasks sorted by pIndex
 	 */
 	@Override
@@ -110,9 +103,6 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * Get the list of tasks with a particular #tag
-	 * 
-	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */
 	@Override
@@ -128,9 +118,6 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 	
 	/**
-	 * Get the list of tasks without a particular #tag
-	 * 
-	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */	
 	@Override
@@ -148,9 +135,6 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 	
 	/**
-	 * Get the list of tasks that don't have a list of #tags
-	 * 
-	 * @param tag
 	 * @return List of Task with tag sorted by pIndex
 	 */	
 	@Override
@@ -168,9 +152,6 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * Get the list of tasks with a list of #tags
-	 * 
-	 * @param tag
 	 * @return List of Task with tags sorted by pIndex
 	 */
 	@Override
@@ -186,12 +167,6 @@ public class FinApplication implements Fin.IFinApplication {
 		return filteredTasks;
 	}
 
-	/**
-	 * Deletes a given task (by UID) from the environment
-	 * 
-	 * @param taskUID
-	 * @return true iff the task is deleted
-	 */
 	@Override
 	public boolean deleteTask(UUID taskUID) {
 		assert(taskUID!=null);
@@ -227,11 +202,6 @@ public class FinApplication implements Fin.IFinApplication {
 		return todelete;		
 	}
 	
-	/**
-	 * Deletes all tasks and updates the undelete stack
-	 * @param taskUID
-	 * @return true if deletes were successful
-	 */
 	public boolean deleteTasks(Collection<UUID> taskUID) {
 		assert(taskUID != null);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
@@ -245,12 +215,6 @@ public class FinApplication implements Fin.IFinApplication {
 		return true;
 	}
 
-	/**
-	 * Mark a task as important / flag
-	 * 
-	 * @param taskUID
-	 * @return true iff the task is flagged
-	 */
 	@Override
 	public boolean flagTask(UUID taskUID) {
 		assert(taskUID != null);
@@ -265,12 +229,7 @@ public class FinApplication implements Fin.IFinApplication {
 			return false;
 		}		
 	}
-	/**
-	 * Unmark a task as important / flag
-	 * 
-	 * @param taskUID
-	 * @return true iff the task is unflagged
-	 */
+
 	@Override
 	public boolean unflagTask(UUID taskUID) {
 		assert(taskUID!=null);
@@ -286,12 +245,6 @@ public class FinApplication implements Fin.IFinApplication {
 		}		
 	}
 
-	/**
-	 * Mark a task as completed
-	 * 
-	 * @param taskUID
-	 * @return true iff the task is marked as finished
-	 */
 	@Override
 	public boolean finTask(UUID taskUID) {
 		assert(taskUID!=null);
@@ -312,12 +265,6 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 	}
 
-	/**
-	 * Unmark a task as completed
-	 * 
-	 * @param taskUID
-	 * @return true iff the task is unmarked as finished
-	 */
 	@Override
 	public boolean unfinTask(UUID taskUID) {
 		assert(taskUID!=null);
@@ -335,11 +282,6 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 	}
 
-	/**
-	 * Clears the current Fin environment (of all tasks and the undelete stack etc.)
-	 * @param none
-	 * @return void
-	 */
 	@Override
 	public void clearEnvironment() {
 		assert(taskMap!=null);
@@ -355,13 +297,6 @@ public class FinApplication implements Fin.IFinApplication {
 		this.saveEnvironment();
 	}
 	
-	/**
-	 * Loads the tasks that was previously saved by the <code>saveEnvironment</code> method from a file.
-	 * @param filename
-	 * @throws IOException
-	 * @return true if environment is successfully loaded
-	 * @see saveEnvironment
-	 */
 	@Override
 	public boolean loadEnvironment(String filename) throws IOException {
 		assert(filename!=null);
@@ -394,11 +329,6 @@ public class FinApplication implements Fin.IFinApplication {
 		return true;
 	}
 	
-	/**
-	 * Get the list of hashtags in the Fin Environment 
-	 * 
-	 * @return list of hashtags
-	 */
 	@Override
 	public List<String> getHashTags() {
 		List<String> tr = new ArrayList<String>();
@@ -433,11 +363,7 @@ public class FinApplication implements Fin.IFinApplication {
 			} 
 		}
 	}
-	/**
-	 * Undoes the last delete action
-	 * 
-	 * @return null if undelete is successful, a list of tasks if undelete stack is empty.
-	 */
+
 	@Override
 	public List<Task> undelete() {
 		if (undeleteStack.isEmpty()) {
@@ -451,12 +377,6 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 		
 	}
-	/**
-	 * Edits the task with the new string as the taskname. Parses the string.
-	 * 
-	 * @return void
-	 * 
-	 */
 
 	@Override
 	public void editTask(Task task, String string) {
