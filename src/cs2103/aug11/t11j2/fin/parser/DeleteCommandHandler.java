@@ -67,12 +67,12 @@ public class DeleteCommandHandler extends ICommandHandler {
 	
 	@Override
 	public String getHelp() {
-		return "delete <task number>\n\tDeletes a task from your tasklist";
+		return "delete <task number>\n\tDeletes a task from your task list";
 	}
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("delete <task number>", "Deletes <task> to your tasklist");
+		return new HelpTablePair("delete <task number>", "Deletes <task> from your task list");
 	}
 	
 	
