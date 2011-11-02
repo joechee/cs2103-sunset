@@ -75,7 +75,7 @@ public class GUI implements IUserInterface {
 	private static final int TABLE_BORDER_WIDTH = 3;
 	
 	public GUI() {
-		logger.info("GUI object created");
+		logger.debug("GUI object created");
 	}
 
 	private Composite createFooter(Composite shell) {
@@ -365,7 +365,7 @@ public class GUI implements IUserInterface {
 
 	@Override
 	public boolean runCommandAndRender(String userArgs) {
-		logger.info("Running command: "+userArgs);
+		logger.debug("Running command: "+userArgs);
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		boolean toReturn;

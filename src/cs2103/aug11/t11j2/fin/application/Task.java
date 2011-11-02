@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class Task {
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
 		parseTags();
-		logger.info("Task Object created!");
+		logger.debug("Task Object created!");
 	}
 	
 	/**
@@ -68,13 +69,27 @@ public class Task {
 		} catch (IllegalArgumentException e) {
 			this.uniqId = UUID.randomUUID();
 		}
-		
+
 		this.taskName = (String) dict.get("Name");
-		this.timeAdded = (Date) dict.get("DateAdded");
-		this.timeDue = (Date) dict.get("DueDate");
+		try {
+			this.timeAdded = (Date) dict.get("DateAdded");
+		} catch (ClassCastException e) {
+			logger.error("Task date added is corrupted! Trying to repair file...");
+			Calendar now = Calendar.getInstance();
+			this.timeAdded = now.getTime();
+		} 
+		
+		try {
+			this.timeDue = (Date) dict.get("DueDate");
+		} catch (ClassCastException e) {
+			logger.debug("Task date due is corrupted! Trying to repair file...");
+			Calendar now = Calendar.getInstance();
+			this.timeDue = now.getTime();
+		} 
+
 
 		parseTags();
-		logger.info("Task Object created from file!");
+		logger.debug("Task Object created from file!");
 	}
 
 	// Parsing methods

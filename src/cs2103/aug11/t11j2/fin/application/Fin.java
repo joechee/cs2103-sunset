@@ -30,11 +30,18 @@ public class Fin {
 	
 	enum LogDestination {FILE,CONSOLE};
 	//Change to LogDestination.CONSOLE to log to console
-	private static Logger logger = initializeLogger(LogDestination.CONSOLE);
+	private static Level LOGGING_LEVEL = Level.INFO;
+	private static final String LOG_FILE = "fin.log";
+	private static final Logger logger = initializeLogger(LogDestination.CONSOLE);
+	
+	
+	
+	
 	public static Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 	private static final String className = "cs2103.aug11.t11j2.fin.application";
+	
 	
 
 
@@ -233,10 +240,11 @@ public class Fin {
 			Logger rootLogger = Logger.getRootLogger();
 			Writer logDest = null;
 			if (dest == LogDestination.FILE){
-				logDest = new FileWriter("fin.log");
+				logDest = new FileWriter(LOG_FILE);
 			} else if (dest == LogDestination.CONSOLE){
 				logDest = new PrintWriter(System.out);
 			} 
+			rootLogger.setLevel(LOGGING_LEVEL);
 			
 			assert (logDest != null);
 
