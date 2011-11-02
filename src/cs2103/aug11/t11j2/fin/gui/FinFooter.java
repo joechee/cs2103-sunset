@@ -19,6 +19,10 @@ import org.eclipse.swt.widgets.Shell;
 import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.Task;
 
+/**
+ * The foot buttons: Add, Search/Show and Help. 
+ * @author Wei Jing
+ */
 public class FinFooter {
 	
 	static final String [] OUTPUT_TEXT = {"add ", "show", "help"};
@@ -35,6 +39,7 @@ public class FinFooter {
 	static final int OVER_HEIGHT = 30;
 	static final int DEFAULT_GAP = 20;
 	static final int HELP_INDEX = 2;
+	static final int CHANGE = 5;
 	static final Color DEFAULT_HINT_COLOR = new Color(null, 100, 100, 100);
 	static final Color DEFAULT_TEXT_COLOR = new Color(null, 0, 0, 0);
 		
@@ -143,8 +148,8 @@ public class FinFooter {
 					@Override
 					public void handleEvent(Event e){
 						Rectangle rt = targetBt.getBounds();
-						rt.x-=5;
-						rt.y-=5;
+						rt.x -= CHANGE;
+						rt.y -= CHANGE;
 						rt.height = OVER_HEIGHT;
 						rt.width = OVER_WIDTH;
 						targetBt.setBounds(rt);
@@ -166,8 +171,8 @@ public class FinFooter {
 					@Override
 					public void handleEvent(Event e){
 						Rectangle rt = targetBt.getBounds();
-						rt.x+=5;
-						rt.y+=5;
+						rt.x += CHANGE;
+						rt.y += CHANGE;
 						rt.height = DEFAULT_HEIGHT;
 						rt.width = DEFAULT_WIDTH;
 						targetBt.setBounds(rt);
