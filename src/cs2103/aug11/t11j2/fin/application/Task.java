@@ -200,12 +200,13 @@ public class Task {
 		parseTags();
 	}
 
-	void removeTag(String tag) {
+	boolean removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
 			this.taskName = this.taskName.replaceAll("(?i)"
 					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
 					"");
 		}
+		return true;
 	}
 
 	public List<String> getTags() {
@@ -277,9 +278,9 @@ public class Task {
 		return this.addTag(FinConstants.FIN_HASH_TAG);
 	}
 
-	void unfin() {
+	boolean unfin() {
 		this.finished = false;
-		this.removeTag(FinConstants.FIN_HASH_TAG);
+		return this.removeTag(FinConstants.FIN_HASH_TAG);
 	}
 
 	void flag() {

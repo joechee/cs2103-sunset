@@ -41,6 +41,7 @@ public class CommandParser {
 		commandHandlers.add(new TagTaskWithTagsCommandHandler());
 		commandHandlers.add(new UndeleteCommandHandler());
 		commandHandlers.add(new TourCommandHandler());
+		commandHandlers.add(new EndTourCommandHandler());
 		commandHandlers.add(new ZenCommandHandler());
 		// install the automated test suite if we are in development mode
 		if (FinConstants.IS_DEVELOPMENT) {
@@ -93,69 +94,6 @@ public class CommandParser {
 		commandHandlerLyst.add(commandHandler);
 	}
 	
-	/**
-	 * Uninstalls the command in the system so that it can't be called.
-	 * @param commandHandler
-	 * @throws FinProductionException
-	 * @see #parse(String, UIContext)
-	 */
-	
-	private void uninstallCommand(ICommandHandler commandHandler) throws FinProductionException {
-		if (commandHandler.getCommandStrings().isEmpty()) {
-			throw (new FinProductionException ("CommandHandler that can't be accessed has been suppressed"));
-		}
-		for (String command : commandHandler.getCommandStrings()) {
-			if (commandHandlers.containsKey(command)) {
-				commandHandlers.remove(command);
-			} else {
-				throw (new FinProductionException("Command was never installed in the first place!"));
-			}
-		}
-		
-		// remove commandHandler from list of command handlers
-		for (ICommandHandler i: commandHandlerLyst) {
-			if (i.getClass() == commandHandler.getClass() ) {
-				commandHandlerLyst.remove(i);
-				break;
-			}
-		}
-		
-	}
-	
-	/**
-	 * Turns CommandParser into TourMode
-	 * @throws FinProductionException 
-	 */
-	
-	public void startTourMode() {
-		assert !tourMode;
-		try {
-			uninstallCommand(new TourCommandHandler());
-			installCommand(new EndTourCommandHandler());
-			tourMode = true;
-		} catch (FinProductionException e) {
-			if (FinConstants.IS_DEVELOPMENT) {
-				logError(e);
-			}
-		}
-		
-
-	}
-	
-	public void endTourMode() {
-		assert tourMode;
-		try {
-			uninstallCommand(new EndTourCommandHandler());
-			installCommand(new TourCommandHandler());
-			tourMode = false;
-		} catch (FinProductionException e) {
-			if (FinConstants.IS_DEVELOPMENT) {
-				logError(e);
-			}
-		}
-
-	}
-
 	/**
 	 * parse a command from the UI
 	 * 

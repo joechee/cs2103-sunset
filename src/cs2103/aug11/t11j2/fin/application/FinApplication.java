@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 /**
  * FinApplication class that handles the environment instance
  * of Fin (essentially manages what task is in memory, serializing
@@ -25,9 +27,10 @@ import java.util.UUID;
  */
 public class FinApplication implements Fin.IFinApplication {
 	final public static FinApplication INSTANCE = new FinApplication();
+	Logger logger = Logger.getLogger(this.getClass());
 	
 	FinApplication () {
-		
+		logger.info("FinApplication Object created");
 	}
 
 	String taskFileName = "";
@@ -55,6 +58,7 @@ public class FinApplication implements Fin.IFinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
+		logger.info("Task added to internal datamodel!");
 		this.saveEnvironment();
 	}
 	
@@ -194,7 +198,9 @@ public class FinApplication implements Fin.IFinApplication {
 		Task deletedTask = removeTask(taskUID);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		deletedTaskLyst.add(deletedTask);
+		logger.info("Task deleted from internal datamodel!");
 		undeleteStack.push(deletedTaskLyst);
+		logger.info("Task added to undelete stack");
 		return true;
 	}
 	
@@ -233,7 +239,9 @@ public class FinApplication implements Fin.IFinApplication {
 			Task deletedTask = removeTask(deleteID);
 			deletedTaskLyst.add(deletedTask);
 		}
+		logger.info("Tasks deleted from internal datamodel!");
 		undeleteStack.push(deletedTaskLyst);
+		logger.info("Tasks added to undelete stack!");
 		return true;
 	}
 
@@ -247,12 +255,13 @@ public class FinApplication implements Fin.IFinApplication {
 	public boolean flagTask(UUID taskUID) {
 		assert(taskUID != null);
 		Task task = taskMap.get(taskUID);
-
 		if (task != null) {
 			task.flag();
+			logger.info("Tasks marked as important!");
 			this.saveEnvironment();
 			return true;
 		} else {
+			logger.fatal("Task selected is null! Error!");
 			return false;
 		}		
 	}
@@ -269,6 +278,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			task.unflag();
+			logger.info("Tasks marked as unimportant!");
 			this.saveEnvironment();
 			return true;
 		} else {
@@ -289,6 +299,12 @@ public class FinApplication implements Fin.IFinApplication {
 
 		if (task != null) {
 			boolean finTask = task.fin();
+			if (finTask) {
+				logger.info("Tasks marked as finished!");
+			} else {
+				logger.warn("Task was already finished!");
+			}
+			
 			this.saveEnvironment();
 			return finTask;
 		} else {
@@ -308,10 +324,13 @@ public class FinApplication implements Fin.IFinApplication {
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
-			task.unfin();
+			if (task.unfin()) {
+				logger.info("Tasks marked as unfinished!");
+			}
 			this.saveEnvironment();
 			return true;
 		} else {
+			logger.warn("Task was never finished to begin with!");
 			return false;
 		}
 	}
@@ -332,6 +351,7 @@ public class FinApplication implements Fin.IFinApplication {
 		this.undeleteStack.clear();
 		
 		undeleteStack.clear();
+		logger.info("Environment Cleared!");
 		this.saveEnvironment();
 	}
 	
@@ -355,13 +375,17 @@ public class FinApplication implements Fin.IFinApplication {
 			fs.unserialize(filename, true);
 		} catch (FileNotFoundException fnfe) {
 			clearEnvironment();
+			logger.warn("Tasks file not found! Creating file...");
 			fs.serialize(filename);
+			logger.info("Tasks file created!");
 			return false;
 		} catch (IOException e) {
+			logger.warn("Error loading file... trying backup file");
 			try {
 				fs.unserialize(filename+".bak");
 				return false;
 			} catch (IOException f) {
+				logger.fatal("Files cannot be loadd. Please check if you have write access to the disk");
 				return false;
 			}
 
