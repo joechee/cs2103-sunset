@@ -32,9 +32,6 @@ public final class FinConstants {
 	public static final String IMPORTANT_HASH_TAG = "impt";
 	public static final String FIN_HASH_TAG = "fin";
 
-	public static final String DROPBOX_APP_KEY = "cehlpiwo5oj19y2";
-	public static final String DROPBOX_APP_SECRET = "8e8iniel7pzy1yc";
-
 	// Shouldn't start with HASH_TAG_CHAR/META_TAG_CHAR/ESCAPE_CHAR
 	public static final String DUEDATE_PLACEHOLDER = "!-!DUEDATE!-!";
 

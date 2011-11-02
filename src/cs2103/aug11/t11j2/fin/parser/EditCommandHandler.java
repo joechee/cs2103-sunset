@@ -94,11 +94,6 @@ public class EditCommandHandler extends ICommandHandler {
 			context.getFinApplication().setDueDate(task,tokens[1] + " " + tokens[2]);
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
 					CommandResult.RenderType.TASK, task);			
-		} else if (tokens[1].equals("undue")) {
-			// remove due date
-			context.getFinApplication().removeDueDate(task);
-			return new CommandResult(this, tokens[0] + " " + tokens[1],
-					CommandResult.RenderType.TASK, task);			
 		} else {
 			return showHelp();
 		}

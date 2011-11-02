@@ -389,6 +389,7 @@ public class FinApplication implements Fin.IFinApplication {
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
+		logger.info("Task edited!");
 		this.saveEnvironment();
 	}
 
@@ -415,13 +416,7 @@ public class FinApplication implements Fin.IFinApplication {
 		
 	}
 
-	@Override
-	public void removeDueDate(Task task) {
-		assert(task!=null);
-		task.removeDueDate();
-		this.saveEnvironment();
-		
-	}
+
 
 	@Override
 	public void setDueDate(Task task, String string) {

@@ -7,13 +7,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
-	/**
-	 * taskName should NEVER be called directly as it should always be accessed by getTaskName in it's external
-	 * unsanitized form
-	 */
+	
 	private String taskName;
 	private List<String> tags = new ArrayList<String>();
 	private Date timeDue;
@@ -21,9 +20,14 @@ public class Task {
 	private UUID uniqId;
 	private boolean finished;
 	private boolean important;
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	// Constructors
 	
+	/**
+	 * Parses the taskname and creates a task with the appropriate date and task description.
+	 *
+	 **/
 	
 	public Task(String taskName) {
 		taskName = sanitizeString(taskName);
@@ -41,14 +45,16 @@ public class Task {
 		this.timeDue = dueDate;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
-
-
 		parseTags();
+		logger.info("Task Object created!");
 	}
 	
+	/**
+	 * Parses the Task from data from the serializer
+	 *
+	 **/	
 
-	public Task(Map<String, Object> dict) {
-		
+	Task(Map<String, Object> dict) {
 		if (dict.get("Name") == null) {
 			dict.put("Name","Corrupted task");
 		}
@@ -68,6 +74,7 @@ public class Task {
 		this.timeDue = (Date) dict.get("DueDate");
 
 		parseTags();
+		logger.info("Task Object created from file!");
 	}
 
 	// Parsing methods
@@ -94,6 +101,11 @@ public class Task {
 			this.finished = true;
 		}
 	}
+	/**
+	 * Sanitizes the hash tag, i.e. Returns a string that has only the valid characters in a hash tag.
+	 * @param s
+	 * @return string
+	 */
 
 	public static String sanitizeHashTag(String s) {  
 		StringBuilder stringBuilder = new StringBuilder();
@@ -139,12 +151,11 @@ public class Task {
 
 	public String getEditableTaskName() {
 		Date dueDate = this.getDueDate();
+		
 		String taskName = this.taskName;
-
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return unsanitizeString(taskName).replace(FinConstants.DUEDATE_PLACEHOLDER, "due "
-					+ DateParser.naturalDateFromNow(dueDate));
+			return unsanitizeString(replaceWithDate(taskName,dueDate));
 		} else {
 			return getTaskName();
 		}		
@@ -153,15 +164,38 @@ public class Task {
 	
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
-		String taskName = unsanitizeString(this.taskName);
-		if ((dueDate != null)
-				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, "["
-					+ DateParser.naturalDateFromNow(dueDate) + "]");
-		} else {
-			return taskName;
-		}
+		String taskName = this.taskName;
+		if (dueDate != null) {
+			taskName = replaceWithDate(taskName, dueDate);
+		} 
+		return unsanitizeString(taskName);
 	}
+	
+
+
+	private String replaceWithDate(String taskName, Date dueDate) {
+		return replaceWord(taskName,FinConstants.DUEDATE_PLACEHOLDER,"["
+				+ DateParser.naturalDateFromNow(dueDate) + "]");
+		
+	}
+	
+	private String replaceWord(String taskName, String find, String replace) {
+		taskName = " "+taskName;
+		String returnName = taskName.replace(" "+find, " "+replace);
+		if (returnName.equals(taskName)) {
+			returnName = taskName.replace(FinConstants.DUEDATE_PLACEHOLDER + " ", replace+" ");
+		} 
+		if (returnName.equals(taskName)) {
+			returnName = taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, replace);			
+		}
+		
+		if (returnName.equals(taskName)) {
+			logger.error("No String replaced even though date was in! Possible sync issue");
+		}
+		
+		return returnName.substring(1);
+	}
+	
 	
 
 
@@ -171,17 +205,11 @@ public class Task {
 		}
 		String sanitizedTag = sanitizeHashTag(tag);
 		this.tags.add(sanitizedTag);
-		setTaskName(getTaskName().trim() + " " + FinConstants.HASH_TAG_CHAR
-				+ sanitizedTag);
+		this.taskName = this.taskName + " " + FinConstants.HASH_TAG_CHAR + sanitizedTag;
 		return true;
 	}
 
-	private void setTaskName(String string) {
-		this.taskName = sanitizeString(string);
-	}
-	
 	void edit(String taskName) {
-		
 		assert(taskName!=null);
 		taskName = sanitizeString(taskName);
 		DateParser dateParser = new DateParser();
@@ -202,9 +230,14 @@ public class Task {
 
 	boolean removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
+			this.taskName = " " + this.taskName;			
 			this.taskName = this.taskName.replaceAll("(?i)"
-					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
+					+ " "+FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
 					"");
+			if (this.taskName.startsWith(" ")) {
+				this.taskName = this.taskName.substring(1);
+			}
+
 		}
 		return true;
 	}
@@ -234,13 +267,7 @@ public class Task {
 		}
 	}
 
-	void removeDueDate() {
-		this.timeDue = null;
-		if (this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			this.taskName = this.taskName.replace(
-					FinConstants.DUEDATE_PLACEHOLDER, "").trim();
-		}
-	}
+
 
 	public Date getDueDate() {
 		return timeDue;

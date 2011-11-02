@@ -57,6 +57,9 @@ import cs2103.aug11.t11j2.fin.parser.TourCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 
 public class GUI implements IUserInterface {
+	// Logger
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private static boolean EXIT = false;
 	
 	// shell for SWT
@@ -64,19 +67,14 @@ public class GUI implements IUserInterface {
 	static FinCLIComposite cli;
 	
 	final private UIContext context = new UIContext(FinApplication.INSTANCE);
-	private Logger logger = null;
+	
 	private IFinAutomation finTour = null;
 	private boolean isInTour = false;
 	
 	// Help table constant
 	private static final int TABLE_BORDER_WIDTH = 3;
 	
-	private void initializeLogger() {
-		logger = Logger.getLogger(this.getClass());
-	}
-	
 	public GUI() {
-		initializeLogger();
 		logger.info("GUI object created");
 	}
 
@@ -367,6 +365,7 @@ public class GUI implements IUserInterface {
 
 	@Override
 	public boolean runCommandAndRender(String userArgs) {
+		logger.info("Running command: "+userArgs);
 		CommandResult feedback = null;
 		feedback = runCommand(userArgs);
 		boolean toReturn;
@@ -743,6 +742,7 @@ public class GUI implements IUserInterface {
 	}
 
 	private void handerUserInput(String userInput){ 
+		logger.info("User typed: "+userInput);
 		if (runCommandAndRender(userInput)) {
 			EXIT = true;
 		}

@@ -190,13 +190,7 @@ public class Fin {
 		 * @return void
 		 */
 		public void removeTag(Task task, String string);
-		/**
-		 * Remove a duedate from the Task object.
-		 * 
-		 * @param Task to remove the duedate from
-		 * @return void
-		 */
-		public void removeDueDate(Task task);
+
 		/**
 		 * Sets the current task's dueDate
 		 * 
@@ -222,7 +216,9 @@ public class Fin {
 		} catch (IOException e) {
 			System.out.print(e.getMessage());
 			e.printStackTrace();
-		} 
+		} catch (Exception e) {
+			logger.fatal("Fatal Error!",e);
+		}
 		logger.info("System exited cleanly");
 
 	}
