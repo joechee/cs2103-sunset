@@ -1,6 +1,9 @@
 package cs2103.aug11.t11j2.fin.application;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +11,8 @@ import java.util.UUID;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.WriterAppender;
 
 import cs2103.aug11.t11j2.fin.ui.CLI;
 import cs2103.aug11.t11j2.fin.ui.GUI;
@@ -23,21 +28,16 @@ import cs2103.aug11.t11j2.fin.ui.GUI;
  */
 public class Fin {
 	
-	/* Constants */
-
-	public static Fin.IUserInterface DEFAULT_UI = null;
+	enum LogDestination {FILE,CONSOLE};
+	//Change to LogDestination.CONSOLE to log to console
+	private static Logger logger = initializeLogger(LogDestination.CONSOLE);
+	public static Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
 	private static final String className = "cs2103.aug11.t11j2.fin.application";
 	
-	private static Logger logger;
-	
-	private static void initializeConstants() {
-		DEFAULT_UI = new GUI();
-	}
 
-	
-	
+
 	
 	public interface IUserInterface {
 		/**
@@ -215,8 +215,7 @@ public class Fin {
 
 	public static void main(String[] args) {
 		try {
-			initializeLogger();
-			initializeConstants();
+			logger.info("Entering application.");
 			parseArgs(args);
 		} catch (IllegalArgumentException e) {
 			System.out.print(e.getMessage());
@@ -229,11 +228,31 @@ public class Fin {
 	}
 
 
-	private static void initializeLogger() {
-		logger = Logger.getLogger(className);
 
-		BasicConfigurator.configure();
-		logger.info("Entering application.");
+
+
+	private static Logger initializeLogger(LogDestination dest) {
+		
+		try {
+			Logger rootLogger = Logger.getRootLogger();
+			Writer logDest = null;
+			if (dest == LogDestination.FILE){
+				logDest = new FileWriter("fin.log");
+			} else if (dest == LogDestination.CONSOLE){
+				logDest = new PrintWriter(System.out);
+			} 
+			
+			assert (logDest != null);
+
+			WriterAppender test = new WriterAppender(new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN),logDest);
+			rootLogger.addAppender(test);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+
+		
+		return Logger.getLogger(className);
 	}
 
 	private static void parseArgs(String[] args)
