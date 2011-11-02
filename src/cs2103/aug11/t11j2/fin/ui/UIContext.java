@@ -49,14 +49,6 @@ public class UIContext {
 		this.taskList = tasks;
 	}
 
-	void setStatus(String newStatus) {
-		status = newStatus;
-	}
-
-	String getStatus() {
-		return status;
-	}
-
 	void setFilter(String filter) {
 		this.filter = filter;
 	}
