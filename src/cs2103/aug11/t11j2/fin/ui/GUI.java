@@ -7,7 +7,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -50,6 +49,7 @@ import cs2103.aug11.t11j2.fin.parser.DeleteAllCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.EndTourCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.HelpCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.HelpTablePair;
 import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
@@ -63,7 +63,7 @@ public class GUI implements IUserInterface {
 	private static boolean EXIT = false;
 	
 	// shell for SWT
-	Shell shell = null;
+	static Shell shell = null;
 	static FinCLIComposite cli;
 	
 	final private UIContext context = new UIContext(FinApplication.INSTANCE);
@@ -73,6 +73,12 @@ public class GUI implements IUserInterface {
 	
 	// Help table constant
 	private static final int TABLE_BORDER_WIDTH = 3;
+	
+	// Label
+	private Label l = null;
+	
+	// Footer
+	private Composite footer;
 	
 	public GUI() {
 		logger.debug("GUI object created");
@@ -94,8 +100,10 @@ public class GUI implements IUserInterface {
 		// creates gradient for footer
 		Image newImage = new Image(shell.getDisplay(), 1, 30);
 		GC gc = new GC(newImage);
-		gc.setForeground(new Color(null, 43, 72, 153));
-		gc.setBackground(new Color(null, 36, 64, 128));
+		Color skyBlue = new Color(null, 43, 72, 153);
+		Color navyBlue = new Color(null, 36, 64, 128);
+		gc.setForeground(skyBlue);
+		gc.setBackground(navyBlue);
 		gc.fillGradientRectangle(0, 0, 1, 30, true);
 		gc.dispose();
 		footer.setBackgroundImage(newImage);
@@ -130,10 +138,12 @@ public class GUI implements IUserInterface {
 					public void handleEvent(Event event) {
 						Button b = (Button)event.widget;
 						if (event.text.equals("add")) {
-							cli.setHint("add <task>", "add a new task");
+							HelpTablePair addHelp = new AddCommandHandler().getHelpTablePair();
+							cli.setHint(addHelp.getUsage(), addHelp.getDescription());	
 						} else if(event.text.equals("show")) {
-							cli.setHint("show", "show all the tasks in Fin.");
-							
+							HelpTablePair showHelp = new ShowCommandHandler().getHelpTablePair();
+							cli.setHint(showHelp.getUsage(), showHelp.getDescription());	
+
 							for (Control c : tip.getChildren()) {
 								c.dispose();
 							}
@@ -209,7 +219,8 @@ public class GUI implements IUserInterface {
 							}
 							
 						} else if (event.text.equals("help")) {
-							cli.setHint("help", "show help for Fin.");
+							HelpTablePair helpHelp = new HelpCommandHandler().getHelpTablePair();
+							cli.setHint(helpHelp.getUsage(), helpHelp.getDescription());	
 						}
 					}
 				},
@@ -243,7 +254,11 @@ public class GUI implements IUserInterface {
 							cli.setText("add ");
 							cli.forceFocus();
 						} else if(event.text.equals("show")) {
-							cli.runInput("show");							
+							tip.setVisible(false);
+							for (Control c : tip.getChildren()) {
+								c.dispose();
+							}
+							cli.runInput("show");	
 						} else if (event.text.equals("help")) {
 							cli.runInput("help");
 						}
@@ -251,7 +266,7 @@ public class GUI implements IUserInterface {
 				});
 
 		
-		Label l = new Label(footer, SWT.NONE);
+		l = new Label(footer, SWT.NONE);
 		l.setText("Fin.");
 		l.setFont(new Font(shell.getDisplay(), FinConstants.FOOTER_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.BOLD));
 
@@ -260,9 +275,7 @@ public class GUI implements IUserInterface {
 
 		l.setForeground(new Color(null, 255, 255, 255));
 		l.setBackgroundImage(newImage);
-				
 		footer.layout(true);
-
 		return footer;
 	}
 	
@@ -298,10 +311,8 @@ public class GUI implements IUserInterface {
 			}
 		});
 		
-		createFooter(shell);
-
-
-		
+		footer = createFooter(shell);
+				
 
 	    ImageData finIconData = new ImageData(this.getClass().getResourceAsStream("fin_icon.png"));
 	    Image finIcon = new Image(display, finIconData);
@@ -310,8 +321,10 @@ public class GUI implements IUserInterface {
 
 	    shell.setText("Fin.");
 	    shell.setImage(finIcon);
-		shell.layout(true);
-
+	    shell.layout(true);
+		
+		
+		
 		refreshContext();
 		displayTasks();
 		cli.forceFocus();
@@ -606,17 +619,19 @@ public class GUI implements IUserInterface {
 		context.setFinApplication(FinApplicationSandbox.INSTANCE);
 		finTour = new FinTour(this, context);
 		isInTour = true;
-		//CommandParser.INSTANCE.startTourMode();
 		finTour.beginStep();
-		
+		l.setText("Fin. Tour");
+		footer.layout(true);
 	}
 	
 	private void endTour() {
 		context.setFinApplication(FinApplication.INSTANCE);
-		//CommandParser.INSTANCE.endTourMode();
 		isInTour = false;
-		
+		l.setText("Fin.");
+		footer.layout(true);
+		shell.update();
 		runCommandAndRender("show");
+
 	}
 
 	/**
@@ -709,7 +724,7 @@ public class GUI implements IUserInterface {
 		List<Task> imptTask = new ArrayList<Task>();
 		List<Task> normalTask = new ArrayList<Task>();
 		List<Task> newContext = new ArrayList<Task>();
-
+		
 		// shows the important task above
 		// followed by normal task
 		for (Task t : taskList) {
@@ -723,7 +738,7 @@ public class GUI implements IUserInterface {
 		for (Task t : imptTask) newContext.add(t);
 		for (Task t : normalTask) newContext.add(t);
 		context.setTaskList(newContext);
-
+	
 		cli.clear();
 		if (taskList.size() == 0) {
 			if (context.getFilter().length() == 0) {
@@ -739,10 +754,11 @@ public class GUI implements IUserInterface {
 			}
 			cli.addTaskList(newContext);
 		}
+		
 	}
 
 	private void handerUserInput(String userInput){ 
-		logger.info("User typed: "+userInput);
+		logger.info("User evoked: "+userInput);
 		if (runCommandAndRender(userInput)) {
 			EXIT = true;
 		}
