@@ -134,10 +134,22 @@ public class Task {
 
 		return stringBuilder.toString();
 	}
+	
+	/**
+	 * Tokenizes the task
+	 * @param task
+	 * @return
+	 */
 
 	private static String[] tokenize(String task) {
 		return task.trim().split("\\s");
 	}
+	
+	/**
+	 * 
+	 * @param s
+	 * @return true if String is a valid hash tag, false otherwise
+	 */
 
 	public static boolean isHashTag(String s) {
 		if (s.isEmpty()) {
@@ -167,15 +179,21 @@ public class Task {
 	public String getEditableTaskName() {
 		Date dueDate = this.getDueDate();
 		
-		String taskName = this.taskName;
+		
 		if ((dueDate != null)
 				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			return unsanitizeString(replaceWithDate(taskName,dueDate));
+			//return unsanitizeString(replaceWithDate(taskName,dueDate));
+			return unsanitizeString(replaceWord(this.taskName,FinConstants.DUEDATE_PLACEHOLDER, "due "
+					+ DateParser.naturalDateFromNow(dueDate)));
 		} else {
 			return getTaskName();
 		}		
 	}
 
+	/**
+	 * Returns the parsed taskname. 
+	 * @return
+	 */
 	
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
@@ -186,8 +204,6 @@ public class Task {
 		return unsanitizeString(taskName);
 	}
 	
-
-
 	private String replaceWithDate(String taskName, Date dueDate) {
 		return replaceWord(taskName,FinConstants.DUEDATE_PLACEHOLDER,"["
 				+ DateParser.naturalDateFromNow(dueDate) + "]");
@@ -211,7 +227,19 @@ public class Task {
 		return returnName.substring(1);
 	}
 	
+	private String sanitizeString(String s) {
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR), 
+				Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR);
+		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER, FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
+		return s;
+	}
 	
+	private String unsanitizeString(String s) {
+		s = s.replace(FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER,FinConstants.DUEDATE_PLACEHOLDER);
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR, 
+				Character.toString(FinConstants.ESCAPE_CHAR));
+		return s;
+	}	
 
 
 	boolean addTag(String tag) {
@@ -360,19 +388,7 @@ public class Task {
 		return this.important;
 	}
 	
-	private String sanitizeString(String s) {
-		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR), 
-				Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR);
-		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER, FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
-		return s;
-	}
-	
-	private String unsanitizeString(String s) {
-		s = s.replace(FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER,FinConstants.DUEDATE_PLACEHOLDER);
-		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR, 
-				Character.toString(FinConstants.ESCAPE_CHAR));
-		return s;
-	}
+
 
 	@Override
 	public String toString() {

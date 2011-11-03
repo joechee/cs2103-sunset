@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
 
+import cs2103.aug11.t11j2.fin.application.FinLogger.LogDestination;
 import cs2103.aug11.t11j2.fin.ui.CLI;
 import cs2103.aug11.t11j2.fin.ui.GUI;
 
@@ -28,11 +29,8 @@ import cs2103.aug11.t11j2.fin.ui.GUI;
  */
 public class Fin {
 	
-	enum LogDestination {FILE,CONSOLE};
-	//Change to LogDestination.CONSOLE to log to console
-	private static Level LOGGING_LEVEL = Level.INFO;
-	private static final String LOG_FILE = "fin.log";
-	private static final Logger logger = initializeLogger(LogDestination.CONSOLE);
+
+	private static final Logger logger = FinLogger.initializeLogger(LogDestination.CONSOLE);
 	
 	
 	
@@ -234,30 +232,7 @@ public class Fin {
 
 
 
-	private static Logger initializeLogger(LogDestination dest) {
-		
-		try {
-			Logger rootLogger = Logger.getRootLogger();
-			Writer logDest = null;
-			if (dest == LogDestination.FILE){
-				logDest = new FileWriter(LOG_FILE);
-			} else if (dest == LogDestination.CONSOLE){
-				logDest = new PrintWriter(System.out);
-			} 
-			rootLogger.setLevel(LOGGING_LEVEL);
-			
-			assert (logDest != null);
 
-			WriterAppender test = new WriterAppender(new PatternLayout(PatternLayout.TTCC_CONVERSION_PATTERN),logDest);
-			rootLogger.addAppender(test);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
-
-		
-		return Logger.getLogger(className);
-	}
 
 	private static void parseArgs(String[] args)
 			throws IllegalArgumentException, IOException {

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -14,11 +15,12 @@ import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
+import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 import cs2103.aug11.t11j2.fin.application.*;
 
 public class AddCommandHandlerTest implements Fin.IUserInterface{
-	
-	UIContext context = new UIContext(FinApplication.INSTANCE);
+	Logger init = TestLogger.initializeLogger();
+	UIContext context = new UIContextTest(FinApplication.INSTANCE);
 	AddCommandHandler add = new AddCommandHandler();
 	
 	ArrayList <String> commands = new ArrayList<String>();
@@ -29,6 +31,7 @@ public class AddCommandHandlerTest implements Fin.IUserInterface{
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		
 	}
 
 	@AfterClass
@@ -46,6 +49,7 @@ public class AddCommandHandlerTest implements Fin.IUserInterface{
 
 	@Test
 	public void testExecuteCommands() throws FinProductionException {
+		
 		String exp;
 		int passed = 0;
 		
