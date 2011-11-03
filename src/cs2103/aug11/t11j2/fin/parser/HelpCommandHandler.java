@@ -82,12 +82,12 @@ public class HelpCommandHandler extends ICommandHandler {
 
 	@Override
 	public String getHelp() {
-		return "help\n\tBrings you to this page. Hope that helped!";
+		return "help\n\tBrings you to the help page. Hope that helped!";
 	}
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("help", "Brings you to this page. For more info, type \"help <command>\"");
+		return new HelpTablePair("help", "show help for Fin.");
 	}
 	
 	

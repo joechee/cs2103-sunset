@@ -38,7 +38,6 @@ public class Fin {
 	public static Fin.IUserInterface DEFAULT_UI = new GUI();
 	public final static String DEFAULT_FILENAME = "fin.yaml";
 	public static final String fileExtension = ".yaml";
-	private static final String className = "cs2103.aug11.t11j2.fin.application";
 	
 	
 
