@@ -1,6 +1,7 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.application.Task;
@@ -38,6 +39,7 @@ public class EditCommandHandler extends ICommandHandler {
 		}
 
 		int taskIndex;
+		
 		String[] tokens = arguments.split("\\s+",3);
 		
 		try {
@@ -56,6 +58,11 @@ public class EditCommandHandler extends ICommandHandler {
 	}
 	
 	CommandResult executeEditMethods(String[] tokens, Task task, UIContext context) throws FinProductionException  {
+		
+		if (tokens.length <= 1) {
+			return showHelp();
+		}
+		
 		tokens[1] = tokens[1].trim();
 		
 		if (tokens[1].equals("to")) {
