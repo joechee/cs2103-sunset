@@ -38,9 +38,9 @@ public class Task {
 
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
-		boolean parsed = dateParser.parse(taskName);
+		boolean hasDate = dateParser.parse(taskName);
 
-		if (parsed) {
+		if (hasDate) {
 			this.parsedTaskName = dateParser.getParsedString();
 			dueDate = dateParser.getParsedDate();
 		} else {
@@ -234,7 +234,7 @@ public class Task {
 		String unparsedTaskName = replaceWord(parsedTaskName,
 				FinConstants.DUEDATE_PLACEHOLDER,
 				"[" + DateParser.naturalDateFromNow(dueDate) + "]");
-		
+
 		if (parsedTaskName.equals(unparsedTaskName)) {
 			logger.error("No string replaced even though date was in! Possible sync issue.");
 		}
@@ -243,11 +243,15 @@ public class Task {
 	}
 
 	/**
-	 * Replaces the given search string with the replacement string in the task name.
+	 * Replaces the given search string with the replacement string in the task
+	 * name.
 	 * 
-	 * @param taskName - the parsed/unparsed task name
-	 * @param find - the search string
-	 * @param replace - the replacement string
+	 * @param taskName
+	 *            - the parsed/unparsed task name
+	 * @param find
+	 *            - the search string
+	 * @param replace
+	 *            - the replacement string
 	 * @return the given task name with replacements done, if any
 	 */
 	private String replaceWord(String taskName, String find, String replace) {
@@ -270,10 +274,11 @@ public class Task {
 	}
 
 	/**
-	 * Replaces escape characters and due date placeholders that may be in the input string.</br>
-	 * Used to sanitize the task name.
+	 * Replaces escape characters and due date placeholders that may be in the
+	 * input string.</br> Used to sanitize the task name.
 	 * 
-	 * @param s - string to be sanitized
+	 * @param s
+	 *            - string to be sanitized
 	 * @return string that has been sanitized
 	 */
 	private String sanitizeString(String s) {
@@ -286,10 +291,11 @@ public class Task {
 	}
 
 	/**
-	 * Replaces the sanitized text with what should be the input text.</br>
-	 * Used to unsanitize the task name.
+	 * Replaces the sanitized text with what should be the input text.</br> Used
+	 * to unsanitize the task name.
 	 * 
-	 * @param s - string that has been sanitized
+	 * @param s
+	 *            - string that has been sanitized
 	 * @return string that has been restored to pre-sanitized state.
 	 */
 	private String unsanitizeString(String s) {
@@ -305,12 +311,14 @@ public class Task {
 	/**
 	 * Adds a tag to the task if it does not already have it.
 	 * 
-	 * @param tag - tag to be added
-	 * @return true, if tag was added successfully, false if tag was already present
+	 * @param tag
+	 *            - tag to be added
+	 * @return true, if tag was added successfully, false if tag was already
+	 *         present
 	 */
 	boolean addTag(String tag) {
 		String sanitizedTag = sanitizeHashTag(tag);
-		
+
 		if (hasTag(sanitizedTag)) {
 			return false;
 		} else {
@@ -321,39 +329,62 @@ public class Task {
 		}
 	}
 
+	/**
+	 * Edits the task name of the Task.
+	 * 
+	 * @param taskName
+	 *            - the new task name for the Task
+	 */
 	void edit(String taskName) {
 		assert (taskName != null);
+
+		// prevent abuse of special characters
 		taskName = sanitizeString(taskName);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		tags.clear();
-		boolean parsed = dateParser.parse(taskName);
+		boolean hasDate = dateParser.parse(taskName);
 
-		if (parsed) {
-			taskName = dateParser.getParsedString();
+		if (hasDate) {
+			this.parsedTaskName = dateParser.getParsedString();
 			dueDate = dateParser.getParsedDate();
+		} else {
+			this.parsedTaskName = taskName;
 		}
-
-		this.parsedTaskName = taskName;
 		this.timeDue = dueDate;
-
+		this.timeAdded = new Date();
 		parseTags();
 	}
 
+	/**
+	 * Removes the given tag from the task if it has it.
+	 * 
+	 * @param tag
+	 *            - the tag to be removed
+	 * @return true, if the Task has the tag, false otherwise
+	 */
 	boolean removeTag(String tag) {
-		if (this.tags.remove(tag.toLowerCase().trim())) {
-			this.parsedTaskName = " " + this.parsedTaskName;
-			this.parsedTaskName = this.parsedTaskName.replaceAll("(?i)" + " "
-					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
-					"");
-			if (this.parsedTaskName.startsWith(" ")) {
-				this.parsedTaskName = this.parsedTaskName.substring(1);
-			}
+		String sanitizedTag = sanitizeHashTag(tag);
 
+		if (this.tags.remove(sanitizedTag.toLowerCase().trim())) {
+			this.parsedTaskName = " " + this.parsedTaskName;
+			this.parsedTaskName = this.parsedTaskName.replaceAll("\\s"
+					+ FinConstants.HASH_TAG_CHAR + sanitizedTag.toLowerCase(),
+					" ");
+
+			// compensate for added whitespace
+			this.parsedTaskName = this.parsedTaskName.substring(1);
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 
+	/**
+	 * Returns the list of tags associated with the task.
+	 * 
+	 * @return tags associated with this task
+	 */
 	public List<String> getTags() {
 		List<String> newTags = new ArrayList<String>();
 		for (String t : tags) {
@@ -362,21 +393,42 @@ public class Task {
 		return newTags;
 	}
 
-	void setDueDate(Date dueDate) {
+	/**
+	 * Sets the due date to the date specified by the argument and adds a due
+	 * date placeholder if not already present.
+	 * 
+	 * @param dueDate
+	 *            - the new due date
+	 * @return true if the task already has a due date, false otherwise
+	 */
+	boolean setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
-		if (!this.parsedTaskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+		boolean hasDueDate = this.parsedTaskName
+				.contains(FinConstants.DUEDATE_PLACEHOLDER);
+
+		if (!hasDueDate) {
 			this.parsedTaskName = this.parsedTaskName.concat(" "
 					+ FinConstants.DUEDATE_PLACEHOLDER);
 		}
+		return hasDueDate;
 	}
 
-	void setDueDate(String string) {
+	/**
+	 * Sets the due date if the string passed in can be parsed to a valid date.
+	 * 
+	 * @param string
+	 *            - the string to be parsed into a date
+	 * @return true if the string passed in can be parsed into a date, false
+	 *         otherwise
+	 */
+	boolean setDueDate(String string) {
 		DateParser dp = new DateParser();
-		boolean parsed = dp.parse(string);
+		boolean isValidDate = dp.parse(string);
 
-		if (parsed) {
+		if (isValidDate) {
 			this.setDueDate(dp.getParsedDate());
 		}
+		return isValidDate;
 	}
 
 	public Date getDueDate() {
