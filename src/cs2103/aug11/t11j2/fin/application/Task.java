@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
 
 public class Task {
-	
-	private String taskName;
+
+	private String parsedTaskName;
 	private List<String> tags = new ArrayList<String>();
 	private Date timeDue;
 	private Date timeAdded;
@@ -24,105 +24,114 @@ public class Task {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	// Constructors
-	
+
 	/**
-	 * Parses the taskname and creates a task with the appropriate date and task description.
-	 *
+	 * Parses the taskname and creates a task with the appropriate date and task
+	 * description.
+	 * 
+	 * @param taskName
+	 *            - the input string containing the unparsed task
 	 **/
-	
 	public Task(String taskName) {
+		// prevent abuse of special characters
 		taskName = sanitizeString(taskName);
-		
+
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
 		boolean parsed = dateParser.parse(taskName);
 
 		if (parsed) {
-			taskName = dateParser.getParsedString();
+			this.parsedTaskName = dateParser.getParsedString();
 			dueDate = dateParser.getParsedDate();
+		} else {
+			this.parsedTaskName = taskName;
 		}
 
-		this.taskName = taskName;
 		this.timeDue = dueDate;
 		this.uniqId = UUID.randomUUID();
 		this.timeAdded = new Date();
 		parseTags();
+
 		logger.debug("Task Object created!");
 	}
-	
-	/**
-	 * Parses the Task from data from the serializer
-	 *
-	 **/	
 
+	/**
+	 * Parses the Task from data from the serializer.
+	 * 
+	 * @param dict
+	 *            - the Map containing the data for the task
+	 **/
 	Task(Map<String, Object> dict) {
 		if (dict.get("Name") == null) {
-			dict.put("Name","Corrupted task");
+			dict.put("Name", "Corrupted task");
 		}
 		if (dict.get("UID") == null) {
 			dict.put("UID", UUID.randomUUID().toString());
 		}
-		
-		
+
 		try {
 			this.uniqId = UUID.fromString((String) dict.get("UID"));
 		} catch (IllegalArgumentException e) {
 			this.uniqId = UUID.randomUUID();
 		}
 
-		this.taskName = (String) dict.get("Name");
+		this.parsedTaskName = (String) dict.get("Name");
 		try {
 			this.timeAdded = (Date) dict.get("DateAdded");
 		} catch (ClassCastException e) {
 			logger.error("Task date added is corrupted! Trying to repair file...");
 			Calendar now = Calendar.getInstance();
 			this.timeAdded = now.getTime();
-		} 
-		
+		}
+
 		try {
 			this.timeDue = (Date) dict.get("DueDate");
 		} catch (ClassCastException e) {
 			logger.debug("Task date due is corrupted! Trying to repair file...");
 			Calendar now = Calendar.getInstance();
 			this.timeDue = now.getTime();
-		} 
-
+		}
 
 		parseTags();
 		logger.debug("Task Object created from file!");
 	}
 
 	// Parsing methods
-	
+
 	/**
-	 * looks at the current task string, extracts all the valid hash tags and
-	 * add it to the list of tags the Task object has
+	 * Extracts all the valid hash tags from the current task name and adds it
+	 * to the list of tags the Task object has
 	 */
 	private void parseTags() {
 		String[] tokens = tokenize(this.getTaskName());
 
-		// parse hashTags of task
+		// Adds parsed hashTags to the Task
 		for (String s : tokens) {
 			if (isHashTag(s)) {
 				this.tags.add(sanitizeHashTag(s));
 			}
 		}
-		
+
+		// Flags task as Important if #impt tag is found
 		if (this.hasTag(FinConstants.IMPORTANT_HASH_TAG)) {
 			this.important = true;
 		}
-		
+
+		// Flags task as Finished if #fin tag is found
 		if (this.hasTag(FinConstants.FIN_HASH_TAG)) {
 			this.finished = true;
 		}
 	}
-	/**
-	 * Sanitizes the hash tag, i.e. Returns a string that has only the valid characters in a hash tag.
-	 * @param s
-	 * @return string
-	 */
 
-	public static String sanitizeHashTag(String s) {  
+	/**
+	 * Sanitizes the hash tag, i.e. Returns a string that has only the valid
+	 * characters in a hash tag.
+	 * 
+	 * @param s
+	 *            - the string to be sanitized
+	 * @return the sanitized string
+	 */
+	public static String sanitizeHashTag(String s) {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		for (int i = 0; i < s.length(); ++i) {
@@ -134,126 +143,186 @@ public class Task {
 
 		return stringBuilder.toString();
 	}
-	
-	/**
-	 * Tokenizes the task
-	 * @param task
-	 * @return
-	 */
 
+	/**
+	 * Tokenizes the task string, delimited by spaces.
+	 * 
+	 * @param task
+	 *            - the task name for the task
+	 * @return an array of tokens for the task name
+	 */
 	private static String[] tokenize(String task) {
 		return task.trim().split("\\s");
 	}
-	
+
 	/**
+	 * Checks if the given string is a hashTag.
 	 * 
 	 * @param s
+	 *            - the String to be checked
 	 * @return true if String is a valid hash tag, false otherwise
 	 */
-
 	public static boolean isHashTag(String s) {
 		if (s.isEmpty()) {
 			return false;
 		}
-		
-		boolean hasHashTag = s.charAt(0) == FinConstants.HASH_TAG_CHAR;
 
-		if (!hasHashTag) {
+		char firstChar = s.charAt(0);
+		boolean hasHashTag = (firstChar == FinConstants.HASH_TAG_CHAR);
+
+		if (hasHashTag) {
+			// ensures that hashtag comprises only letters or digits
+			for (int i = 1; i < s.length(); ++i) {
+				char c = s.charAt(i);
+				if (!Character.isLetterOrDigit(c)) {
+					return false;
+				}
+			}
+			return true;
+		} else {
 			return false;
 		}
-
-		// ensures that hashtag comprises only letters or digits
-		for (int i = 1; i < s.length(); ++i) {
-			char c = s.charAt(i);
-			if (!Character.isLetterOrDigit(c)) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	// Setter and Getter methods
-	
 
+	/**
+	 * Returns unparsed but editable version of the task name.
+	 * 
+	 * @return the task name that represents the task object
+	 */
 	public String getEditableTaskName() {
 		Date dueDate = this.getDueDate();
-		
-		
+
 		if ((dueDate != null)
-				&& (taskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
-			//return unsanitizeString(replaceWithDate(taskName,dueDate));
-			return unsanitizeString(replaceWord(this.taskName,FinConstants.DUEDATE_PLACEHOLDER, "due "
-					+ DateParser.naturalDateFromNow(dueDate)));
+				&& (parsedTaskName.contains(FinConstants.DUEDATE_PLACEHOLDER))) {
+			return unsanitizeString(replaceWord(this.parsedTaskName,
+					FinConstants.DUEDATE_PLACEHOLDER,
+					"due " + DateParser.naturalDateFromNow(dueDate)));
 		} else {
 			return getTaskName();
-		}		
+		}
 	}
 
 	/**
-	 * Returns the parsed taskname. 
-	 * @return
+	 * Returns the unparsed task name.
+	 * 
+	 * @return the unparsed task name
 	 */
-	
 	public String getTaskName() {
 		Date dueDate = this.getDueDate();
-		String taskName = this.taskName;
+		String taskName = "";
 		if (dueDate != null) {
-			taskName = replaceWithDate(taskName, dueDate);
-		} 
+			taskName = replaceWithDate(this.parsedTaskName, dueDate);
+		} else {
+			taskName = this.parsedTaskName;
+		}
 		return unsanitizeString(taskName);
 	}
-	
-	private String replaceWithDate(String taskName, Date dueDate) {
-		return replaceWord(taskName,FinConstants.DUEDATE_PLACEHOLDER,"["
-				+ DateParser.naturalDateFromNow(dueDate) + "]");
+
+	/**
+	 * Replaces the date placeholder with the relative date from now.
+	 * 
+	 * @param parsedTaskName
+	 *            - the parsed task name
+	 * @param dueDate
+	 *            - the date that the task is due
+	 * @return the unparsed task name with the date placeholder replaced by the
+	 *         relative date that the task is due
+	 */
+	private String replaceWithDate(String parsedTaskName, Date dueDate) {
+		String unparsedTaskName = replaceWord(parsedTaskName,
+				FinConstants.DUEDATE_PLACEHOLDER,
+				"[" + DateParser.naturalDateFromNow(dueDate) + "]");
 		
+		if (parsedTaskName.equals(unparsedTaskName)) {
+			logger.error("No string replaced even though date was in! Possible sync issue.");
+		}
+		return unparsedTaskName;
+
 	}
-	
+
+	/**
+	 * Replaces the given search string with the replacement string in the task name.
+	 * 
+	 * @param taskName - the parsed/unparsed task name
+	 * @param find - the search string
+	 * @param replace - the replacement string
+	 * @return the given task name with replacements done, if any
+	 */
 	private String replaceWord(String taskName, String find, String replace) {
-		taskName = " "+taskName;
-		String returnName = taskName.replace(" "+find, " "+replace);
+		// pad with additional whitespace to ensure we do not replace something
+		// at the start or end of a word
+		taskName = " " + taskName;
+		String returnName = taskName.replace(" " + find, " " + replace);
+
+		// defensive check
 		if (returnName.equals(taskName)) {
-			returnName = taskName.replace(FinConstants.DUEDATE_PLACEHOLDER + " ", replace+" ");
-		} 
-		if (returnName.equals(taskName)) {
-			returnName = taskName.replace(FinConstants.DUEDATE_PLACEHOLDER, replace);			
+			returnName = taskName.replace(find + " ", replace + " ");
 		}
-		
 		if (returnName.equals(taskName)) {
-			logger.error("No String replaced even though date was in! Possible sync issue");
+			returnName = taskName.replace(find, replace);
 		}
-		
+
+		// returns the taskName with compensation for the whitespace added
+		// initially
 		return returnName.substring(1);
 	}
-	
+
+	/**
+	 * Replaces escape characters and due date placeholders that may be in the input string.</br>
+	 * Used to sanitize the task name.
+	 * 
+	 * @param s - string to be sanitized
+	 * @return string that has been sanitized
+	 */
 	private String sanitizeString(String s) {
-		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR), 
-				Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR);
-		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER, FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR),
+				Character.toString(FinConstants.ESCAPE_CHAR)
+						+ FinConstants.ESCAPE_CHAR);
+		s = s.replace(FinConstants.DUEDATE_PLACEHOLDER,
+				FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER);
 		return s;
 	}
-	
+
+	/**
+	 * Replaces the sanitized text with what should be the input text.</br>
+	 * Used to unsanitize the task name.
+	 * 
+	 * @param s - string that has been sanitized
+	 * @return string that has been restored to pre-sanitized state.
+	 */
 	private String unsanitizeString(String s) {
-		s = s.replace(FinConstants.ESCAPE_CHAR + FinConstants.DUEDATE_PLACEHOLDER,FinConstants.DUEDATE_PLACEHOLDER);
-		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR)+FinConstants.ESCAPE_CHAR, 
+		s = s.replace(FinConstants.ESCAPE_CHAR
+				+ FinConstants.DUEDATE_PLACEHOLDER,
+				FinConstants.DUEDATE_PLACEHOLDER);
+		s = s.replace(Character.toString(FinConstants.ESCAPE_CHAR)
+				+ FinConstants.ESCAPE_CHAR,
 				Character.toString(FinConstants.ESCAPE_CHAR));
 		return s;
-	}	
+	}
 
-
+	/**
+	 * Adds a tag to the task if it does not already have it.
+	 * 
+	 * @param tag - tag to be added
+	 * @return true, if tag was added successfully, false if tag was already present
+	 */
 	boolean addTag(String tag) {
-		if (hasTag(tag)) {
-			return false;
-		}
 		String sanitizedTag = sanitizeHashTag(tag);
-		this.tags.add(sanitizedTag);
-		this.taskName = this.taskName + " " + FinConstants.HASH_TAG_CHAR + sanitizedTag;
-		return true;
+		
+		if (hasTag(sanitizedTag)) {
+			return false;
+		} else {
+			this.tags.add(sanitizedTag);
+			this.parsedTaskName = this.parsedTaskName + " "
+					+ FinConstants.HASH_TAG_CHAR + sanitizedTag;
+			return true;
+		}
 	}
 
 	void edit(String taskName) {
-		assert(taskName!=null);
+		assert (taskName != null);
 		taskName = sanitizeString(taskName);
 		DateParser dateParser = new DateParser();
 		Date dueDate = null;
@@ -265,7 +334,7 @@ public class Task {
 			dueDate = dateParser.getParsedDate();
 		}
 
-		this.taskName = taskName;
+		this.parsedTaskName = taskName;
 		this.timeDue = dueDate;
 
 		parseTags();
@@ -273,12 +342,12 @@ public class Task {
 
 	boolean removeTag(String tag) {
 		if (this.tags.remove(tag.toLowerCase().trim())) {
-			this.taskName = " " + this.taskName;			
-			this.taskName = this.taskName.replaceAll("(?i)"
-					+ " "+FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
+			this.parsedTaskName = " " + this.parsedTaskName;
+			this.parsedTaskName = this.parsedTaskName.replaceAll("(?i)" + " "
+					+ FinConstants.HASH_TAG_CHAR + tag.toLowerCase() + "\\s*",
 					"");
-			if (this.taskName.startsWith(" ")) {
-				this.taskName = this.taskName.substring(1);
+			if (this.parsedTaskName.startsWith(" ")) {
+				this.parsedTaskName = this.parsedTaskName.substring(1);
 			}
 
 		}
@@ -295,8 +364,8 @@ public class Task {
 
 	void setDueDate(Date dueDate) {
 		this.timeDue = dueDate;
-		if (!this.taskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
-			this.taskName = this.taskName.concat(" "
+		if (!this.parsedTaskName.contains(FinConstants.DUEDATE_PLACEHOLDER)) {
+			this.parsedTaskName = this.parsedTaskName.concat(" "
 					+ FinConstants.DUEDATE_PLACEHOLDER);
 		}
 	}
@@ -309,8 +378,6 @@ public class Task {
 			this.setDueDate(dp.getParsedDate());
 		}
 	}
-
-
 
 	public Date getDueDate() {
 		return timeDue;
@@ -331,10 +398,9 @@ public class Task {
 	public Map<String, Object> toDictionary() {
 		Map<String, Object> tr = new TreeMap<String, Object>();
 
-		tr.put("Name", this.taskName);
+		tr.put("Name", this.parsedTaskName);
 		tr.put("UID", this.getUniqId().toString());
 		tr.put("DateAdded", this.getDateAdded());
-
 
 		if (this.getDueDate() != null) {
 			tr.put("DueDate", this.getDueDate());
@@ -362,9 +428,9 @@ public class Task {
 		this.important = false;
 		this.removeTag(FinConstants.IMPORTANT_HASH_TAG);
 	}
-	
+
 	// Query methods
-	
+
 	public boolean hasTag(String tag) {
 		return this.tags.contains(tag.toLowerCase().trim());
 	}
@@ -379,7 +445,7 @@ public class Task {
 		}
 		return has;
 	}
-	
+
 	public boolean isFin() {
 		return this.finished;
 	}
@@ -387,8 +453,6 @@ public class Task {
 	public boolean isImportant() {
 		return this.important;
 	}
-	
-
 
 	@Override
 	public String toString() {
