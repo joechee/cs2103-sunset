@@ -1,6 +1,5 @@
 package cs2103.aug11.t11j2.fin.application;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,34 +14,28 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 /**
- * FinApplication class that handles the environment instance
- * of Fin (essentially manages what task is in memory, serializing
- * searching etc.)
+ * FinApplication class that handles the environment instance of Fin
+ * (essentially manages what task is in memory, serializing searching etc.)
  * 
- * Only a single instance of the environment should be running 
- * to prevent any race conditions
- *  
+ * Only a single instance of the environment should be running to prevent any
+ * race conditions
+ * 
  * @version 0.1
  * @author Koh Zi Chun
  */
 public class FinApplication implements Fin.IFinApplication {
 	final public static FinApplication INSTANCE = new FinApplication();
 	Logger logger = Logger.getLogger(this.getClass());
-	
-	FinApplication () {
-		logger.debug("FinApplication Object created");
-	}
-
 	String taskFileName = "";
-
-	private List<Task> taskList = new ArrayList<Task>();
-	private Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
-
 	// Each hashTag points to a collection of Tasks
 	Map<String, List<Task>> hashTags = new HashMap<String, List<Task>>();
 	
-	// 
+	private Map<UUID, Task> taskMap = new HashMap<UUID, Task>();
 	private Stack<List<Task>> undeleteStack = new Stack<List<Task>>();
+	
+	FinApplication() {
+		logger.debug("FinApplication Object created");
+	}
 
 	@Override
 	public void add(Task task) {
@@ -51,8 +44,7 @@ public class FinApplication implements Fin.IFinApplication {
 	
 	@Override
 	public void add(Task task, boolean save) {
-		assert(task!=null);
-		taskList.add(task);
+		assert (task != null);
 		taskMap.put(task.getUniqId(), task);
 
 		for (String tag : task.getTags()) {
@@ -63,29 +55,31 @@ public class FinApplication implements Fin.IFinApplication {
 			this.saveEnvironment();
 		}
 	}
-	
+
 	private boolean addTaskToTag(String tag, Task task) {
-		assert(task != null);
+		assert (task != null);
 		List<Task> taskListOfTags;
+		
 		if (hashTags.containsKey(tag)) {
 			taskListOfTags = hashTags.get(tag);
 		} else {
 			taskListOfTags = new ArrayList<Task>();
 			hashTags.put(tag, taskListOfTags);
 		}
+		
 		if (taskListOfTags.contains(task)) {
 			return false;
 		} else {
 			taskListOfTags.add(task);
 			return true;
 		}
-		
+
 	}
-	
+
 	private void removeTaskFromTag(String tag, Task task) {
-		assert(task != null);
-		assert(tag != null);
-		
+		assert (task != null);
+		assert (tag != null);
+
 		List<Task> taskListOfTags;
 		if (hashTags.containsKey(tag)) {
 			taskListOfTags = hashTags.get(tag);
@@ -104,7 +98,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasks() {
-		List<Task> tasks = new ArrayList<Task>(taskList);
+		List<Task> tasks = new ArrayList<Task>(taskMap.values());
 		Collections.sort(tasks, new TaskSortByDueDate());
 		return tasks;
 	}
@@ -114,7 +108,7 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasksWithTag(String tag) {
-		assert(tag!=null);
+		assert (tag != null);
 		if (hashTags.containsKey(tag)) {
 			List<Task> lt = hashTags.get(tag);
 			Collections.sort(lt, new TaskSortByDueDate());
@@ -123,16 +117,16 @@ public class FinApplication implements Fin.IFinApplication {
 			return new ArrayList<Task>();
 		}
 	}
-	
+
 	/**
 	 * @return List of Task with tag sorted by pIndex
-	 */	
+	 */
 	@Override
 	public List<Task> getTasksWithoutTag(String tag) {
-		assert(tag!=null);
+		assert (tag != null);
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
-		for (Task i: lt) {
+		for (Task i : lt) {
 			if (!i.getTags().contains(tag)) {
 				rt.add(i);
 			}
@@ -140,16 +134,16 @@ public class FinApplication implements Fin.IFinApplication {
 		Collections.sort(rt, new TaskSortByDueDate());
 		return rt;
 	}
-	
+
 	/**
 	 * @return List of Task with tag sorted by pIndex
-	 */	
+	 */
 	@Override
 	public List<Task> getTasksWithoutTags(List<String> tags) {
-		assert(tags!=null);
+		assert (tags != null);
 		List<Task> lt = getTasks();
 		List<Task> rt = new ArrayList<Task>();
-		for (Task i: lt) {
+		for (Task i : lt) {
 			if (!i.getTags().containsAll(tags)) {
 				rt.add(i);
 			}
@@ -163,9 +157,9 @@ public class FinApplication implements Fin.IFinApplication {
 	 */
 	@Override
 	public List<Task> getTasksWithTags(List<String> tags) {
-		assert(tags!=null);
+		assert (tags != null);
 		List<Task> filteredTasks = new ArrayList<Task>();
-		for (Task t : taskList) {
+		for (Task t : taskMap.values()) {
 			if (t.hasTags(tags)) {
 				filteredTasks.add(t);
 			}
@@ -176,7 +170,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public boolean deleteTask(UUID taskUID) {
-		assert(taskUID!=null);
+		assert (taskUID != null);
 		Task deletedTask = removeTask(taskUID);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
 		deletedTaskLyst.add(deletedTask);
@@ -185,20 +179,19 @@ public class FinApplication implements Fin.IFinApplication {
 		logger.debug("Task added to undelete stack");
 		return true;
 	}
-	
+
 	/**
 	 * Internal code for deleting a given task (by UID) from the environment
 	 * 
 	 * @param taskUID
 	 * @return the task that was deleted
 	 * @throws IllegalArgumentException
-	 */	
+	 */
 	private Task removeTask(UUID taskUID) {
-		assert(taskUID!=null);
+		assert (taskUID != null);
 		Task todelete = taskMap.get(taskUID);
 		if (todelete != null) {
 			taskMap.remove(taskUID);
-			taskList.remove(todelete);
 			for (String tag : todelete.getTags()) {
 				removeTaskFromTag(tag, todelete);
 			}
@@ -206,13 +199,13 @@ public class FinApplication implements Fin.IFinApplication {
 		} else {
 			throw new IllegalArgumentException("TaskUID does not exist!");
 		}
-		return todelete;		
+		return todelete;
 	}
-	
+
 	public boolean deleteTasks(Collection<UUID> taskUID) {
-		assert(taskUID != null);
+		assert (taskUID != null);
 		List<Task> deletedTaskLyst = new ArrayList<Task>();
-		for (UUID deleteID: taskUID) {
+		for (UUID deleteID : taskUID) {
 			Task deletedTask = removeTask(deleteID);
 			deletedTaskLyst.add(deletedTask);
 		}
@@ -224,7 +217,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public boolean flagTask(UUID taskUID) {
-		assert(taskUID != null);
+		assert (taskUID != null);
 		Task task = taskMap.get(taskUID);
 		if (task != null) {
 			task.flag();
@@ -233,12 +226,12 @@ public class FinApplication implements Fin.IFinApplication {
 		} else {
 			logger.fatal("Task selected is null! Error!");
 			return false;
-		}		
+		}
 	}
 
 	@Override
 	public boolean unflagTask(UUID taskUID) {
-		assert(taskUID!=null);
+		assert (taskUID != null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -248,12 +241,12 @@ public class FinApplication implements Fin.IFinApplication {
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
 
 	@Override
 	public boolean finTask(UUID taskUID) {
-		assert(taskUID!=null);
+		assert (taskUID != null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -263,7 +256,7 @@ public class FinApplication implements Fin.IFinApplication {
 			} else {
 				logger.warn("Task was already finished!");
 			}
-			
+
 			this.saveEnvironment();
 			return finTask;
 		} else {
@@ -273,7 +266,7 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public boolean unfinTask(UUID taskUID) {
-		assert(taskUID!=null);
+		assert (taskUID != null);
 		Task task = taskMap.get(taskUID);
 
 		if (task != null) {
@@ -290,21 +283,19 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public void clearEnvironment() {
-		assert(taskMap!=null);
-		assert(taskList!=null);
-		
+		assert (taskMap != null);
+
 		this.taskMap.clear();
-		this.taskList.clear();
 		this.hashTags.clear();
 		this.undeleteStack.clear();
-		
+
 		undeleteStack.clear();
 		logger.debug("Environment Cleared!");
 	}
-	
+
 	@Override
 	public boolean loadEnvironment(String filename) throws IOException {
-		assert(filename!=null);
+		assert (filename != null);
 		if (filename.isEmpty()) {
 			filename = Fin.DEFAULT_FILENAME;
 		}
@@ -326,6 +317,7 @@ public class FinApplication implements Fin.IFinApplication {
 		} catch (IOException e) {
 			logger.warn("Error loading file... trying backup file");
 			try {
+				fs.unserialize(filename + ".bak");
 				this.clearEnvironment();
 				List<Task> tasks = fs.unserialize(filename+".bak");
 				for (Task t: tasks) {
@@ -338,10 +330,10 @@ public class FinApplication implements Fin.IFinApplication {
 			}
 
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public List<String> getHashTags() {
 		List<String> tr = new ArrayList<String>();
@@ -350,11 +342,13 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 		return tr;
 	}
-	
+
 	/**
-	 * Saves the current state of all tasks to a file that can be loaded by the <code>loadEnvironment</code> method.
+	 * Saves the current state of all tasks to a file that can be loaded by the
+	 * <code>loadEnvironment</code> method.
+	 * 
 	 * @param none
-	 * @see loadEnvironment 
+	 * @see loadEnvironment
 	 */
 	protected void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
@@ -368,13 +362,13 @@ public class FinApplication implements Fin.IFinApplication {
 				logger.error("File being used by another process, saving delayed");
 			}
 		}
-		
+
 		try {
 			fs.serialize(taskFileName+".bak",getTasks());
 		} catch (IOException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
-			} 
+			}
 		}
 	}
 
@@ -384,18 +378,18 @@ public class FinApplication implements Fin.IFinApplication {
 			return null;
 		} else {
 			List<Task> deletedTasks = undeleteStack.pop();
-			for (Task task: deletedTasks) {
+			for (Task task : deletedTasks) {
 				add(task);
 			}
 			return deletedTasks;
 		}
-		
+
 	}
 
 	@Override
 	public void editTask(Task task, String string) {
-		assert(task!=null);
-		assert(string!=null);
+		assert (task != null);
+		assert (string != null);
 		for (String tag : task.getTags()) {
 			removeTaskFromTag(tag, task);
 		}
@@ -409,35 +403,33 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public void addTag(Task task, String tag) {
-		assert(task!=null);
-		assert(tag!=null);
+		assert (task != null);
+		assert (tag != null);
 		if (task.addTag(tag)) {
 			addTaskToTag(tag, task);
 		}
 		this.saveEnvironment();
-		
+
 	}
 
 	@Override
 	public void removeTag(Task task, String string) {
-		assert(task!=null);
-		assert(string!=null);
+		assert (task != null);
+		assert (string != null);
 		task.removeTag(string);
 		for (String tag : task.getTags()) {
 			addTaskToTag(tag, task);
 		}
 		this.saveEnvironment();
-		
+
 	}
-
-
 
 	@Override
 	public void setDueDate(Task task, String string) {
-		assert(task!=null);
-		assert(string!=null);
+		assert (task != null);
+		assert (string != null);
 		task.setDueDate(string);
 		this.saveEnvironment();
-		
+
 	}
 }
