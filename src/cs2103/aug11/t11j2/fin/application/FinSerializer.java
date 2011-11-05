@@ -15,9 +15,7 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
  * FinSerializer handles the serializing of the Fin working environment (i.e all
  * task and the semantics relationship between them) into a list of objects.
  * 
- * Each task is represented as a dictionary (Map<String, Object>) and tasks with
- * subtasks will have a "Subtasks" attribute with the same (recursive)
- * definition.
+ * Each task is represented as a dictionary (Map<String, Object>).
  * 
  * This allows the main Storage Serializer to serialize the serialized object
  * into YAML (or JSON or XML if we want to change in the future).
@@ -29,12 +27,13 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
  * @author Joe Chee
  */
 public class FinSerializer {
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	public void serialize(String filename, List<Task> tasks) throws IOException {
 		Serializer sr = new Serializer();
 		List<Object> oLyst = FinSerializer
-				.taskTreeListToList(tasks);
+				.taskListToDictList(tasks);
 
 		sr.serialize(oLyst.iterator(), filename);
 	}
@@ -76,7 +75,7 @@ public class FinSerializer {
 	/**
 	 * Converts a list of Task into a List of dictionaries for serialization
 	 */
-	private static List<Object> taskTreeListToList(List<Task> ttl) {
+	private static List<Object> taskListToDictList(List<Task> ttl) {
 		List<Object> tr = new ArrayList<Object>();
 		for (Task t : ttl) {
 			tr.add(FinSerializer.taskToDictionary(t));
