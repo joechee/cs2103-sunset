@@ -68,7 +68,7 @@ public class UnImportantCommandHandler extends ICommandHandler {
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("unimportant", "Unmarks an important task");
+		return new HelpTablePair("unimpt <task number>", "Unmarks an important task");
 	}
 
 }

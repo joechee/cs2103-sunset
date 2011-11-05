@@ -76,6 +76,6 @@ public class ImportantCommandHandler extends ICommandHandler {
 	}
 	
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("important <task>", "Marks a task as important");
+		return new HelpTablePair("impt <task number>", "Marks a task as important");
 	}
 }

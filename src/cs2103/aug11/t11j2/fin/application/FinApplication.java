@@ -46,6 +46,11 @@ public class FinApplication implements Fin.IFinApplication {
 
 	@Override
 	public void add(Task task) {
+		add(task,true);
+	}
+	
+	@Override
+	public void add(Task task, boolean save) {
 		assert(task!=null);
 		taskList.add(task);
 		taskMap.put(task.getUniqId(), task);
@@ -54,7 +59,9 @@ public class FinApplication implements Fin.IFinApplication {
 			addTaskToTag(tag, task);
 		}
 		logger.debug("Task added to internal datamodel!");
-		this.saveEnvironment();
+		if (save == true) {
+			this.saveEnvironment();
+		}
 	}
 	
 	private boolean addTaskToTag(String tag, Task task) {
@@ -346,6 +353,7 @@ public class FinApplication implements Fin.IFinApplication {
 		FinSerializer fs = new FinSerializer();
 		try {
 			fs.serialize(taskFileName);
+			logger.info("File saved");
 		} catch (IOException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();

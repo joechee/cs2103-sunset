@@ -209,6 +209,7 @@ public class Fin {
 		 * @return null if undelete is successful, a list of tasks if undelete stack is empty.
 		 */
 		public List<Task> undelete();
+		void add(Task task, boolean save);
 	}
 
 	public static void main(String[] args) {

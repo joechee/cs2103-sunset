@@ -71,7 +71,8 @@ public class FinSerializer {
 
 	private static void parseDictionary(Map<String, Object> dict, UUID parentUID) {
 		Task task = new Task(dict);
-		FinApplication.INSTANCE.add(task);
+		FinApplication.INSTANCE.add(task,false);
+		FinApplication.INSTANCE.saveEnvironment();
 	}
 
 	/**

@@ -73,34 +73,7 @@ public class EditCommandHandler extends ICommandHandler {
 			context.getFinApplication().editTask(task,tokens[2]);
 			
 			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.TASK, task);
-			
-		} else if (tokens[1].equals("at")) {
-			// add tag to current task
-			
-			if (tokens.length == 2) return showHelp();
-
-			context.getFinApplication().addTag(task,tokens[2]);
-			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.TASK, task);
-			
-		} else if (tokens[1].equals("rt")) {
-			// remove tag from task
-			
-			if (tokens.length == 2) return showHelp();
-
-			context.getFinApplication().removeTag(task,tokens[2]);
-			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.TASK, task);
-			
-		} else if (tokens[1].equals("due")) {
-			// set new due date
-			
-			if (tokens.length == 2) return showHelp();
-
-			context.getFinApplication().setDueDate(task,tokens[1] + " " + tokens[2]);
-			return new CommandResult(this, tokens[0] + " " + tokens[1] + " " + tokens[2],
-					CommandResult.RenderType.TASK, task);			
+					CommandResult.RenderType.TASK, task);		
 		} else {
 			return showHelp();
 		}
@@ -112,18 +85,16 @@ public class EditCommandHandler extends ICommandHandler {
 	@Override
 	public String getHelp() {
 		return "edit <task number> <command>\n\tEdits a task based on the following command\n" +
-		"\t - edit <task> to <newtask>\tedits the task to new task\n" +
-		"\t - edit <task> due <duedate>\tchange/add due date for a task\n" +
-		"\t - edit <task> undue\t\tremove due date from a task";
+		"\t - edit <task> to <newtask>\tedits the task to new task\n" ;
 	}
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("edit <task number> to <new task>", "Edits a task based on the following command");
+		return new HelpTablePair("edit <task number> to <new task>", "Edits <task number> to a <new task>");
 	}
 	
 	
-	private static final String[] editCommands = {"to", "at", "rt", "due", "undue"};
+	private static final String[] editCommands = {"to"};
 	@Override
 	public String autoComplete(String fullCommand, String command, String arguments, UIContext context) {
 		int taskIndex;

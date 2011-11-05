@@ -87,7 +87,7 @@ public class HelpCommandHandler extends ICommandHandler {
 	
 	@Override
 	public HelpTablePair getHelpTablePair() {
-		return new HelpTablePair("help", "show help for Fin.");
+		return new HelpTablePair("help", "Show help for Fin.");
 	}
 	
 	
