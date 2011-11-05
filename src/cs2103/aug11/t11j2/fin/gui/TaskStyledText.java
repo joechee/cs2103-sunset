@@ -199,7 +199,6 @@ public class TaskStyledText extends StyledText {
 	 * @return Returns whether the task has been modified after being in editMode
 	 */
 	public boolean hasChange() {
-		// TODO Auto-generated method stub
 		return !beforeEdit.equals(this.getText());
 	}
 }

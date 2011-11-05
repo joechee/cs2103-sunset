@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
+
 import cs2103.aug11.t11j2.fin.storage.Serializer;
 
 /**
@@ -27,52 +29,48 @@ import cs2103.aug11.t11j2.fin.storage.Serializer;
  * @author Joe Chee
  */
 public class FinSerializer {
-	public void serialize(String filename) throws IOException {
+	private Logger logger = Logger.getLogger(this.getClass());
+
+	public void serialize(String filename, List<Task> tasks) throws IOException {
 		Serializer sr = new Serializer();
 		List<Object> oLyst = FinSerializer
-				.taskTreeListToList(FinApplication.INSTANCE.getTasks());
+				.taskTreeListToList(tasks);
 
 		sr.serialize(oLyst.iterator(), filename);
 	}
 
 	/**
-	 * Clears the environment and unserialize a file into the environment
+	 * Unserialize a file into the environment. Should clear the environment beforehand.
 	 * 
 	 * @param filename
 	 * @throws IOException
+	 * @return A list of tasks
 	 */
-	public boolean unserialize(String filename) throws IOException {
-		return unserialize(filename, true);
-	}
+	
 
-	// TODO: decouple finapplication
-	public boolean unserialize(String filename, boolean clearEnvironment)
+	public List<Task> unserialize(String filename)
 			throws IOException {
+		logger.debug("Unserializing tasks");
 		Serializer sr = new Serializer();
 		List<Object> dictionaries = sr.unserialize(filename);
-
-		if (clearEnvironment == true) {
-			FinApplication.INSTANCE.clearEnvironment();
-		}
-
-		FinSerializer.parseDictionaries(dictionaries, null);
-
-		return true;
+		return FinSerializer.parseDictionaries(dictionaries, null);
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void parseDictionaries(List<Object> dictionaries,
+	private static List<Task> parseDictionaries(List<Object> dictionaries,
 			UUID parentUID) {
+		List<Task> taskList = new ArrayList<Task>();
 		for (Object dict : dictionaries) {
-			FinSerializer
-					.parseDictionary((Map<String, Object>) dict, parentUID);
+			taskList.add(FinSerializer
+					.parseDictionary((Map<String, Object>) dict, parentUID));
 		}
+		return taskList;
 	}
 
-	private static void parseDictionary(Map<String, Object> dict, UUID parentUID) {
+	private static Task parseDictionary(Map<String, Object> dict, UUID parentUID) {
 		Task task = new Task(dict);
-		FinApplication.INSTANCE.add(task,false);
-		FinApplication.INSTANCE.saveEnvironment();
+		//FinApplication.INSTANCE.add(task,false);
+		return task;
 	}
 
 	/**
@@ -92,5 +90,10 @@ public class FinSerializer {
 	private static Map<String, Object> taskToDictionary(Task tt) {
 		Map<String, Object> o = tt.toDictionary();
 		return o;
+	}
+
+	public void createFile(String filename) throws IOException {
+		Serializer sr = new Serializer();
+		sr.createFile(filename);
 	}
 }

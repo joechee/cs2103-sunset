@@ -18,10 +18,11 @@ public class FinLogger extends Logger{
 
 	enum LogDestination {FILE,CONSOLE};
 	//Change to LogDestination.CONSOLE to log to console
-	private static Level LOGGING_LEVEL = Level.INFO;
+	private static Level LOGGING_LEVEL = Level.DEBUG;
 	private static final String LOG_FILE = "fin.log";
 	
 	static Logger initializeLogger(Object o) {
+		/*
 		LogDestination dest = LogDestination.CONSOLE;
 		
 		try {
@@ -41,9 +42,10 @@ public class FinLogger extends Logger{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	
 
-		
+		*/
 		return Logger.getLogger(o.getClass());
 	}
 

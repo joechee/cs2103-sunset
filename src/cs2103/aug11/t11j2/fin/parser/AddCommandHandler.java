@@ -39,7 +39,7 @@ public class AddCommandHandler extends ICommandHandler {
 			return showHelp();
 		} else {
 			Task newtask = new Task(arguments);
-			context.getFinApplication().add(newtask);
+			context.getFinApplication().add(newtask,true);
 			return new CommandResult(this, arguments,
 					CommandResult.RenderType.TASK, newtask);
 		}

@@ -61,5 +61,10 @@ public class Serializer {
 		fs.close();
 		return deserializedObjects;
 	}
+	public void createFile(String filename) throws IOException {
+		File newFile = new File(filename);
+		newFile.createNewFile();
+		
+	}
 
 }

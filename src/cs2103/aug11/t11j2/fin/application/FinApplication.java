@@ -300,7 +300,6 @@ public class FinApplication implements Fin.IFinApplication {
 		
 		undeleteStack.clear();
 		logger.debug("Environment Cleared!");
-		this.saveEnvironment();
 	}
 	
 	@Override
@@ -313,17 +312,25 @@ public class FinApplication implements Fin.IFinApplication {
 		taskFileName = filename;
 
 		try {
-			fs.unserialize(filename, true);
+			this.clearEnvironment();
+			List<Task> tasks = fs.unserialize(filename);
+			for (Task t: tasks) {
+				this.add(t,false);
+			}
 		} catch (FileNotFoundException fnfe) {
 			clearEnvironment();
 			logger.warn("Tasks file not found! Creating file...");
-			fs.serialize(filename);
+			fs.createFile(filename);
 			logger.debug("Tasks file created!");
 			return false;
 		} catch (IOException e) {
 			logger.warn("Error loading file... trying backup file");
 			try {
-				fs.unserialize(filename+".bak");
+				this.clearEnvironment();
+				List<Task> tasks = fs.unserialize(filename+".bak");
+				for (Task t: tasks) {
+					this.add(t,false);
+				}
 				return true;
 			} catch (IOException f) {
 				logger.fatal("Files cannot be loaded. Please check if you have write access to the disk");
@@ -352,7 +359,7 @@ public class FinApplication implements Fin.IFinApplication {
 	protected void saveEnvironment() {
 		FinSerializer fs = new FinSerializer();
 		try {
-			fs.serialize(taskFileName);
+			fs.serialize(taskFileName,getTasks());
 			logger.info("File saved");
 		} catch (IOException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
@@ -363,7 +370,7 @@ public class FinApplication implements Fin.IFinApplication {
 		}
 		
 		try {
-			fs.serialize(taskFileName+".bak");
+			fs.serialize(taskFileName+".bak",getTasks());
 		} catch (IOException e) {
 			if (FinConstants.IS_DEVELOPMENT) {
 				e.printStackTrace();
