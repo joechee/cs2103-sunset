@@ -52,7 +52,7 @@ public class UntagTaskWithTagsCommandHandlerTest {
 		//add in tasks first
 		String cmd, args;
 		cmd = "+";
-		args = "do this by next Sun";
+		args = "do #a #b #c #dby next Sun";
 		add.executeCommands(cmd, args, context);
 		
 		cmd = "+";
@@ -70,12 +70,16 @@ public class UntagTaskWithTagsCommandHandlerTest {
 		expected.add("Invalid Task Index!");
 		
 		commands.add("untag");
-		arguments.add("1 acer");
+		arguments.add("1 a");
 		expected.add("Invalid Task Index!");
 	
 		commands.add("untag");
-		arguments.add("1 what is this tag");
-		expected.add("Invalid Task Index!");		
+		arguments.add("1 a b");
+		expected.add("Invalid Task Index!");	
+		
+		commands.add("untag");
+		arguments.add("2 a b");
+		expected.add("Invalid Task Index!");	
 		
 		
 		int n = commands.size();

@@ -71,6 +71,10 @@ public class TagTaskWithTagsCommandHandlerTest {
 		commands.add("tag");
 		arguments.add("1 acer");
 		expected.add("Invalid Task Index!");
+		
+		commands.add("tag");
+		arguments.add("1 acer");
+		expected.add("Invalid Task Index!");
 	
 		commands.add("tag");
 		arguments.add("1 what is this tag");
