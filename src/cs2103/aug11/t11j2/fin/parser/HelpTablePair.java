@@ -1,5 +1,6 @@
 package cs2103.aug11.t11j2.fin.parser;
 /**
+ * Utility class to hold a command's usage pattern and description.
  * 
  * @author Joe Chee
  *

@@ -9,8 +9,11 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "add" command Usage: add [task] Parses given task and
- * throws it into Fin environment
+ * CommandHandler for the "add" command.</br>
+ * 
+ * Usage: add [task]</br> 
+ * Parses given task into a Task and returns it to the Fin environment.
+ * Also contains the autocomplete subroutine.
  * 
  * @author Koh Zi Chun
  * 

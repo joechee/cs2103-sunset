@@ -13,6 +13,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
+ * Main interface to parse commands and activate the relevant command handlers.
  * 
  * @author Koh Zi Chun
  *

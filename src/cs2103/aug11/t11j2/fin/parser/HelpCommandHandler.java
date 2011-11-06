@@ -7,7 +7,7 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * Returns a string that shows the help file
+ * Returns a string that shows the help file.
  * 
  * @author Koh Zi Chun
  * 
@@ -66,6 +66,12 @@ public class HelpCommandHandler extends ICommandHandler {
 		return null;
 	}
 
+	/**
+	 * This is the default help method when the arguments to help can't be matched.
+	 * 
+	 * @return CommandResult containing a HELPTABLE RenderType and the List of HelpTablePair that contains help instructions for all commands.
+	 * @throws FinProductionException
+	 */
 	private CommandResult showDefaultHelp() throws FinProductionException {
 		List<HelpTablePair> helpTable = new ArrayList<HelpTablePair>(); 
 		

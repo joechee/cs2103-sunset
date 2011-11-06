@@ -6,7 +6,8 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 /**
- * 
+ * Command handler to end the Fin. guided tour.
+ *  
  * @author Alex Liew
  *
  */

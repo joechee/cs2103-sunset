@@ -7,20 +7,20 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * Command to exit Fin Application
+ * Commandhandler for the "exit" command.</br>
+ * 
+ * Usage: exit</br>
+ * Returns an instance of CommandResult.exitCommandResult when executed.
  * 
  * @author Joe Chee
  *
  */
 public class ExitCommandHandler extends ICommandHandler {
-	
-	/**
-	 * Used in conjunction with <code>CommandParser</code>. 
-	 * 
-	 * @return List<String>
-	 * @see CommandParser#installCommand(ICommandHandler commandHandler)
-	 */
 
+	/* 
+	 * 
+	 * @see cs2103.aug11.t11j2.fin.parser.ICommandHandler#getCommandStrings()
+	 */
 	@Override
 	@SuppressWarnings("serial")
 	List<String> getCommandStrings() {
