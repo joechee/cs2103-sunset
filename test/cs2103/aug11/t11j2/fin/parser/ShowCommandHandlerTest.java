@@ -48,7 +48,7 @@ public class ShowCommandHandlerTest {
 	
 	@Test
 	public void testExecuteCommands() throws FinProductionException {
-int passed = 0;
+		int passed = 0;
 		
 		//add in tasks first
 		String cmd, args;
@@ -68,68 +68,72 @@ int passed = 0;
 		args = "what is by 1 Dec";
 		add.executeCommands(cmd, args, context);
 		
+		//the expected taskList in String format.
 		ArrayList<String> taskList = new ArrayList<String>();
 		
-		int m = context.getTaskList().size();
-		for (int i=0; i<m; i++){
-			String str = context.getTaskList().get(i).toString();
-			taskList.add(str);
-		}		
+		taskList.add("do this [next Sunday]");
+		taskList.add("I do not know [next Sunday]");
+		taskList.add("what is [01 Dec]");
+		taskList.add("what is this");
+		
+		int m = 4;
 		
 		//test cases
-		ArrayList<String> exp = new ArrayList<String> ();
-			
-		commands.add("show");
-		arguments.add("");
-		exp.clear();
-		for (int i=0; i<m; i++){
-			exp.add(i+1 + ". " + taskList.get(i));
-		}
-		expected.add(exp);
+		
+		ArrayList<String> exp0 = new ArrayList<String> ();
 		
 		commands.add("show");
+		arguments.add("");
+		exp0.clear();
+		for (int i=0; i<m; i++){
+			exp0.add(taskList.get(i));
+		}
+		expected.add(exp0);		
+		
+		ArrayList<String> exp1 = new ArrayList<String> ();
+		commands.add("show");
 		arguments.add("this");
-		exp.clear();
+		exp1.clear();
 		int j=1;
 		for (int i=0; i<m; i++){
 			if(taskList.get(i).indexOf("this")>-1){
-				exp.add(j + ". " + taskList.get(i));
+				exp1.add(taskList.get(i));
 				j++;
 			}
 		}
-		expected.add(exp);
+		expected.add(exp1);
+		System.out.println(expected.get(0));
 		
+		ArrayList<String> exp2 = new ArrayList<String> ();
 		commands.add("show");
 		arguments.add("t");
-		exp.clear();
+		exp2.clear();
 		j=1;
 		for (int i=0; i<m; i++){
 			if(taskList.get(i).indexOf("t")>-1){
-				exp.add(j + ". " + taskList.get(i));
+				exp2.add(taskList.get(i));
 				j++;
 			}
 		}
-		expected.add(exp);
+		expected.add(exp2);
 				
+		ArrayList<String> exp3 = new ArrayList<String>();
+		exp3.clear();
 		commands.add("show");
 		arguments.add("ttttttt");
-		expected.add("There are not tasks");
+		expected.add(exp3);
 		
 		int n = commands.size();
 		for (int i=0; i<n; i++){
-			System.out.println(arguments.get(i));
+			
 			res = show.executeCommands(commands.get(i), arguments.get(i), context);
 			actual = res.getReturnObject();	
-			
-			System.out.println(actual);
+			System.out.println(arguments.get(i));
 			System.out.println(expected.get(i));
-			
+			System.out.println(actual);
 			boolean isEqual = checkEqual(expected.get(i), actual);			
-			if (isEqual) 
-				passed++;
-			else
-				System.out.println("Passed " + passed + " out of " + n);				
 			Assert.assertFalse(!isEqual);
+			passed++;
 		}
 		System.out.println("Passed " + passed + " out of " + n);
 	}
@@ -142,8 +146,8 @@ int passed = 0;
 			return obj1.equals(obj2);
 		}
 		// List
-		List<Task> list1 = (ArrayList<Task>)obj1;
-		List<Task> list2 = (ArrayList<Task>)obj2;
+		List<Object> list1 = (ArrayList<Object>)obj1;
+		List<Object> list2 = (ArrayList<Object>)obj2;
 		if (list1.size() != list2.size()){
 			return false;
 		}
@@ -157,5 +161,6 @@ int passed = 0;
 		}		
 		return true;		
 	}
+
 
 }
