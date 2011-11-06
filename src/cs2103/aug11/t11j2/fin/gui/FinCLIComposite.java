@@ -204,6 +204,23 @@ public class FinCLIComposite extends Composite {
 		t.setEnabled(false);
 	}
 
+	public void tourStepEcho(String text) {
+		StyledText t = new StyledText(display, SWT.WRAP);
+
+		t.setFont(new Font(this.getDisplay(), FinConstants.CLI_FONT, FinConstants.CLI_FONTSIZE, SWT.NORMAL));
+		t.setText(text.trim());
+
+		t.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
+		t.setForeground(new Color(null, FinConstants.TOUR_STEP_COLOR));		
+		
+
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
+				false);
+		gridData.verticalIndent = gridData.horizontalIndent = 10;
+		t.setLayoutData(gridData);
+		t.setEnabled(false);
+	}
+	
 	/**
 	 * Add a list of task to the FinCLI
 	 * 

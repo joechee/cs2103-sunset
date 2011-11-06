@@ -40,6 +40,7 @@ public final class FinConstants {
 	public static final RGB BACKGROUND_COLOR = new RGB(10, 10, 10);
 	public static final RGB FOREGROUND_COLOR = new RGB(255, 255, 255);
 	public static final RGB CLI_FOREGROUND_COLOR = new RGB(210, 210, 210);
+	public static final RGB TOUR_STEP_COLOR = new RGB(255, 0, 0);
 	public static final RGB BORDER_COLOR = new RGB(55, 55, 55);
 	public static final RGB RED_COLOR = new RGB(255, 0, 0);
 	public static final RGB HASHTAG_COLOR = new RGB(50, 150, 200);
