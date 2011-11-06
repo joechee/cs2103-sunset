@@ -1,7 +1,5 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
-import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
@@ -139,6 +135,7 @@ public class DeleteCommandHandlerTest {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	boolean checkEqual (Object obj1, Object obj2){
 		if (obj1.getClass() != obj2.getClass()){
 			return false;

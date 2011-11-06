@@ -1,7 +1,5 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
-import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
@@ -96,11 +92,9 @@ public class ShowCommandHandlerTest {
 		commands.add("show");
 		arguments.add("this");
 		exp1.clear();
-		int j=1;
 		for (int i=0; i<m; i++){
 			if(taskList.get(i).indexOf("this")>-1){
 				exp1.add(taskList.get(i));
-				j++;
 			}
 		}
 		expected.add(exp1);
@@ -110,11 +104,9 @@ public class ShowCommandHandlerTest {
 		commands.add("show");
 		arguments.add("t");
 		exp2.clear();
-		j=1;
 		for (int i=0; i<m; i++){
 			if(taskList.get(i).indexOf("t")>-1){
 				exp2.add(taskList.get(i));
-				j++;
 			}
 		}
 		expected.add(exp2);
@@ -148,7 +140,9 @@ public class ShowCommandHandlerTest {
 			return obj1.equals(obj2);
 		}
 		// List
+		@SuppressWarnings("unchecked")
 		List<Object> list1 = (ArrayList<Object>)obj1;
+		@SuppressWarnings("unchecked")
 		List<Object> list2 = (ArrayList<Object>)obj2;
 		if (list1.size() != list2.size()){
 			return false;

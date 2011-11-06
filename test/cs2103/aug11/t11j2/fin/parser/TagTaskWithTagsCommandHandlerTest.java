@@ -1,7 +1,5 @@
 package cs2103.aug11.t11j2.fin.parser;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +10,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
 import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
-import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class TagTaskWithTagsCommandHandlerTest {
 
@@ -109,7 +99,9 @@ public class TagTaskWithTagsCommandHandlerTest {
 			return obj1.equals(obj2);
 		}
 		// List
+		@SuppressWarnings("unchecked")
 		List<Object> list1 = (ArrayList<Object>)obj1;
+		@SuppressWarnings("unchecked")
 		List<Object> list2 = (ArrayList<Object>)obj2;
 		if (list1.size() != list2.size()){
 			return false;

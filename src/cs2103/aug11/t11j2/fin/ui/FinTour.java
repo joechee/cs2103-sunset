@@ -6,15 +6,14 @@ import java.util.Calendar;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.Task;
-import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
-import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
 
 
 public class FinTour extends IFinAutomation {

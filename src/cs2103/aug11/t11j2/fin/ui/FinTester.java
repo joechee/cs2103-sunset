@@ -630,7 +630,6 @@ public class FinTester extends IFinAutomation {
 				} else if(cmdRes.getRenderType() != CommandResult.RenderType.TASK) {
 					addError("Running the command "+command+" does not result in a TASK RenderType being returned");
 				} else {
-					@SuppressWarnings("unchecked")
 					Task task = (Task) cmdRes.getReturnObject();
 					if (!task.toString().equals(FinConstants.DUEDATE_PLACEHOLDER)) {
 						addError("Characters in Task are not escaped properly!");

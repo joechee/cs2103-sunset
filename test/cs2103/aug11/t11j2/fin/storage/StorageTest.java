@@ -16,20 +16,11 @@ package cs2103.aug11.t11j2.fin.storage;
  * For more info, check out http://www.vogella.de/articles/JUnit/article.html#usingjunit_asserts
  */
 
-import static org.junit.Assert.*;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
-
-import cs2103.aug11.t11j2.fin.application.FinApplication;
-import cs2103.aug11.t11j2.fin.application.FinSerializer;
-import cs2103.aug11.t11j2.fin.application.Task;
 
 
 public class StorageTest {

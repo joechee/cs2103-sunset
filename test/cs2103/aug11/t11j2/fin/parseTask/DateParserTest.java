@@ -209,7 +209,7 @@ public class DateParserTest {
 
 		correctDates.clear();
 		// test when today is a sunday
-		correctDates.add(new Date("24 Oct 2011"));
+		correctDates.add(new Date("31 Oct 2011"));
 		correctDates.add(new Date("25 Oct 2011"));
 		correctDates.add(new Date("26 Oct 2011"));
 		correctDates.add(new Date("27 Oct 2011"));

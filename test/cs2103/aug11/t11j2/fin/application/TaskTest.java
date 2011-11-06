@@ -1,10 +1,11 @@
 package cs2103.aug11.t11j2.fin.application;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.junit.Test;
 
