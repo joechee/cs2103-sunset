@@ -8,7 +8,8 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for "Untag" command Usage: untag [task index] [tags]
+ * CommandHandler for "Untag" command<br>
+ * Usage: untag [task index] [tags]<br>
  * removes the [tags] from the index-th task. eg: untag 7 cs math.
  * 
  * @author Alex Liew

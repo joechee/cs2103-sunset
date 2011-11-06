@@ -1,7 +1,4 @@
 package cs2103.aug11.t11j2.fin.parser;
-/**
- * @author Wei Jing
- */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +7,14 @@ import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+/**
+ * CommandHandler for the "undelete" command.
+ * 
+ * Usage: undelete 
+ * Restores last deleted Task and returns the updated Task list to the Fin environment.
+ * 
+ * @author Wei Jing
+ */
 public class UndeleteCommandHandler extends ICommandHandler{
 
 	@SuppressWarnings("serial")

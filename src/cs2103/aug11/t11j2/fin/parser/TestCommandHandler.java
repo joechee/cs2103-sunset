@@ -6,6 +6,12 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+/**
+ * Command handler that handles the command to initiate self-diagnostic tests.
+ * 
+ * @author Joe Chee
+ *
+ */
 public class TestCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")

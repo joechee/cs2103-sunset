@@ -1,6 +1,8 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 /**
+ * Command handler to handle zen.
+ * 
  * @author Joe Chee
  */
 
@@ -12,7 +14,8 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 public class ZenCommandHandler extends ICommandHandler {
-	List<String> zenList;
+	private List<String> zenList;
+	
 	ZenCommandHandler() {
 		zenList = new ArrayList<String>();
 		Random RNG = new Random();
@@ -23,10 +26,12 @@ public class ZenCommandHandler extends ICommandHandler {
 				"null","void","integer","linked-list","darkness",
 				"tree","hash-table","forest","death","eternity", "zen", "person"};
 		for (int i = 0; i < 100; i++) {
-			zenList.add("Zen master says \""+ noun[RNG.nextInt(noun.length)] + " is " +
+			zenList.add("Zen master says, \""+ noun[RNG.nextInt(noun.length)] + " is " +
 					noun[RNG.nextInt(noun.length)] + "\".");
 		}
 	}
+	
+	
 	@SuppressWarnings("serial")
 	@Override
 	List<String> getCommandStrings() {

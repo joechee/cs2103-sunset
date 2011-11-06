@@ -10,6 +10,12 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+/**
+ * Command handler to handle command that initiates the Fin. guided tour.
+ * 
+ * @author Alex Liew
+ *
+ */
 public class TourCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")
