@@ -188,30 +188,17 @@ public class FinCLIComposite extends Composite {
 	 * @param text text to echo
 	 */
 	public void echo(String text) {
-		StyledText t = new StyledText(display, SWT.WRAP);
-
-		t.setFont(new Font(this.getDisplay(), FinConstants.CLI_FONT, FinConstants.CLI_FONTSIZE, SWT.NORMAL));
-		t.setText(text.trim());
-
-		t.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
-		t.setForeground(new Color(null, FinConstants.CLI_FOREGROUND_COLOR));		
-		
-
-		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
-				false);
-		gridData.verticalIndent = gridData.horizontalIndent = 10;
-		t.setLayoutData(gridData);
-		t.setEnabled(false);
+		this.echoWithColor(text, new Color(null, FinConstants.CLI_FOREGROUND_COLOR));
 	}
 
-	public void tourStepEcho(String text) {
+	public void echoWithColor(String text, Color color) {
 		StyledText t = new StyledText(display, SWT.WRAP);
 
 		t.setFont(new Font(this.getDisplay(), FinConstants.CLI_FONT, FinConstants.CLI_FONTSIZE, SWT.NORMAL));
 		t.setText(text.trim());
 
 		t.setBackground(new Color(null, FinConstants.BACKGROUND_COLOR));
-		t.setForeground(new Color(null, FinConstants.TOUR_STEP_COLOR));		
+		t.setForeground(color);		
 		
 
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,

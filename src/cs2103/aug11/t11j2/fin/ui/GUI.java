@@ -785,7 +785,7 @@ public class GUI implements IUserInterface {
 	}
 
 	public void tourStepEcho(String promptMessage) {
-		cli.tourStepEcho(promptMessage);
+		cli.echoWithColor(promptMessage, new Color(null, FinConstants.TOUR_STEP_COLOR));
 		cli.refresh();
 	}
 	
