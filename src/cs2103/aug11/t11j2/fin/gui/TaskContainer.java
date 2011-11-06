@@ -2,6 +2,8 @@ package cs2103.aug11.t11j2.fin.gui;
 
 import org.eclipse.swt.SWT;
 /**
+ * Container Composite object to store TaskControl objects for the Fin. GUI
+ * 
  * @author Koh Zi Chun
  */
 import org.eclipse.swt.SWTException;

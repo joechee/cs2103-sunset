@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.gui;
 /**
+ * Fin.-specific event
+ * 
  * @author Wei Jing
  */
 import java.util.EventObject;

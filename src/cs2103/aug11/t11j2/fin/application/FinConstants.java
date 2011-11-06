@@ -5,6 +5,7 @@ import org.eclipse.swt.graphics.RGB;
 
 
 /**
+ * Contains standard constants for the Fin. application. 
  * 
  * @version 0.1
  * @author Koh Zi Chun

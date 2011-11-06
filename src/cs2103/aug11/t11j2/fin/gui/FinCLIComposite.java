@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.gui;
 /**
+ * Main Composite object for Fin.
+ * 
  * @author Wei Jing
  */
 import java.util.ArrayList;
