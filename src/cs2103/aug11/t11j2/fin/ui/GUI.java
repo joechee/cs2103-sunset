@@ -776,8 +776,12 @@ public class GUI implements IUserInterface {
 		cli.echo(promptMessage);
 		cli.refresh();
 	}
+
+	public void tourStepEcho(String promptMessage) {
+		cli.tourStepEcho(promptMessage);
+		cli.refresh();
+	}
 	
-	@Override
 	public void clearScreen() {
 		cli.clear();
 	}
