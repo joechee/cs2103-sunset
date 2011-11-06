@@ -16,9 +16,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import cs2103.aug11.t11j2.fin.application.FinApplication;
-import cs2103.aug11.t11j2.fin.application.Task;
-
 /**
  * The foot buttons: Add, Search/Show and Help. 
  * @author Wei Jing

@@ -1,18 +1,12 @@
 package cs2103.aug11.t11j2.fin.application;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.WriterAppender;
 
 import cs2103.aug11.t11j2.fin.application.FinLogger.LogDestination;
 import cs2103.aug11.t11j2.fin.ui.CLI;

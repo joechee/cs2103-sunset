@@ -1,14 +1,7 @@
 package cs2103.aug11.t11j2.fin.application;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.WriterAppender;
 
 public class FinLogger extends Logger{
 	

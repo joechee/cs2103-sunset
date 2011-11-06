@@ -3,12 +3,16 @@ package cs2103.aug11.t11j2.fin.ui;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Display;
-
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.application.Task;
-import cs2103.aug11.t11j2.fin.parser.*;
+import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.CommandResult;
+import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 
 public class FinTester extends IFinAutomation {
 	private int errors = 0;
