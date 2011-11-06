@@ -10,7 +10,8 @@ import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
 /**
- * CommandHandler for the "show tasks" command Usage: show [filter]
+ * CommandHandler for the "show tasks" command<br>
+ * Usage: show [filter]
  * 
  * @author Koh Zi Chun
  */

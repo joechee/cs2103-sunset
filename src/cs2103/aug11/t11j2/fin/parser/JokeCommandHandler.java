@@ -1,6 +1,8 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 /**
+ * Command handler to handle jokes :)
+ * 
  * @author Joe Chee
  */
 

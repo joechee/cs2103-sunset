@@ -7,6 +7,7 @@ import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 /**
+ * Command handler that handles the command to flag a task as 'important'.
  * 
  * @author Wei Jing
  *
