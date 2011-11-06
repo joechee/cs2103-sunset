@@ -40,6 +40,7 @@ public class DeleteCommandHandlerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		FinApplicationSandbox.INSTANCE.clearEnvironment();
 	}
 
 	@After
