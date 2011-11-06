@@ -102,13 +102,27 @@ public class DeleteCommandHandlerTest {
 		arguments.add("4");
 		exp = "Invalid Task Index!";
 		expected.add(exp);
-
+		
+		commands.add("del");
+		arguments.add("1");
+		exp = "Invalid Task Index!";
+		expected.add(exp);
+		
+		commands.add("del");
+		arguments.add("all");
+		ArrayList <String> taskList = new ArrayList<String> ();
+		
+		taskList.add("do this [next Sunday]");
+		taskList.add("I do not know [next Sunday]");		
+		taskList.add("what is [01 Dec]");
+		taskList.add("what is this");
+		expected.add(taskList);
 		
 		int n = commands.size();
 		for (int i=0; i<n; i++){
 			System.out.println(arguments.get(i));
 			res = del.executeCommands(commands.get(i), arguments.get(i), context);
-			actual = res.getReturnObject().toString();	
+			actual = res.getReturnObject();	
 			
 			System.out.println(actual);
 			System.out.println(expected.get(i));
