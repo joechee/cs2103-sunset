@@ -102,11 +102,7 @@ public class DeleteCommandHandlerTest {
 		arguments.add("4");
 		exp = "Invalid Task Index!";
 		expected.add(exp);
-		
-		commands.add("del");
-		arguments.add("1");
-		exp = "Invalid Task Index!";
-		expected.add(exp);
+
 		
 		int n = commands.size();
 		for (int i=0; i<n; i++){
@@ -135,8 +131,8 @@ public class DeleteCommandHandlerTest {
 			return obj1.equals(obj2);
 		}
 		// List
-		List<Task> list1 = (ArrayList<Task>)obj1;
-		List<Task> list2 = (ArrayList<Task>)obj2;
+		List<Object> list1 = (ArrayList<Object>)obj1;
+		List<Object> list2 = (ArrayList<Object>)obj2;
 		if (list1.size() != list2.size()){
 			return false;
 		}
