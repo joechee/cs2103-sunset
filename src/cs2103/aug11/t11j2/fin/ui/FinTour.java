@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.ui;
 /**
+ * The guided tour for Fin.
+ * 
  * @author Alex Liew
  */
 import java.text.DateFormat;

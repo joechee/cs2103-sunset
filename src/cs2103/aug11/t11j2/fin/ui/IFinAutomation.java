@@ -7,6 +7,7 @@ import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
 /**
+ * Abstract class to define automated interfaces for Fin. 
  * 
  * @author Wei Jing
  *

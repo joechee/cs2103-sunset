@@ -14,6 +14,7 @@ import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 /**
+ * Automated self-diagnostic for Fin.
  * 
  * @author Wei Jing
  *

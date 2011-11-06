@@ -20,6 +20,8 @@ import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 /**
+ * The CLI front-end for Fin.
+ * 
  * @author alexljz
  * 
  */

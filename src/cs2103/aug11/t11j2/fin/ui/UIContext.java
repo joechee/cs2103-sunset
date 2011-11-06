@@ -9,6 +9,7 @@ import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.Task;
 
 /**
+ * Context to hold state specific to the UI.
  * 
  * @author Alex Liew
  *

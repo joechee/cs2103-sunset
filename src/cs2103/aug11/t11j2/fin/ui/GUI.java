@@ -56,6 +56,7 @@ import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.TourCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
 /**
+ * The GUI front-end for Fin.
  * 
  * @author Joe Chee
  *
