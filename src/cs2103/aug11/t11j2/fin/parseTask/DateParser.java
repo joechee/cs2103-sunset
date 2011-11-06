@@ -63,7 +63,7 @@ public class DateParser {
 
 		// by/due tomorrow
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due\\sby|due|by)\\s*(today)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due\\sby|due|by)\\s*(today)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
@@ -72,7 +72,7 @@ public class DateParser {
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(dateNow);
 							
-							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+							m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 							m.appendTail(sb);
 							
 							return new DateStringBufferPair(
@@ -85,7 +85,7 @@ public class DateParser {
 		
 		// by/due tomorrow
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due\\sby|due|by)\\s*(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due\\sby|due|by)\\s*(tmrw|tomorrow|tmr|tml)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
@@ -95,7 +95,7 @@ public class DateParser {
 							calendar.setTime(dateNow);
 							calendar.add(Calendar.DAY_OF_YEAR, +1 );
 							
-							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+							m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 							m.appendTail(sb);
 							
 							return new DateStringBufferPair(
@@ -107,7 +107,7 @@ public class DateParser {
 
 		// on/by/this [day_of_week], e.g by Thursday
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due)?\\s*(on|by|this|coming)\\s*(coming)?\\s*(\\w*)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due)?\\s*(on|by|this|coming)\\s*(coming)?\\s*(\\w*)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -127,7 +127,7 @@ public class DateParser {
 								
 								
 								StringBuffer sb = new StringBuffer();
-								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+								m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 								m.appendTail(sb);
 								
 								return new DateStringBufferPair(
@@ -140,7 +140,7 @@ public class DateParser {
 
 		// next week
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due\\sby|due\\son|due|on|by)?\\s*(next|nxt)\\s*(week|wk)",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due\\sby|due\\son|due|on|by)?\\s*(next|nxt)\\s*(week|wk)",Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						if (m.find()) {							
@@ -149,7 +149,7 @@ public class DateParser {
 							calendar.add(Calendar.DAY_OF_YEAR, +7 );
 
 							StringBuffer sb = new StringBuffer();
-							m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+							m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 							m.appendTail(sb);
 							
 							return new DateStringBufferPair(
@@ -161,7 +161,7 @@ public class DateParser {
 
 		// next [day_of_week], e.g next Thursday
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due\\sby|due\\son|due|on|by)?\\s*(next|nxt)\\s*(\\w*)",Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due\\sby|due\\son|due|on|by)?\\s*(next|nxt)\\s*(\\w*)",Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -190,7 +190,7 @@ public class DateParser {
 								}
 								
 								StringBuffer sb = new StringBuffer();
-								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+								m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 								m.appendTail(sb);
 								
 								return new DateStringBufferPair(
@@ -204,7 +204,7 @@ public class DateParser {
 
 		// in [number] days
 		patternCheckers.add(new PatternChecker(
-				Pattern.compile("(due\\sby|due\\sin|due|in|by)?\\s*(\\d*)\\s*(days)", Pattern.CASE_INSENSITIVE),
+				Pattern.compile("\\s(due\\sby|due\\sin|due|in|by)?\\s*(\\d*)\\s*(days)", Pattern.CASE_INSENSITIVE),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						
@@ -218,7 +218,7 @@ public class DateParser {
 								calendar.add(Calendar.DAY_OF_YEAR, w);
 
 								StringBuffer sb = new StringBuffer();
-								m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+								m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 								m.appendTail(sb);
 								
 								return new DateStringBufferPair(
@@ -234,7 +234,7 @@ public class DateParser {
 		// for using SimpleDateFormat
 		// 30 Oct 2011, 30/10/2011, Oct 30 2011 
 		patternCheckers.add(
-				new PatternChecker(Pattern.compile("(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*[\\s|/]\\w*)"),
+				new PatternChecker(Pattern.compile("\\s(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*[\\s|/]\\w*)"),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -249,7 +249,7 @@ public class DateParser {
 									Date date = df.parse(t);
 
 									StringBuffer sb = new StringBuffer();
-									m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+									m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 									m.appendTail(sb);
 
 									Calendar cal = Calendar.getInstance();
@@ -278,7 +278,7 @@ public class DateParser {
 		// for using SimpleDateFormat
 		// 30 Oct, 30/10, Oct 30
 		patternCheckers.add(
-				new PatternChecker(Pattern.compile("(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*)"),
+				new PatternChecker(Pattern.compile("\\s(due\\sby|due\\son|due|on|by)\\s*(\\w*[\\s|/]\\w*)"),
 				new IPatternHandler() {
 					public DateStringBufferPair handleMatches(Matcher m) {
 						while (m.find()) {
@@ -294,7 +294,7 @@ public class DateParser {
 									Date date = df.parse(t);
 									
 									StringBuffer sb = new StringBuffer();
-									m.appendReplacement(sb, FinConstants.DUEDATE_PLACEHOLDER);
+									m.appendReplacement(sb, " "+FinConstants.DUEDATE_PLACEHOLDER);
 									m.appendTail(sb);
 
 									Calendar cal = Calendar.getInstance();
