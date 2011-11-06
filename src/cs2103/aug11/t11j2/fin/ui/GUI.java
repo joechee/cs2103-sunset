@@ -75,7 +75,7 @@ public class GUI implements IUserInterface {
 	private static final int TABLE_BORDER_WIDTH = 3;
 	
 	// Label
-	private Label l = null;
+	private Label finFooterLabel = null;
 	
 	// Footer
 	private Composite footer;
@@ -266,15 +266,15 @@ public class GUI implements IUserInterface {
 				});
 
 		
-		l = new Label(footer, SWT.NONE);
-		l.setText("Fin.");
-		l.setFont(new Font(shell.getDisplay(), FinConstants.FOOTER_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.BOLD));
+		finFooterLabel = new Label(footer, SWT.NONE);
+		finFooterLabel.setText("Fin.");
+		finFooterLabel.setFont(new Font(shell.getDisplay(), FinConstants.FOOTER_FONT, FinConstants.DEFAULT_FONTSIZE, SWT.BOLD));
 
-		l.setBounds(5, 5, 30, 20);
-	    l.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, true, 1, 1));
+		finFooterLabel.setBounds(5, 5, 30, 20);
+	    finFooterLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, true, 1, 1));
 
-		l.setForeground(new Color(null, 255, 255, 255));
-		l.setBackgroundImage(newImage);
+		finFooterLabel.setForeground(new Color(null, 255, 255, 255));
+		finFooterLabel.setBackgroundImage(newImage);
 		footer.layout(true);
 		return footer;
 	}
@@ -545,6 +545,10 @@ public class GUI implements IUserInterface {
 				}
 			}
 		};
+		
+		finFooterLabel.setText("Fin. Automated Test");
+		footer.layout(true);
+		
 		shell.getDisplay().timerExec(time, timer);
 		finTour.beginStep();
 	}
@@ -552,6 +556,9 @@ public class GUI implements IUserInterface {
 	private void stopAutomatedTest() {
 		context.setFinApplication(FinApplication.INSTANCE);
 		isInTour = false;
+
+		finFooterLabel.setText("Fin.");
+		footer.layout(true);
 		
 		this.runCommandAndRender("show");
 		
@@ -620,14 +627,14 @@ public class GUI implements IUserInterface {
 		finTour = new FinTour(this, context);
 		isInTour = true;
 		finTour.beginStep();
-		l.setText("Fin. Tour");
+		finFooterLabel.setText("Fin. Tour");
 		footer.layout(true);
 	}
 	
 	private void endTour() {
 		context.setFinApplication(FinApplication.INSTANCE);
 		isInTour = false;
-		l.setText("Fin.");
+		finFooterLabel.setText("Fin.");
 		footer.layout(true);
 		shell.update();
 		runCommandAndRender("show");
