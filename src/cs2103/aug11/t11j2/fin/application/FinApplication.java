@@ -94,7 +94,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * @return List of Tasks sorted by pIndex
+	 * @return List of Tasks sorted by due date
 	 */
 	@Override
 	public List<Task> getTasks() {
@@ -104,7 +104,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * @return List of Task with tag sorted by pIndex
+	 * @return List of Task with tag sorted by due date
 	 */
 	@Override
 	public List<Task> getTasksWithTag(String tag) {
@@ -119,7 +119,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * @return List of Task with tag sorted by pIndex
+	 * @return List of Task with tag sorted by due date
 	 */
 	@Override
 	public List<Task> getTasksWithoutTag(String tag) {
@@ -136,7 +136,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * @return List of Task with tag sorted by pIndex
+	 * @return List of Task with tag sorted by due date
 	 */
 	@Override
 	public List<Task> getTasksWithoutTags(List<String> tags) {
@@ -153,7 +153,7 @@ public class FinApplication implements Fin.IFinApplication {
 	}
 
 	/**
-	 * @return List of Task with tags sorted by pIndex
+	 * @return List of Task with tags sorted by due date
 	 */
 	@Override
 	public List<Task> getTasksWithTags(List<String> tags) {
