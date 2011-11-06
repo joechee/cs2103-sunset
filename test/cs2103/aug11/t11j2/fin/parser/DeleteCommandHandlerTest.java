@@ -19,7 +19,6 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 
 public class DeleteCommandHandlerTest {
-	
 	UIContext context = new UIContextTest(FinApplication.INSTANCE);
 	DeleteCommandHandler del = new DeleteCommandHandler();
 	AddCommandHandler add = new AddCommandHandler();
@@ -135,6 +134,7 @@ public class DeleteCommandHandlerTest {
 			Assert.assertFalse(!isEqual);
 		}
 		System.out.println("Passed " + passed + " out of " + n);
+		FinApplication.INSTANCE.clearEnvironment();
 	}
 	
 	boolean checkEqual (Object obj1, Object obj2){

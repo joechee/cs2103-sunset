@@ -116,6 +116,7 @@ public class UndeleteCommandHandlerTest {
 			passed++;
 		}
 		System.out.println("Passed " + passed + " out of " + n);
+		FinApplication.INSTANCE.clearEnvironment();
 	}
 	
 	boolean checkEqual (Object obj1, Object obj2){
