@@ -49,6 +49,7 @@ public class FinSerializer {
 
 	public List<Task> unserialize(String filename)
 			throws IOException {
+		assert(filename!="");
 		logger.debug("Unserializing tasks");
 		Serializer sr = new Serializer();
 		List<Object> dictionaries = sr.unserialize(filename);

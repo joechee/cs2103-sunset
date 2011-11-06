@@ -19,8 +19,7 @@ import cs2103.aug11.t11j2.fin.application.*;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 
 public class AddCommandHandlerTest implements Fin.IUserInterface{
-	Logger init = TestLogger.initializeLogger();
-	UIContext context = new UIContextTest(FinApplication.INSTANCE);
+	UIContext context = new UIContextTest(FinApplicationSandbox.INSTANCE);
 	AddCommandHandler add = new AddCommandHandler();
 	
 	ArrayList <String> commands = new ArrayList<String>();

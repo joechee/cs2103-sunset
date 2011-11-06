@@ -34,6 +34,7 @@ public class Serializer {
 
 	public void serialize(Iterator<Object> objects, String filename)
 			throws IOException {
+		assert !filename.equals("");
 		File saveFile = new File(filename);
 		if (!saveFile.exists()) {
 			saveFile.createNewFile();

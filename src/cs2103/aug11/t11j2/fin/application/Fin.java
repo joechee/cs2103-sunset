@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import cs2103.aug11.t11j2.fin.application.FinLogger.LogDestination;
 import cs2103.aug11.t11j2.fin.ui.CLI;
 import cs2103.aug11.t11j2.fin.ui.GUI;
 
@@ -24,7 +23,7 @@ import cs2103.aug11.t11j2.fin.ui.GUI;
 public class Fin {
 	
 
-	private static final Logger logger = FinLogger.initializeLogger(LogDestination.CONSOLE);
+	private static final Logger logger = Logger.getRootLogger();
 	
 	
 	

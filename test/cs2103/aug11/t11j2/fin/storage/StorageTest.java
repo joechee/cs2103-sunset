@@ -46,8 +46,8 @@ public class StorageTest {
 
 		System.out.println("Serializing test...");
 
-		FinSerializer fs = new FinSerializer();
-		fs.serialize("test.yaml");
+		Serializer fs = new Serializer();
+		fs.unserialize("test.yaml");
 
 		System.out.println("Serializing test complete!");
 
