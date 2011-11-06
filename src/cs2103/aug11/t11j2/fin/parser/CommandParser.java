@@ -18,7 +18,6 @@ public class CommandParser {
 
 	private Map<String, ICommandHandler> commandHandlers = new HashMap<String, ICommandHandler>();
 	private List<ICommandHandler> commandHandlerLyst = new ArrayList<ICommandHandler>();
-	private boolean tourMode = false;
 	private Logger logger;
 
 	protected CommandParser() {
