@@ -1,6 +1,9 @@
 package cs2103.aug11.t11j2.fin.gui;
 
 import org.eclipse.swt.SWT;
+/**
+ * @author Koh Zi Chun
+ */
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;

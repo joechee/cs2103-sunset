@@ -10,6 +10,8 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 /**
  * CommandHandler for "Untag" command Usage: untag [task index] [tags]
  * removes the [tags] from the index-th task. eg: untag 7 cs math.
+ * 
+ * @author Alex Liew
  */
 public class UntagTaskWithTagsCommandHandler extends ICommandHandler {
 

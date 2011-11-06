@@ -12,6 +12,11 @@ import cs2103.aug11.t11j2.fin.application.FinConstants;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 
+/**
+ * 
+ * @author Koh Zi Chun
+ *
+ */
 public class CommandParser {
 
 	public static CommandParser INSTANCE = new CommandParser();

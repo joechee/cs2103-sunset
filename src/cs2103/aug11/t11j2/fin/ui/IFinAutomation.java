@@ -6,6 +6,11 @@ import java.util.List;
 import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 
+/**
+ * 
+ * @author Wei Jing
+ *
+ */
 public abstract class IFinAutomation {
 	interface Step {
 		// this will initialize the step by augmenting the environment

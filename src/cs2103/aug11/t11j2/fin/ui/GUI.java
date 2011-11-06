@@ -55,6 +55,11 @@ import cs2103.aug11.t11j2.fin.parser.ICommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.TourCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
+/**
+ * 
+ * @author Joe Chee
+ *
+ */
 
 public class GUI implements IUserInterface {
 	// Logger

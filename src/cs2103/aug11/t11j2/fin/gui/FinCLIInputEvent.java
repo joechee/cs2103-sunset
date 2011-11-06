@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.gui;
-
+/**
+ * @author Wei Jing
+ */
 import java.util.EventObject;
 
 public class FinCLIInputEvent extends EventObject {

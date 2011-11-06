@@ -13,7 +13,11 @@ import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
-
+/**
+ * 
+ * @author Wei Jing
+ *
+ */
 public class FinTester extends IFinAutomation {
 	private int errors = 0;
 	private List<String> errorList = null;

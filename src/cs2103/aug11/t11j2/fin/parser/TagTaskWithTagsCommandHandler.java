@@ -10,6 +10,8 @@ import cs2103.aug11.t11j2.fin.ui.UIContext;
 /**
  * CommandHandler for "tag" command Usage: tag [task index] [tags]
  * adds the [tags] to the index-th task. eg: tag 7 cs math.
+ * 
+ * @author Alex Liew
  */
 public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 

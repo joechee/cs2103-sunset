@@ -1,5 +1,7 @@
 package cs2103.aug11.t11j2.fin.ui;
-
+/**
+ * @author Alex Liew
+ */
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -1,4 +1,7 @@
 package cs2103.aug11.t11j2.fin.parser;
+/**
+ * @author Wei Jing
+ */
 
 import java.util.ArrayList;
 import java.util.List;

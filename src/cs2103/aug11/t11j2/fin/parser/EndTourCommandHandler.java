@@ -5,7 +5,11 @@ import java.util.List;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
-
+/**
+ * 
+ * @author Alex Liew
+ *
+ */
 public class EndTourCommandHandler extends ICommandHandler {
 	@Override
 	@SuppressWarnings("serial")

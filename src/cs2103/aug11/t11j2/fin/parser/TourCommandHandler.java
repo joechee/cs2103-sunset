@@ -1,6 +1,10 @@
 package cs2103.aug11.t11j2.fin.parser;
 
 import java.util.ArrayList;
+
+/**
+ * @author Alex Liew
+ */
 import java.util.List;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;

@@ -8,6 +8,11 @@ import org.eclipse.swt.widgets.Display;
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.Task;
 
+/**
+ * 
+ * @author Alex Liew
+ *
+ */
 public class UIContext {
 	private List<Task> taskList = new ArrayList<Task>();
 	private String filter = "";
