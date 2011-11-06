@@ -184,6 +184,7 @@ public class FinCLIComposite extends Composite {
 
 	/** 
 	 * Echos the text onto the CLI
+	 * The default color to use will be Finconstants.CLI_FOREGROUND_COLOR
 	 * 
 	 * @param text text to echo
 	 */
@@ -191,6 +192,12 @@ public class FinCLIComposite extends Composite {
 		this.echoWithColor(text, new Color(null, FinConstants.CLI_FOREGROUND_COLOR));
 	}
 
+	/**
+	 * Echos the text onto the CLI with a specific color
+	 * 
+	 * @param text
+	 * @param color
+	 */
 	public void echoWithColor(String text, Color color) {
 		StyledText t = new StyledText(display, SWT.WRAP);
 
