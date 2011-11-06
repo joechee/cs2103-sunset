@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import cs2103.aug11.t11j2.fin.application.Fin;
 import cs2103.aug11.t11j2.fin.application.Task;
+import cs2103.aug11.t11j2.fin.application.Fin.IUserInterface;
 import cs2103.aug11.t11j2.fin.parser.AddCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.CommandResult;
 import cs2103.aug11.t11j2.fin.parser.DeleteCommandHandler;
@@ -13,6 +14,7 @@ import cs2103.aug11.t11j2.fin.parser.EditCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.FinCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.ShowCommandHandler;
 import cs2103.aug11.t11j2.fin.parser.UndeleteCommandHandler;
+import cs2103.aug11.t11j2.fin.parser.ImportantCommandHandler;
 
 
 public class FinTour extends IFinAutomation {
@@ -22,7 +24,7 @@ public class FinTour extends IFinAutomation {
 		super(UI, context);
 				
 		// add some default tasks
-		Fin.IFinApplication finApplication = this.context.getFinApplication();
+		final Fin.IFinApplication finApplication = this.context.getFinApplication();
 		finApplication.clearEnvironment();
 		finApplication.add(new Task("Add your First Task! #impt"));
 		
@@ -32,7 +34,7 @@ public class FinTour extends IFinAutomation {
 		 */
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "Complete tour of Fin.";
+			String args = "Complete this tour.";
 			@Override
 			public void initStep() {
 				UI.clearScreen();
@@ -70,7 +72,7 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 2: Relative dates
 		 */
-		final DateFormat df = new SimpleDateFormat("d MMM yyyy");
+		final DateFormat df = new SimpleDateFormat("d MMM");
 		final Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		steps.add(new Step() {
@@ -107,6 +109,7 @@ public class FinTour extends IFinAutomation {
 			}
 		});
 		
+		
 		/*
 		 * Step 3
 		 */
@@ -114,11 +117,13 @@ public class FinTour extends IFinAutomation {
 		calendar.add(Calendar.DAY_OF_YEAR, 6);
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "#fetch Harry from #airport on "+ df2.format(calendar.getTime()) +" #impt";
+			String date = df2.format(calendar.getTime());
+			String args = "fetch #mum from #airport on " + date;
 			@Override
 			public void initStep() {
 				UI.echo("See what we did there?");
 				UI.echo("Fin. intelligently converts dates to make dates more readable.");
+				UI.echo("The actual date can still be seen on the right hand side of the screen.");
 				UI.echo("We've also included a tool to help you organize your todos.");
 				UI.echo("Type the following:");
 				UI.tourStepEcho("add " + args);
@@ -151,14 +156,19 @@ public class FinTour extends IFinAutomation {
 		 */
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "photo trial at the #airport";
+			String date = df2.format(calendar.getTime());
+			String args = "fetch #mum from #airport on " + date + " #impt";
 			
 			@Override
 			public void initStep() {
+				finApplication.add(new Task("buy duty-free from #airport on " + date));
+				finApplication.add(new Task("#buy #present for dad's #birthday"));
+				finApplication.add(new Task("#buy cake for dad's #birthday"));
+				UI.runCommandAndRender("show");
 				UI.echo("Tags help to organize your tasks and have been coloured to make them more identifiable.");
-				UI.echo("The #impt tag is a special tag that gives a task higher priority.");
-				UI.echo("Thus, while Fin. normally sorts tasks by date, the #impt tag will give a task higher priority.");
-				UI.echo("For now, just type the following:");
+				UI.echo("We've added a few tasks to help illustrate this.");
+				UI.echo("In addition, there are a few special tags that we'd like to mention.");
+				UI.echo("Type the following:");
 				UI.tourStepEcho("add " + args);
 				isUserGenerated = true;
 			}
@@ -185,6 +195,44 @@ public class FinTour extends IFinAutomation {
 		});
 		
 		/*
+		 * Step 4
+		 */
+		steps.add(new Step() {
+			boolean isUserGenerated = false;
+			String args = "3";
+			
+			@Override
+			public void initStep() {
+				UI.echo("Notice that this is almost identical to the last task but is higher up the list.");
+				UI.echo("The #impt tag is used to indicate tasks with higher priority.");
+				UI.echo("You can also flag tasks as #impt even after they are created.");
+				UI.echo("Type the following:");
+				UI.tourStepEcho("impt " + args);
+				isUserGenerated = true;
+			}
+			
+			@Override
+			public boolean onUserAction(CommandResult cmdRes) {
+				final boolean isTaskResult = cmdRes.getRenderType() == CommandResult.RenderType.TASK;
+				final boolean isAddCommand =  cmdRes.getCommand() instanceof ImportantCommandHandler;
+				final boolean isMatched = cmdRes.getArgument().equalsIgnoreCase(args);
+				
+				// add command success
+				if (isTaskResult && isAddCommand && isMatched) {
+					return nextStep();
+				}
+				
+				if (isUserGenerated) {
+					isUserGenerated = false;
+					UI.echo("Go on, type the following line:");
+					UI.tourStepEcho("impt " + args);
+					isUserGenerated = true;
+				}
+				return false;
+			}
+		});		
+		
+		/*
 		 * Step 5
 		 */
 		steps.add(new Step() {
@@ -193,7 +241,8 @@ public class FinTour extends IFinAutomation {
 			
 			@Override
 			public void initStep() {
-				UI.echo("What's the use of a tag if all it does it look pretty?");
+				UI.echo("Good! Now you may be wondering:");
+				UI.echo("What's the use of a tag apart from looking pretty?");
 				UI.echo("Quite a lot in fact!");
 				UI.echo("Type the following:");
 				UI.tourStepEcho("show " + args);
@@ -221,6 +270,40 @@ public class FinTour extends IFinAutomation {
 			}
 		});
 		
+		steps.add(new Step() {
+			boolean isUserGenerated = false;
+			String args = "";
+			
+			@Override
+			public void initStep() {
+				UI.echo("The 'show' command searches for tasks that have matching tags and arguments.");
+				UI.echo("This is handy when you're dealing with many tasks and just want to look at a few.");
+				UI.echo("To return to the main task list, just type:");
+				UI.tourStepEcho("show");
+				isUserGenerated = true;
+			}
+
+			@Override
+			public boolean onUserAction(CommandResult cmdRes) {
+				final boolean isCorrectType = cmdRes.getRenderType() == CommandResult.RenderType.TASKLIST;
+				final boolean isCorrectCommand = cmdRes.getCommand() instanceof ShowCommandHandler;
+				final boolean isMatched = cmdRes.getArgument().equalsIgnoreCase(args);
+				
+				// add command success
+				if (isCorrectType && isCorrectCommand && isMatched) {
+					return nextStep();
+				}
+				
+				if (isUserGenerated) {
+					isUserGenerated = false;
+					UI.echo("It's not that hard to just type:");
+					UI.tourStepEcho("show");
+					isUserGenerated = true;
+				}
+				return false;
+			}
+		});
+		
 		/*
 		 * Step 6
 		 */
@@ -229,9 +312,6 @@ public class FinTour extends IFinAutomation {
 			String args = "1";
 			@Override
 			public void initStep() {
-				UI.echo("WOW! How unexpected!");
-				UI.echo("The 'show' command searches tasks that have matching arguments.");
-				UI.echo("This is handy when you're dealing with many tasks and just want to look at a few");
 				UI.echo("You'll also want to clear tasks from your todo list if you've already done them.");
 				UI.echo("Type the following:");
 				UI.tourStepEcho("fin " + args);
@@ -337,13 +417,12 @@ public class FinTour extends IFinAutomation {
 		 */
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "1";
+			String args = "3";
 			
 			@Override
 			public void initStep() {
-				UI.runCommandAndRender("add The British are coming #impt by today");
-				UI.echo("Oh no! Where did this message come from! It must be a bug!");
-				UI.echo("Squash the bug! Delete this task by typing:");
+				UI.echo("Since we don't really want duplicate tasks, we should delete it.");
+				UI.echo("Delete the duplicated task by typing:");
 				UI.tourStepEcho("del " + args);
 				isUserGenerated = true;
 			}
@@ -405,14 +484,15 @@ public class FinTour extends IFinAutomation {
 		/*
 		 * Step 10
 		 */
+		calendar.add(Calendar.DAY_OF_YEAR, 4);
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "4 to photo trail at the #airport";
+			String date = df2.format(calendar.getTime());
+			String args = "7 to #buy food for dad's #birthday on " + date;
 			
 			@Override
 			public void initStep() {
-				UI.echo("**--GRAMMAR SENSES TINGLING--**");
-				UI.echo("That's terrible. It seems you've made a typo in task 4 and now it's up to YOU to fix it!!");
+				UI.echo("You can also choose to edit a task if you so desire.");
 				UI.echo("Type:");
 				UI.tourStepEcho("edit " + args);
 				isUserGenerated = true;
@@ -445,9 +525,8 @@ public class FinTour extends IFinAutomation {
 		steps.add(new Step() {
 			@Override
 			public void initStep() {
-				UI.echo("Whew. That was close.");
 				UI.echo("That about wraps up our tour. However, remember that you can always take this tour again!");
-				UI.echo("When in doubt, DON'T PANIC. There is always the \"help\" command to save the day.");
+				UI.echo("When in doubt, there is always the \"help\" command to save the day.");
 				UI.echo("We hope you've enjoyed touring Fin.");
 				UI.echo("To end this tour, type:");
 				UI.tourStepEcho("end");
