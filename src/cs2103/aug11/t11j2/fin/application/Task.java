@@ -11,7 +11,14 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import cs2103.aug11.t11j2.fin.parseTask.DateParser;
-
+/**
+ * Each task object models a task within the environment or memory. Mutation of the task 
+ * internals can only be done with  * package private methods within Task. Only accessor 
+ * methods are public.
+ * 
+ * @author Joe Chee
+ *
+ */
 public class Task {
 
 	private String parsedTaskName;

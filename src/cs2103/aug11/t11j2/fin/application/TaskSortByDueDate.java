@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 /**
  * Comparator that sorts Tasks by due date and date added.
+ * @author Acer Wei
  */
 class TaskSortByDueDate implements Comparator<Task> {
 
