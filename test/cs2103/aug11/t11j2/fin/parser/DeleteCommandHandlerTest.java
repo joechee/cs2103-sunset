@@ -13,13 +13,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
+import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
 import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
 import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 
 public class DeleteCommandHandlerTest {
-	UIContext context = new UIContextTest(FinApplication.INSTANCE);
+	UIContext context = new UIContextTest(FinApplicationSandbox.INSTANCE);
 	DeleteCommandHandler del = new DeleteCommandHandler();
 	AddCommandHandler add = new AddCommandHandler();
 	
@@ -134,7 +135,7 @@ public class DeleteCommandHandlerTest {
 			Assert.assertFalse(!isEqual);
 		}
 		System.out.println("Passed " + passed + " out of " + n);
-		FinApplication.INSTANCE.clearEnvironment();
+
 	}
 	
 	boolean checkEqual (Object obj1, Object obj2){

@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
+import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
 import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -20,7 +21,7 @@ import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 
 public class ShowCommandHandlerTest {
 
-	UIContext context = new UIContextTest(FinApplication.INSTANCE);
+	UIContext context = new UIContextTest(FinApplicationSandbox.INSTANCE);
 	ShowCommandHandler show = new ShowCommandHandler();
 	AddCommandHandler add = new AddCommandHandler();
 	
@@ -40,6 +41,7 @@ public class ShowCommandHandlerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		FinApplicationSandbox.INSTANCE.clearEnvironment();
 	}
 
 	@After

@@ -266,8 +266,6 @@ public class Fin {
 			return (IUserInterface) new CLI();
 		} else if (UIString.equals("GUI")) {
 			return (IUserInterface) new GUI();
-		} else if (UIString.equals("NUI")) {
-			return (IUserInterface) null;
 		} else {
 			throw new IllegalArgumentException("UI not recognised!");
 		}

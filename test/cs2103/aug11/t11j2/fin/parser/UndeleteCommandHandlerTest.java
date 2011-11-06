@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.application.FinApplication;
+import cs2103.aug11.t11j2.fin.application.FinApplicationSandbox;
 import cs2103.aug11.t11j2.fin.application.Task;
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
@@ -27,7 +28,7 @@ import org.junit.Test;
 
 public class UndeleteCommandHandlerTest {
 	
-	UIContext context = new UIContextTest(FinApplication.INSTANCE);
+	UIContext context = new UIContextTest(FinApplicationSandbox.INSTANCE);
 	DeleteCommandHandler del = new DeleteCommandHandler();
 	UndeleteCommandHandler undel = new UndeleteCommandHandler();
 	AddCommandHandler add = new AddCommandHandler();
@@ -48,6 +49,7 @@ public class UndeleteCommandHandlerTest {
 
 	@Before
 	public void setUp() throws Exception {
+		FinApplicationSandbox.INSTANCE.clearEnvironment();
 	}
 
 	@After

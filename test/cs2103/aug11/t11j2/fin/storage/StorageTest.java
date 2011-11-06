@@ -33,10 +33,7 @@ import cs2103.aug11.t11j2.fin.application.Task;
 
 
 public class StorageTest {
-	@Test
-	public void testFailure() throws Exception {
-		fail();
-	}
+
 
 	@Test
 	public void testSerializer() throws IOException {
