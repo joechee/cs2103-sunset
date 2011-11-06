@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import cs2103.aug11.t11j2.fin.errorhandler.FinProductionException;
 import cs2103.aug11.t11j2.fin.ui.UIContext;
-import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 import cs2103.aug11.t11j2.fin.application.*;
+import cs2103.aug11.t11j2.fin.ui.UIContextTest;
 
 public class AddCommandHandlerTest implements Fin.IUserInterface{
 	Logger init = TestLogger.initializeLogger();
@@ -95,8 +95,8 @@ public class AddCommandHandlerTest implements Fin.IUserInterface{
 			return obj1.equals(obj2);
 		}
 		// List
-		List<Task> list1 = (ArrayList<Task>)obj1;
-		List<Task> list2 = (ArrayList<Task>)obj2;
+		List<Object> list1 = (ArrayList<Object>)obj1;
+		List<Object> list2 = (ArrayList<Object>)obj2;
 		if (list1.size() != list2.size()){
 			return false;
 		}
