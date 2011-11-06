@@ -34,7 +34,7 @@ public class FinTour extends IFinAutomation {
 		 */
 		steps.add(new Step() {
 			boolean isUserGenerated = false;
-			String args = "Complete this tour.";
+			String args = "Complete this tour";
 			@Override
 			public void initStep() {
 				UI.clearScreen();

@@ -26,7 +26,7 @@ public class JokeCommandHandler extends ICommandHandler {
 			add("Did you hear about the red ship and the blue ship that collided with each other? Both crews were marooned.");
 			add("The Energizer Bunny was arrested, and charged with battery.");
 			add("Did you hear about the restaurant on the moon? Great food but no atmosphere.");
-			
+			add("At my lemonade stand I used to give the first glass away free and charge five dollars for the second glass. The refill contained the antidote.");
 		}
 	};
 	
