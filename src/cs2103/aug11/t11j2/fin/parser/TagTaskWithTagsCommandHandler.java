@@ -45,7 +45,7 @@ public class TagTaskWithTagsCommandHandler extends ICommandHandler {
 			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
-		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
+		if (taskIndex <= 0 || taskIndex > context.getTaskList().size()) {
 			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 		Task task = context.getTaskList().get(taskIndex - 1);
