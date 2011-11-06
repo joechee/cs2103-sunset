@@ -43,7 +43,7 @@ public class ImportantCommandHandler extends ICommandHandler {
 			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 
-		if (taskIndex < 0 || taskIndex > context.getTaskList().size()) {
+		if (taskIndex <= 0 || taskIndex > context.getTaskList().size()) {
 			return new CommandResult(this, arguments, CommandResult.RenderType.ERROR, "Invalid Task Index!");
 		}
 

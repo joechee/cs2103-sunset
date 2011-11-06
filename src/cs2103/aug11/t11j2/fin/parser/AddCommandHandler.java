@@ -32,8 +32,7 @@ public class AddCommandHandler extends ICommandHandler {
 
 	@Override
 	public CommandResult executeCommands(String command, String arguments,
-			UIContext context) throws FinProductionException {
-		
+			UIContext context) throws FinProductionException {		
 		
 		if (arguments.trim().length() == 0) {
 			return showHelp();
