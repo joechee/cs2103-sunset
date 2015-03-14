@@ -1,0 +1,1 @@
+Fin. is a To-Do manager that will allow you to keep track of your daily tasks the way you want it to be tracked.
